@@ -101,8 +101,10 @@ if ( ! class_exists( 'TINYPRESS_Main' ) ) {
 		function define_classes_functions() {
 
 			require_once TINYPRESS_PLUGIN_DIR . 'includes/classes/class-hooks.php';
-			require_once TINYPRESS_PLUGIN_DIR . 'includes/classes/class-meta-boxes.php';
 			require_once TINYPRESS_PLUGIN_DIR . 'includes/classes/class-functions.php';
+			require_once TINYPRESS_PLUGIN_DIR . 'includes/functions.php';
+
+			require_once TINYPRESS_PLUGIN_DIR . 'includes/classes/class-meta-boxes.php';
 		}
 
 		/**
