@@ -21,7 +21,6 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 		function __construct() {
 
 			add_action( 'init', array( $this, 'register_everything' ) );
-
 		}
 
 		/**
@@ -45,11 +44,12 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 			/**
 			 * Register Post Types
 			 */
-			$tinypress_sdk->utils()->register_post_type( 'tinypress', array(
-				'singular'            => esc_html__( 'Tinypress', 'tinypress' ),
-				'plural'              => esc_html__( 'Tinypress', 'tinypress' ),
+			$tinypress_sdk->utils()->register_post_type( 'tinypress_url', array(
+				'singular'            => esc_html__( 'Tiny URL', 'tinypress' ),
+				'plural'              => esc_html__( 'All Tiny URLs', 'tinypress' ),
 				'labels'              => array(
-					'menu_name' => esc_html__( 'Tinypress', 'tinypress' ),
+					'menu_name' => esc_html__( 'TinyPress', 'tinypress' ),
+					'add_new'   => esc_html__( 'Short an URL', 'tinypress' ),
 				),
 				'menu_icon'           => 'dashicons-admin-links',
 				'supports'            => array( 'title' ),

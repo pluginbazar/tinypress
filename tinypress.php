@@ -19,17 +19,6 @@ defined( 'TINYPRESS_PLUGIN_DIR' ) || define( 'TINYPRESS_PLUGIN_DIR', plugin_dir_
 defined( 'TINYPRESS_PLUGIN_FILE' ) || define( 'TINYPRESS_PLUGIN_FILE', plugin_basename( __FILE__ ) );
 defined( 'TINYPRESS_PLUGIN_VERSION' ) || define( 'TINYPRESS_PLUGIN_VERSION', '1.0.0' );
 
-
-if ( ! class_exists( 'TINYPRESS_Main' ) ) {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/sdk/classes/class-client.php';
-}
-
-/**
- * @global TINYPRESS_base $tinypress
- */
-global $tinypress;
-
-
 if ( ! class_exists( 'TINYPRESS_Main' ) ) {
 	/**
 	 * Class TINYPRESS_Main
@@ -49,8 +38,9 @@ if ( ! class_exists( 'TINYPRESS_Main' ) ) {
 
 			$this->define_scripts();
 			$this->define_classes_functions();
+
 			register_activation_hook( __FILE__, [ $this, 'tinypress_data_table' ] );
-			add_action( 'wp_head', array($this,'wpdocs_pingbackurl_example') );
+			add_action( 'wp_head', array( $this, 'wpdocs_pingbackurl_example' ) );
 			add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		}
 
@@ -90,8 +80,6 @@ if ( ! class_exists( 'TINYPRESS_Main' ) ) {
 		}
 
 
-
-
 		/**
 		 * Load Textdomain
 		 */
@@ -113,7 +101,7 @@ if ( ! class_exists( 'TINYPRESS_Main' ) ) {
 		function define_classes_functions() {
 
 			require_once TINYPRESS_PLUGIN_DIR . 'includes/classes/class-hooks.php';
-			require_once TINYPRESS_PLUGIN_DIR . 'includes/classes/class-post-meta.php';
+			require_once TINYPRESS_PLUGIN_DIR . 'includes/classes/class-meta-boxes.php';
 			require_once TINYPRESS_PLUGIN_DIR . 'includes/classes/class-functions.php';
 		}
 
@@ -174,9 +162,14 @@ function pb_sdk_init_tinypress() {
 		include_once ABSPATH . '/wp-admin/includes/plugin.php';
 	}
 
+	if ( ! class_exists( 'Pluginbazar\Client' ) ) {
+		require_once( plugin_dir_path( __FILE__ ) . 'includes/sdk/classes/class-client.php' );
+	}
+
 	global $tinypress_sdk;
 
-	$tinypress_sdk = new Pluginbazar\Client( esc_html( 'tinypress' ), 'tinypress', 38, __FILE__ );
+	$tinypress_sdk = new Pluginbazar\Client( esc_html( 'TinyPress - Best URL Shortener Plugin' ), 'tinypress', 36, __FILE__ );
+//	$tinypress_sdk->notifications();
 
 	do_action( 'pb_sdk_init_tinypress', $tinypress_sdk );
 }
@@ -189,3 +182,4 @@ global $tinypress_sdk;
 pb_sdk_init_tinypress();
 
 TINYPRESS_Main::instance();
+

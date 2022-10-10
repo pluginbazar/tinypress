@@ -9,14 +9,19 @@ use \Pluginbazar\Utils;
 defined( 'ABSPATH' ) || exit;
 
 
-if ( ! class_exists( 'TINYPRESS_Post_meta' ) ) {
+if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 	/**
-	 * Class TINYPRESS_Post_meta
+	 * Class TINYPRESS_Meta_boxes
 	 */
-	class TINYPRESS_Post_meta {
+	class TINYPRESS_Meta_boxes {
 
 		/**
-		 * TINYPRESS_Post_meta constructor.
+		 * @var string
+		 */
+		private $prefix_tinyurl_metabox = 'tinypress_url';
+
+		/**
+		 * TINYPRESS_Meta_boxes constructor.
 		 */
 		function __construct() {
 
@@ -29,51 +34,41 @@ if ( ! class_exists( 'TINYPRESS_Post_meta' ) ) {
 		 */
 		function generate_tinypress_meta_box() {
 
-			$prefix = 'pb_meta_fields';
-
-			/**
-			 * Create a metabox for tinypress.
-			 */
-			PBSettings::createMetabox(
-				$prefix,
+			// Create a metabox for tinypress.
+			PBSettings::createMetabox( $this->prefix_tinyurl_metabox,
 				array(
-					'title'     => __( 'Tinypress Options', 'tinypress' ),
-					'post_type' => 'tinypress',
+					'title'     => esc_html__( 'TinyPress', 'tinypress' ),
+					'post_type' => 'tinypress_url',
 					'data_type' => 'unserialize',
 					'context'   => 'normal',
 					'nav'       => 'inline',
 					'preview'   => true,
-				)
+				),
 			);
 
-			/**
-			 * General Settings section.
-			 */
-			PBSettings::createSection( $prefix,
+			// General Settings section.
+			PBSettings::createSection( $this->prefix_tinyurl_metabox,
 				array(
-					'title'  => __( 'General Settings', 'tinypress' ),
+					'title'  => esc_html__( 'General Settings', 'tinypress' ),
 					'icon'   => 'fa fa-cog',
 					'fields' => array(
 						array(
-							'id'       => '_targetURL',
+							'id'       => '_target_url',
 							'type'     => 'text',
 							'title'    => esc_html__( 'Target URL', 'tinypress' ),
 							'subtitle' => esc_html__( '', 'tinypress' ),
-
-
 						),
 						array(
-							'id'       => '_shortURL',
+							'id'       => '_short_url',
 							'type'     => 'text',
 							'title'    => esc_html__( 'Short URL', 'tinypress' ),
 							'subtitle' => esc_html__( '', 'tinypress' ),
 						),
 						array(
-							'id'       => '_redirection',
-							'type'     => 'select',
-							'title'    => esc_html__( 'Redirection', 'tinypress' ),
-							'subtitle' => esc_html__( '', 'tinypress' ),
-
+							'id'          => '_redirection',
+							'type'        => 'select',
+							'title'       => esc_html__( 'Redirection', 'tinypress' ),
+							'subtitle'    => esc_html__( '', 'tinypress' ),
 							'placeholder' => 'Select an option',
 							'options'     => array(
 								'option-1' => '307 (Temporary)',
@@ -82,37 +77,17 @@ if ( ! class_exists( 'TINYPRESS_Post_meta' ) ) {
 							),
 							'default'     => 'option-2'
 						),
-
-						array(
-							'id'       => '_domain',
-							'type'     => 'text',
-							'title'    => esc_html__( 'Domain', 'tinypress' ),
-							'subtitle' => esc_html__( '', 'tinypress' ),
-
-						),
 						array(
 							'id'       => '_notes',
 							'type'     => 'textarea',
 							'title'    => esc_html__( 'Notes', 'tinypress' ),
 							'subtitle' => esc_html__( '', 'tinypress' ),
-
 						),
 					),
 				)
 			);
-
-
-			PBSettings::createSection( $prefix,
-				array(
-					'title'  => esc_html__( 'Tinypress Advanced', 'tinypress' ),
-					'icon'   => 'fa fa-cog',
-					'fields' => array()
-				)
-			);
 		}
-
-
 	}
 }
 
-new TINYPRESS_Post_meta();
+tinypress()->tinypress_metaboxes = new TINYPRESS_Meta_boxes();
