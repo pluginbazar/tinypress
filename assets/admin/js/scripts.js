@@ -5,14 +5,16 @@
 (function ($, window, document, pluginObject) {
     "use strict";
 
-    $(document).on('keyup', '.tinypress-slug-custom input[type="text"]', function () {
+    $(document).on('keydown, keyup', '.tinypress-slug-custom input[type="text"]', function () {
+
+        let texInputValue = $(this).val();
+        $('.random').html(texInputValue);
 
     });
 
     $(document).on('click', '.sliderxwoo-shortcode .shortcode', function () {
 
-        let inputField = document.createElement('input'),
-            htmlElement = $(this),
+        let inputField = document.createElement('input'), htmlElement = $(this),
             ariaLabel = htmlElement.attr('aria-label');
 
         document.body.appendChild(inputField);
