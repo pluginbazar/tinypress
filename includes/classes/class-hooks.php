@@ -21,6 +21,7 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 		function __construct() {
 
 			add_action( 'init', array( $this, 'register_everything' ) );
+			add_action( 'template_redirect', array( $this, 'register_everything' ) );
 		}
 
 		/**

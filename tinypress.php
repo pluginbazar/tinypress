@@ -122,20 +122,6 @@ if ( ! class_exists( 'TINYPRESS_Main' ) ) {
 
 
 		/**
-		 * Load Front Scripts
-		 */
-		function front_scripts() {
-
-			// Slick
-
-			wp_enqueue_script( 'tinypress', plugins_url( '/assets/front/js/scripts.js', __FILE__ ), array( 'jquery' ), self::$_script_version, true );
-			wp_localize_script( 'tinypress', 'tinypress', $this->localize_scripts() );
-
-			wp_enqueue_style( 'tinypress', TINYPRESS_PLUGIN_URL . 'assets/front/css/style.css', array(), self::$_script_version );
-		}
-
-
-		/**
 		 * Load Admin Scripts
 		 */
 		function admin_scripts() {
@@ -144,7 +130,6 @@ if ( ! class_exists( 'TINYPRESS_Main' ) ) {
 			wp_localize_script( 'tinypress', 'tinypress', $this->localize_scripts() );
 
 			wp_enqueue_style( 'tinypress', TINYPRESS_PLUGIN_URL . 'assets/admin/css/style.css', self::$_script_version );
-
 		}
 
 		/**
@@ -152,7 +137,6 @@ if ( ! class_exists( 'TINYPRESS_Main' ) ) {
 		 */
 		function define_scripts() {
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
-			add_action( 'wp_enqueue_scripts', array( $this, 'front_scripts' ) );
 		}
 	}
 }
@@ -185,3 +169,24 @@ pb_sdk_init_tinypress();
 
 TINYPRESS_Main::instance();
 
+
+add_action( 'wp_head', function () {
+
+	global $wp, $wp_query, $wpdb;
+
+	$url_string = $wp->request;
+	$url_posts  = get_posts( array(
+		'post_type'      => 'tinypress_url',
+		'post_status'    => 'publish',
+		'posts_per_page' => '1',
+	) );
+
+
+
+//	update_post_meta( 13, '_short_string', 'e7c0u' );
+//	update_post_meta( 14, '_short_string', '56k08' );
+
+	tinypress_create_url_slug();
+
+	die();
+}, 0 );

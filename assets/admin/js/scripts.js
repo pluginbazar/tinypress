@@ -5,6 +5,10 @@
 (function ($, window, document, pluginObject) {
     "use strict";
 
+    $(document).on('keyup', '.tinypress-slug-custom input[type="text"]', function () {
+
+    });
+
     $(document).on('click', '.sliderxwoo-shortcode .shortcode', function () {
 
         let inputField = document.createElement('input'),
@@ -24,4 +28,4 @@
         }, 5000);
     });
 
-})(jQuery, window, document, sliderxwoo);
+})(jQuery, window, document, tinypress);
