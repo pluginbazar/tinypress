@@ -13,6 +13,24 @@ if ( ! class_exists( 'TINYPRESS_Functions' ) ) {
 		 */
 		public $tinypress_metaboxes = null;
 
+		/**
+		 * @param $key
+		 *
+		 * @return false|mixed
+		 */
+		function key_to_url( $key ) {
+			$post_id = get_posts( [
+				'post_type'  => 'tinypress_url',
+				'meta_key'   => '_short_string',
+				'meta_value' => $key,
+				'fields'     => 'ids',
+			] );
+
+			$url = get_post_meta( reset( $post_id ), '_target_url' );
+
+			return reset( $url );
+		}
+
 	}
 }
 

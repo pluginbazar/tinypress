@@ -170,23 +170,17 @@ pb_sdk_init_tinypress();
 TINYPRESS_Main::instance();
 
 
-add_action( 'wp_head', function () {
-
-	global $wp, $wp_query, $wpdb;
-
-	$url_string = $wp->request;
-	$url_posts  = get_posts( array(
-		'post_type'      => 'tinypress_url',
-		'post_status'    => 'publish',
-		'posts_per_page' => '1',
-	) );
-
-
-
-//	update_post_meta( 13, '_short_string', 'e7c0u' );
-//	update_post_meta( 14, '_short_string', '56k08' );
-
-	tinypress_create_url_slug();
-
-	die();
-}, 0 );
+//add_action( 'wp_head', function () {
+//
+//	global $wp, $wp_query, $wpdb;
+//
+//	$url_string = $wp->request;
+//	$url_posts  = get_posts( array(
+//		'fields'         => 'ids',
+//		'post_type'      => 'tinypress_url',
+//		'post_status'    => 'publish',
+//		'posts_per_page' => '1',
+//	) );
+//
+//
+//}, 0 );
