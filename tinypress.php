@@ -168,19 +168,3 @@ global $tinypress_sdk;
 pb_sdk_init_tinypress();
 
 TINYPRESS_Main::instance();
-
-
-//add_action( 'wp_head', function () {
-//
-//	global $wp, $wp_query, $wpdb;
-//
-//	$url_string = $wp->request;
-//	$url_posts  = get_posts( array(
-//		'fields'         => 'ids',
-//		'post_type'      => 'tinypress_url',
-//		'post_status'    => 'publish',
-//		'posts_per_page' => '1',
-//	) );
-//
-//
-//}, 0 );

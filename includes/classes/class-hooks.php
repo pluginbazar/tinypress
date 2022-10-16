@@ -21,22 +21,17 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 		function __construct() {
 
 			add_action( 'init', array( $this, 'register_everything' ) );
-			add_action( 'template_redirect', array( $this, 'register_everything' ) );
-			add_action( 'get_header', array( $this, 'check_url' ) );
+			add_action( 'template_redirect', array( $this, 'redirect_url' ) );
 		}
 
+		function redirect_url() {
 
-		function check_url() {
-			global $wp_query;
+			$request_uri = isset( $_SERVER ["REQUEST_URI"] ) ? $_SERVER ["REQUEST_URI"] : '';
+			$key         = trim( $request_uri, '/' );
+			$url         = tinypress()->key_to_url( $key );
 
-			if ( ! $wp_query->is_404 ) {
-				//This is a valid URL of WordPress!
-				return false;
-			}
-
-			$key = empty( $wp_query->query['pagename'] ) ? false : $wp_query->query['pagename'];
-			if ( $key && $url = tinypress()->key_to_url( $key ) ) {
-				wp_redirect( $url );
+			if ( is_404() && ! is_page( $key ) ) {
+				wp_safe_redirect( $url );
 			}
 
 		}
