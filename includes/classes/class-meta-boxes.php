@@ -107,11 +107,11 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 							'subtitle'    => esc_html__( '', 'tinypress' ),
 							'placeholder' => 'Select an option',
 							'options'     => array(
-								'option-1' => '307 (Temporary)',
-								'option-2' => '302 (Temporary)',
-								'option-3' => '301 (Permanent)',
+								307 => '307 (Temporary)',
+								302 => '302 (Temporary)',
+								301 => '301 (Permanent)',
 							),
-							'default'     => 'option-2'
+							'default'     => 302,
 						),
 						array(
 							'id'       => '_notes',

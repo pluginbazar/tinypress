@@ -18,7 +18,14 @@ if ( ! class_exists( 'TINYPRESS_Functions' ) ) {
 		 *
 		 * @return false|mixed
 		 */
-		function key_to_url( $key ) {
+		function target_url( $post_id ) {
+
+			$url = get_post_meta( $post_id, '_target_url', true );
+
+			return $url;
+		}
+
+		function key_to_post_id( $key ) {
 			$post_id = get_posts( array(
 					'post_type'  => 'tinypress_url',
 					'meta_key'   => '_short_string',
@@ -27,11 +34,8 @@ if ( ! class_exists( 'TINYPRESS_Functions' ) ) {
 				)
 			);
 
-			$url = get_post_meta( reset( $post_id ), '_target_url', true );
-
-			return $url;
+			return reset( $post_id );
 		}
-
 	}
 }
 

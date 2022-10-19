@@ -39,8 +39,7 @@ if ( ! class_exists( 'TINYPRESS_Main' ) ) {
 			$this->define_scripts();
 			$this->define_classes_functions();
 
-			register_activation_hook( __FILE__, [ $this, 'tinypress_data_table' ] );
-			add_action( 'wp_head', array( $this, 'wpdocs_pingbackurl_example' ) );
+			register_activation_hook( __FILE__, [ $this, 'tinypress_info_tb' ] );
 			add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		}
 
@@ -57,23 +56,23 @@ if ( ! class_exists( 'TINYPRESS_Main' ) ) {
 		}
 
 
-		function tinypress_data_table() {
+		function tinypress_info_tb() {
 
 			global $wpdb;
 
-			$table_name = $wpdb->prefix . "tinypress";
+			$table_name = $wpdb->prefix . "tinypress_info_tb";
 
 			$charset_collate = $wpdb->get_charset_collate();
 
 			$sql = "CREATE TABLE IF NOT EXISTS $table_name (
-      id int(20) NOT NULL AUTO_INCREMENT,
-      target_url varchar(200) NOT NULL,
-      short_url varchar(200) NOT NULL,
-      redirection varchar(200) NOT NULL,
-      domain varchar(200) NOT NULL,
-      notes varchar(200) NOT NULL,
-      PRIMARY KEY id (id)
-    ) $charset_collate;";
+	      id int(20) NOT NULL AUTO_INCREMENT,
+	      short_link varchar(200) NOT NULL,
+	      hits varchar(200) NOT NULL,
+	      type varchar(200) NOT NULL,
+	      country varchar(200) NOT NULL,
+	      ip varchar(200) NOT NULL,
+	      PRIMARY KEY id (id)
+	    ) $charset_collate;";
 
 			require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 			dbDelta( $sql );
@@ -86,14 +85,6 @@ if ( ! class_exists( 'TINYPRESS_Main' ) ) {
 		function load_textdomain() {
 			load_plugin_textdomain( 'tinypress', false, plugin_basename( dirname( __FILE__ ) ) . '/languages/' );
 		}
-
-
-		function wpdocs_pingbackurl_example() {
-			if ( is_singular() && pings_open() ) {
-				echo '<link rel="pingback" href="' . esc_url( get_bloginfo( '_targetURL' ) ) . '">';
-			}
-		}
-
 
 		/**
 		 * Include Classes and Functions
@@ -155,7 +146,6 @@ function pb_sdk_init_tinypress() {
 	global $tinypress_sdk;
 
 	$tinypress_sdk = new Pluginbazar\Client( esc_html( 'TinyPress - Best URL Shortener Plugin' ), 'tinypress', 36, __FILE__ );
-//	$tinypress_sdk->notifications();
 
 	do_action( 'pb_sdk_init_tinypress', $tinypress_sdk );
 }
