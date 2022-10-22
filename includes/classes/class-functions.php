@@ -14,9 +14,9 @@ if ( ! class_exists( 'TINYPRESS_Functions' ) ) {
 		public $tinypress_metaboxes = null;
 
 		/**
-		 * @param $key
+		 * @param $post_id
 		 *
-		 * @return false|mixed
+		 * @return mixed
 		 */
 		function target_url( $post_id ) {
 
@@ -25,6 +25,11 @@ if ( ! class_exists( 'TINYPRESS_Functions' ) ) {
 			return $url;
 		}
 
+		/**
+		 * @param $key
+		 *
+		 * @return false|int|WP_Post
+		 */
 		function key_to_post_id( $key ) {
 			$post_id = get_posts( array(
 					'post_type'  => 'tinypress_url',
@@ -35,6 +40,7 @@ if ( ! class_exists( 'TINYPRESS_Functions' ) ) {
 			);
 
 			return reset( $post_id );
+
 		}
 	}
 }

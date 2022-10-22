@@ -1,7 +1,7 @@
 <?php
 /*
 * @Author 		pluginbazar
-* Copyright: 	2015 pluginbazar
+* Copyright: 	2022 pluginbazar
 */
 
 use Pluginbazar\Utils;
@@ -247,6 +247,27 @@ if ( ! function_exists( 'tinypress_create_url_slug' ) ) {
 		}
 
 		return $given_string;
+	}
+}
+
+
+if ( ! function_exists( 'tinypress_get_ip_address' ) ) {
+
+	/**
+	 * @return mixed
+	 */
+
+	function tinypress_get_ip_address() {
+
+		if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
+			$ip = $_SERVER['HTTP_CLIENT_IP'];
+		} elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
+			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+		} else {
+			$ip = $_SERVER['REMOTE_ADDR'];
+		}
+
+		return $ip;
 	}
 }
 
