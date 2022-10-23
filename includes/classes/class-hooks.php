@@ -21,6 +21,7 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 		function __construct() {
 
 			add_action( 'init', array( $this, 'register_everything' ) );
+			add_action( 'init', array( $this, 'user_reports' ) );
 			add_action( 'template_redirect', array( $this, 'redirect_url' ) );
 		}
 
@@ -55,7 +56,6 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 
 			return self::$_instance;
 		}
-		
 
 		/**
 		 * Register Post Types and Settings
@@ -80,6 +80,40 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 				'exclude_from_search' => true,
 			) );
 		}
+
+
+		/**
+		 * Adds a submenu page under a custom post type parent.
+		 */
+		function user_reports() {
+			add_submenu_page(
+				'edit.php?post_type=tinypress_url',
+				esc_html__( 'User Reports', 'tinypress' ),
+				esc_html__( 'User Reports', 'tinypress' ),
+				'manage_options',
+				'user_reports',
+				array( $this, 'books_ref_page_callback' ),
+			);
+		}
+
+		/**
+		 * Display callback for the submenu page.
+		 */
+		function books_ref_page_callback() {
+
+			require_once 'class-user-reports.php';
+
+			$empTable = new User_Reports_Table();
+
+			echo '<div class="wrap"><h2>All User Reports</h2>';
+			// Prepare table
+			$empTable->prepare_items();
+			// Display table
+			$empTable->display();
+			echo '</div>';
+
+		}
+
 	}
 }
 
