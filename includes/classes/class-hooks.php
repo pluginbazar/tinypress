@@ -39,8 +39,8 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 				$format = array( '%d', '%s' );
 				$wpdb->insert( TINNYPRESS_TABLE_REPORTS, $data, $format );
 
-				if(wp_safe_redirect( $url, $status )){
-					header("Location: $url",true,301);
+				if ( wp_safe_redirect( $url, $status ) ) {
+					header( "Location: $url", true, 301 );
 				}
 				die();
 			}

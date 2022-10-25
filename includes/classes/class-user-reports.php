@@ -1,4 +1,7 @@
 <?php
+
+use Pluginbazar\Utils;
+
 defined( 'ABSPATH' ) || exit;
 
 
@@ -26,7 +29,8 @@ class User_Reports_Table extends WP_List_Table {
 			'cb'         => '<input type="checkbox" />',
 			'id'         => esc_html__( 'ID', 'tinypress' ),
 			'post_id'    => esc_html__( 'Post ID', 'tinypress' ),
-			'hits_count' => esc_html__( 'Hits Count', 'tinypress' ),
+			'short_url'  => esc_html__( 'Short Link', 'tinypress' ),
+			'hits_count' => esc_html__( 'Clicks Count', 'tinypress' ),
 			'user_ip'    => esc_html__( 'User IP', 'tinypress' ),
 			'datetime'   => esc_html__( 'Date Time', 'tinypress' ),
 
@@ -57,6 +61,7 @@ class User_Reports_Table extends WP_List_Table {
 		switch ( $column_name ) {
 			case 'id':
 			case 'post_id':
+			case 'short_url':
 			case 'hits_count':
 			case 'user_ip':
 			case 'datetime':
@@ -83,7 +88,7 @@ class User_Reports_Table extends WP_List_Table {
 	 * @return string
 	 */
 	function column_post_id( $item ) {
-		$post_id = isset( $item['post_id'] ) ? $item['post_id'] : '';
+		$post_id = Utils::get_args_option( 'post_id', $item );
 
 		return sprintf( '<div class="post-id">%s</div>', $post_id );
 	}
@@ -94,7 +99,7 @@ class User_Reports_Table extends WP_List_Table {
 	 * @return string
 	 */
 	function column_datetime( $item ) {
-		$post_id = isset( $item['datetime'] ) ? $item['datetime'] : '';
+		$post_id = Utils::get_args_option( 'datetime', $item );
 
 		return sprintf( '<div class="date-time">%s</div>', $post_id );
 	}
@@ -105,9 +110,9 @@ class User_Reports_Table extends WP_List_Table {
 	 * @return string
 	 */
 	function column_hits_count( $item ) {
-		$count = isset( $item['hits_count'] ) ? $item['hits_count'] : '';
+		$count = Utils::get_args_option( 'hits_count', $item );
 
-		return sprintf( '<div class="date-time">%s</div>', $count );
+		return sprintf( '<div class="hits-count">%s</div>', $count );
 	}
 
 	/**
@@ -117,9 +122,19 @@ class User_Reports_Table extends WP_List_Table {
 	 */
 	function column_user_ip( $item ) {
 
-		$count = isset( $item['user_ip'] ) ? $item['user_ip'] : '';
+		$count = Utils::get_args_option( 'user_ip', $item );
 
 		return sprintf( '<div class="user-ip">%s</div>', $count );
 	}
+
+	function column_short_url( $item ) {
+
+		$id         = Utils::get_args_option( 'post_id', $item );
+		$short_link = get_post_meta( $id, '_short_string', true );
+		$url        = get_site_url();
+
+		return sprintf( '<div class="short-string">%s/%s</div>', $url, $short_link );
+	}
+
 
 }
