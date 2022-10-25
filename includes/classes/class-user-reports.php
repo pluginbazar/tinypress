@@ -4,21 +4,18 @@ use Pluginbazar\Utils;
 
 defined( 'ABSPATH' ) || exit;
 
-
-//Loading table class
-
 if ( ! class_exists( 'WP_List_Table' ) ) {
 	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 }
 
-
-//Extending class
-
+/**
+ * Extending class
+ */
 class User_Reports_Table extends WP_List_Table {
 	private function get_users_data() {
 		global $wpdb;
 
-		return $wpdb->get_results( "SELECT id,post_id,user_ip,datetime, COUNT(*) as hits_count FROM " . TINNYPRESS_TABLE_REPORTS . " GROUP BY post_id", ARRAY_A );
+		return $wpdb->get_results( "SELECT id,post_id,user_ip,datetime, COUNT(*) as clicks_count FROM " . TINNYPRESS_TABLE_REPORTS . " GROUP BY post_id", ARRAY_A );
 	}
 
 	/**
@@ -27,8 +24,8 @@ class User_Reports_Table extends WP_List_Table {
 	function get_columns() {
 		$columns = array(
 			'cb'         => '<input type="checkbox" />',
-			'id'         => esc_html__( 'ID', 'tinypress' ),
 			'post_id'    => esc_html__( 'Post ID', 'tinypress' ),
+			'title'      => esc_html__( 'Title', 'tinypress' ),
 			'short_url'  => esc_html__( 'Short Link', 'tinypress' ),
 			'hits_count' => esc_html__( 'Clicks Count', 'tinypress' ),
 			'user_ip'    => esc_html__( 'User IP', 'tinypress' ),
@@ -59,8 +56,8 @@ class User_Reports_Table extends WP_List_Table {
 	 */
 	function column_default( $item, $column_name ) {
 		switch ( $column_name ) {
-			case 'id':
 			case 'post_id':
+			case 'title':
 			case 'short_url':
 			case 'hits_count':
 			case 'user_ip':
@@ -79,6 +76,22 @@ class User_Reports_Table extends WP_List_Table {
 		return sprintf(
 			'<input type="checkbox" name="emp[]" value="%s" />',
 			$item['id']
+		);
+	}
+
+	/**
+	 * @param $item
+	 *
+	 * @return string
+	 */
+	function column_title( $item ) {
+		$post_id = Utils::get_args_option( 'post_id', $item );
+		$title   = get_post( $post_id );
+		$title   = $title->post_title;
+
+		return sprintf(
+			'<div class="post-title">%s</div>',
+			ucwords( $title )
 		);
 	}
 
@@ -110,9 +123,9 @@ class User_Reports_Table extends WP_List_Table {
 	 * @return string
 	 */
 	function column_hits_count( $item ) {
-		$count = Utils::get_args_option( 'hits_count', $item );
+		$count = Utils::get_args_option( 'clicks_count', $item );
 
-		return sprintf( '<div class="hits-count">%s</div>', $count );
+		return sprintf( '<div class="clicks-count">%s</div>', $count );
 	}
 
 	/**
@@ -127,6 +140,11 @@ class User_Reports_Table extends WP_List_Table {
 		return sprintf( '<div class="user-ip">%s</div>', $count );
 	}
 
+	/**
+	 * @param $item
+	 *
+	 * @return string
+	 */
 	function column_short_url( $item ) {
 
 		$id         = Utils::get_args_option( 'post_id', $item );
@@ -135,6 +153,5 @@ class User_Reports_Table extends WP_List_Table {
 
 		return sprintf( '<div class="short-string">%s/%s</div>', $url, $short_link );
 	}
-
 
 }

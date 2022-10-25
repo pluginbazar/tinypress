@@ -94,23 +94,21 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 				esc_html__( 'User Reports', 'tinypress' ),
 				'manage_options',
 				'user_reports',
-				array( $this, 'books_ref_page_callback' ),
+				array( $this, 'reports_data_table' ),
 			);
 		}
 
 		/**
 		 * Display callback for the submenu page.
 		 */
-		function books_ref_page_callback() {
+		function reports_data_table() {
 
 			require_once 'class-user-reports.php';
 
 			$empTable = new User_Reports_Table();
-
-			echo '<div class="wrap"><h2>All User Reports</h2>';
-			// Prepare table
+			echo '<div class="wrap">';
+			echo sprintf( '<h2 class="report-table">%s</h2>', esc_html__( 'All Reports', 'tinypress' ) );
 			$empTable->prepare_items();
-			// Display table
 			$empTable->display();
 			echo '</div>';
 
