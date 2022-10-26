@@ -105,11 +105,17 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 
 			require_once 'class-user-reports.php';
 
-			$empTable = new User_Reports_Table();
+			$User_Reports_Table = new User_Reports_Table();
+			$current_page       = isset( $_REQUEST['page'] ) ? sanitize_text_field( $_REQUEST['page'] ) : '';
 			echo '<div class="wrap">';
-			echo sprintf( '<h2 class="report-table">%s</h2>', esc_html__( 'All Reports', 'tinypress' ) );
-			$empTable->prepare_items();
-			$empTable->display();
+			printf( '<h2 class="report-table">%s</h2>', esc_html__( 'All Reports', 'tinypress' ) );
+			$User_Reports_Table->prepare_items();
+			?>
+            <form action="" method="get">
+                <input type="hidden" name="page" value="<?php echo esc_attr( $current_page ); ?>"/>
+				<?php $User_Reports_Table->search_box( esc_html__( 'Search', 'tinypress' ), 'search_id' ); ?>
+            </form> <?php
+			$User_Reports_Table->display();
 			echo '</div>';
 
 		}

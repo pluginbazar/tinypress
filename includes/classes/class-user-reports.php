@@ -12,10 +12,16 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
  * Extending class
  */
 class User_Reports_Table extends WP_List_Table {
-	private function get_users_data() {
-		global $wpdb;
+	private $users_data;
 
-		return $wpdb->get_results( "SELECT id,post_id,user_ip,datetime, COUNT(*) as clicks_count FROM " . TINNYPRESS_TABLE_REPORTS . " GROUP BY post_id", ARRAY_A );
+	private function get_users_data( $search = "" ) {
+		global $wpdb;
+		if ( ! empty( $search ) ) {
+			return $wpdb->get_results( "SELECT user_ip FROM " . TINNYPRESS_TABLE_REPORTS . " WHERE user_ip = '%{$search}%'", ARRAY_A );
+		} else {
+			return $wpdb->get_results( "SELECT post_id,user_ip,datetime, COUNT(*) as clicks_count FROM " . TINNYPRESS_TABLE_REPORTS . " GROUP BY post_id", ARRAY_A );
+		}
+
 	}
 
 	/**
@@ -23,13 +29,13 @@ class User_Reports_Table extends WP_List_Table {
 	 */
 	function get_columns() {
 		$columns = array(
-			'cb'         => '<input type="checkbox" />',
-			'post_id'    => esc_html__( 'Post ID', 'tinypress' ),
-			'title'      => esc_html__( 'Title', 'tinypress' ),
-			'short_url'  => esc_html__( 'Short Link', 'tinypress' ),
-			'hits_count' => esc_html__( 'Clicks Count', 'tinypress' ),
-			'user_ip'    => esc_html__( 'User IP', 'tinypress' ),
-			'datetime'   => esc_html__( 'Date Time', 'tinypress' ),
+			'cb'           => '<input type="checkbox" />',
+			'post_id'      => esc_html__( 'Post ID', 'tinypress' ),
+			'title'        => esc_html__( 'Title', 'tinypress' ),
+			'short_url'    => esc_html__( 'Short Link', 'tinypress' ),
+			'clicks_count' => esc_html__( 'Clicks Count', 'tinypress' ),
+			'user_ip'      => esc_html__( 'User IP', 'tinypress' ),
+			'datetime'     => esc_html__( 'Date Time', 'tinypress' ),
 
 		);
 
@@ -40,12 +46,34 @@ class User_Reports_Table extends WP_List_Table {
 	 * @return void
 	 */
 	function prepare_items() {
+		if ( isset( $_POST['page'] ) && isset( $_POST['s'] ) ) {
+			$this->users_data = $this->get_users_data( $_POST['s'] );
+		} else {
+			$this->users_data = $this->get_users_data();
+		}
+
 		$columns               = $this->get_columns();
 		$hidden                = array();
 		$sortable              = array();
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 
+		/* pagination */
+		$per_page     = 2;
+		$current_page = $this->get_pagenum();
+		$total_items  = count( $this->users_data );
+
+		$this->users_data = array_slice( $this->users_data, ( ( $current_page - 1 ) * $per_page ), $per_page );
+
+		$this->set_pagination_args( array(
+			'total_items' => $total_items,
+			'per_page'    => $per_page
+		) );
+
+		usort( $this->users_data, array( &$this, 'usort_reorder' ) );
+
+
 		$this->items = $this->get_users_data();
+		$this->items = $this->users_data;
 	}
 
 	/**
@@ -59,7 +87,7 @@ class User_Reports_Table extends WP_List_Table {
 			case 'post_id':
 			case 'title':
 			case 'short_url':
-			case 'hits_count':
+			case 'clicks_count':
 			case 'user_ip':
 			case 'datetime':
 			default:
@@ -84,6 +112,17 @@ class User_Reports_Table extends WP_List_Table {
 	 *
 	 * @return string
 	 */
+	function column_post_id( $item ) {
+		$post_id = Utils::get_args_option( 'post_id', $item );
+
+		return sprintf( '<div class="post-id">%s</div>', $post_id );
+	}
+
+	/**
+	 * @param $item
+	 *
+	 * @return string
+	 */
 	function column_title( $item ) {
 		$post_id = Utils::get_args_option( 'post_id', $item );
 		$title   = get_post( $post_id );
@@ -100,10 +139,13 @@ class User_Reports_Table extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	function column_post_id( $item ) {
-		$post_id = Utils::get_args_option( 'post_id', $item );
+	function column_short_url( $item ) {
 
-		return sprintf( '<div class="post-id">%s</div>', $post_id );
+		$id         = Utils::get_args_option( 'post_id', $item );
+		$short_link = get_post_meta( $id, '_short_string', true );
+		$url        = get_site_url();
+
+		return sprintf( '<div class="shortstring hint--top" aria-label="Click here to copy">%s/%s</div>', $url, $short_link );
 	}
 
 	/**
@@ -111,18 +153,7 @@ class User_Reports_Table extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	function column_datetime( $item ) {
-		$post_id = Utils::get_args_option( 'datetime', $item );
-
-		return sprintf( '<div class="date-time">%s</div>', $post_id );
-	}
-
-	/**
-	 * @param $item
-	 *
-	 * @return string
-	 */
-	function column_hits_count( $item ) {
+	function column_clicks_count( $item ) {
 		$count = Utils::get_args_option( 'clicks_count', $item );
 
 		return sprintf( '<div class="clicks-count">%s</div>', $count );
@@ -145,13 +176,10 @@ class User_Reports_Table extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	function column_short_url( $item ) {
+	function column_datetime( $item ) {
+		$post_id = Utils::get_args_option( 'datetime', $item );
 
-		$id         = Utils::get_args_option( 'post_id', $item );
-		$short_link = get_post_meta( $id, '_short_string', true );
-		$url        = get_site_url();
-
-		return sprintf( '<div class="short-string">%s/%s</div>', $url, $short_link );
+		return sprintf( '<div class="date-time">%s</div>', $post_id );
 	}
 
 }

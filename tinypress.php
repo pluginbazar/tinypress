@@ -121,6 +121,7 @@ if ( ! class_exists( 'TINYPRESS_Main' ) ) {
 			wp_localize_script( 'tinypress', 'tinypress', $this->localize_scripts() );
 
 			wp_enqueue_style( 'tinypress', TINYPRESS_PLUGIN_URL . 'assets/admin/css/style.css', self::$_script_version );
+			wp_enqueue_style( 'tinypress-tool-tip', TINYPRESS_PLUGIN_URL . 'assets/hint.min.css' );
 		}
 
 		/**
