@@ -19,7 +19,7 @@ class User_Reports_Table extends WP_List_Table {
 		if ( ! empty( $search ) ) {
 			return $wpdb->get_results( "SELECT user_ip FROM " . TINNYPRESS_TABLE_REPORTS . " WHERE user_ip = '%{$search}%'", ARRAY_A );
 		} else {
-			return $wpdb->get_results( "SELECT post_id,user_ip,datetime, COUNT(*) as clicks_count FROM " . TINNYPRESS_TABLE_REPORTS . " GROUP BY post_id", ARRAY_A );
+			return $wpdb->get_results( "SELECT post_id,user_id,user_ip, datetime, COUNT(*) as clicks_count FROM " . TINNYPRESS_TABLE_REPORTS . " GROUP BY post_id", ARRAY_A );
 		}
 
 	}
@@ -30,12 +30,10 @@ class User_Reports_Table extends WP_List_Table {
 	function get_columns() {
 		$columns = array(
 			'cb'           => '<input type="checkbox" />',
-			'post_id'      => esc_html__( 'Post ID', 'tinypress' ),
 			'title'        => esc_html__( 'Title', 'tinypress' ),
 			'short_url'    => esc_html__( 'Short Link', 'tinypress' ),
 			'clicks_count' => esc_html__( 'Clicks Count', 'tinypress' ),
-			'user_ip'      => esc_html__( 'User IP', 'tinypress' ),
-			'user_country' => esc_html__( 'Country', 'tinypress' ),
+			'user_id'      => esc_html__( 'User ID', 'tinypress' ),
 			'datetime'     => esc_html__( 'Date Time', 'tinypress' ),
 
 		);
@@ -85,12 +83,10 @@ class User_Reports_Table extends WP_List_Table {
 	 */
 	function column_default( $item, $column_name ) {
 		switch ( $column_name ) {
-			case 'post_id':
 			case 'title':
 			case 'short_url':
 			case 'clicks_count':
-			case 'user_ip':
-			case 'user_country':
+			case 'user_id':
 			case 'datetime':
 			default:
 				return $item[ $column_name ];
@@ -114,24 +110,13 @@ class User_Reports_Table extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	function column_post_id( $item ) {
-		$post_id = Utils::get_args_option( 'post_id', $item );
-
-		return sprintf( '<div class="post-id">%s</div>', $post_id );
-	}
-
-	/**
-	 * @param $item
-	 *
-	 * @return string
-	 */
 	function column_title( $item ) {
 		$post_id = Utils::get_args_option( 'post_id', $item );
 		$title   = get_post( $post_id );
 		$title   = $title->post_title;
 
 		return sprintf(
-			'<div class="post-title">%s</div>',
+			'<div class="post-title"><a href="post.php?post=%s&action=edit">%s</a></div>',$post_id,
 			ucwords( $title )
 		);
 	}
@@ -166,38 +151,25 @@ class User_Reports_Table extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	function column_user_ip( $item ) {
+	function column_user_id( $item ) {
 
-		$count = Utils::get_args_option( 'user_ip', $item );
+		$user_id = Utils::get_args_option( 'user_id', $item );
+		$user_id = get_user_by( 'id', $user_id );
 
-		return sprintf( '<div class="user-ip">%s</div>', $count );
+		return sprintf( '<div class="user-id">%s</div>', $user_id->display_name );
 	}
-
-	/**
-	 * @param $item
-	 *
-	 * @return string
-	 */
-	function column_user_country( $item ) {
-		$ip = Utils::get_args_option( 'user_ip', $item );
-
-		$user_country = @json_decode( file_get_contents(
-			"http://www.geoplugin.net/json.gp?ip=" . $ip ) );
-
-		return sprintf( '<div class="user-country">%s</div>', $user_country->geoplugin_countryName );
-
-
-	}
-
+	
 	/**
 	 * @param $item
 	 *
 	 * @return string
 	 */
 	function column_datetime( $item ) {
-		$post_id = Utils::get_args_option( 'datetime', $item );
+		$date_time = Utils::get_args_option( 'datetime', $item );
+		$date_time = strtotime( $date_time );
+		$time      = date( 'jS M, y - h:i a', $date_time );
 
-		return sprintf( '<div class="date-time">%s</div>', $post_id );
+		return sprintf( '<div class="date-time">%s</div>', $time );
 	}
 
 }
