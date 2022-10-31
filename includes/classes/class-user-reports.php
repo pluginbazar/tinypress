@@ -35,6 +35,7 @@ class User_Reports_Table extends WP_List_Table {
 			'short_url'    => esc_html__( 'Short Link', 'tinypress' ),
 			'clicks_count' => esc_html__( 'Clicks Count', 'tinypress' ),
 			'user_ip'      => esc_html__( 'User IP', 'tinypress' ),
+			'user_country' => esc_html__( 'Country', 'tinypress' ),
 			'datetime'     => esc_html__( 'Date Time', 'tinypress' ),
 
 		);
@@ -58,7 +59,7 @@ class User_Reports_Table extends WP_List_Table {
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 
 		/* pagination */
-		$per_page     = 2;
+		$per_page     = 10;
 		$current_page = $this->get_pagenum();
 		$total_items  = count( $this->users_data );
 
@@ -89,6 +90,7 @@ class User_Reports_Table extends WP_List_Table {
 			case 'short_url':
 			case 'clicks_count':
 			case 'user_ip':
+			case 'user_country':
 			case 'datetime':
 			default:
 				return $item[ $column_name ];
@@ -169,6 +171,22 @@ class User_Reports_Table extends WP_List_Table {
 		$count = Utils::get_args_option( 'user_ip', $item );
 
 		return sprintf( '<div class="user-ip">%s</div>', $count );
+	}
+
+	/**
+	 * @param $item
+	 *
+	 * @return string
+	 */
+	function column_user_country( $item ) {
+		$ip = Utils::get_args_option( 'user_ip', $item );
+
+		$user_country = @json_decode( file_get_contents(
+			"http://www.geoplugin.net/json.gp?ip=" . $ip ) );
+
+		return sprintf( '<div class="user-country">%s</div>', $user_country->geoplugin_countryName );
+
+
 	}
 
 	/**
