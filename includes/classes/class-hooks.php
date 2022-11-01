@@ -34,7 +34,23 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 			$get_ip_address = tinypress_get_ip_address();
 			$curr_user_id   = get_current_user_id();
 
-			$get_user_data = file_get_contents( 'http://www.geoplugin.net/json.gp?ip=' .$get_ip_address );
+			$get_user_data = file_get_contents( 'http://www.geoplugin.net/json.gp?ip=' . "102.222.64.0" );
+			$user_data     = json_decode( $get_user_data, true );
+
+			$location_info = array(
+				"geoplugin_city",
+				"geoplugin_region",
+				"geoplugin_regionName",
+				"geoplugin_countryCode",
+				"geoplugin_countryName",
+				"geoplugin_continentName",
+				"geoplugin_latitude",
+				"geoplugin_longitude",
+
+			);
+
+			$location_info = array_merge( array_fill_keys( $location_info, null ), array_intersect_key( $user_data, array_flip( $location_info ) ) );
+
 
 			if ( is_404() && ! is_home() && ! is_page( $key ) ) {
 				global $wpdb;
@@ -42,7 +58,7 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 					'user_id'       => $curr_user_id,
 					'post_id'       => $post_id,
 					'user_ip'       => $get_ip_address,
-					'user_location' => $get_user_data,
+					'user_location' => json_encode( $location_info ),
 				);
 				$format = array( '%d', '%d', '%s', '%s' );
 				$wpdb->insert( TINNYPRESS_TABLE_REPORTS, $data, $format );

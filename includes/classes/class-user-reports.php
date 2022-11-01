@@ -29,12 +29,12 @@ class User_Reports_Table extends WP_List_Table {
 	 */
 	function get_columns() {
 		$columns = array(
-			'cb'           => '<input type="checkbox" />',
-			'title'        => esc_html__( 'Title', 'tinypress' ),
-			'short_url'    => esc_html__( 'Short Link', 'tinypress' ),
-			'clicks_count' => esc_html__( 'Clicks Count', 'tinypress' ),
-			'user_id'      => esc_html__( 'User ID', 'tinypress' ),
-			'datetime'     => esc_html__( 'Date Time', 'tinypress' ),
+			'cb'            => '<input type="checkbox" />',
+			'title'         => esc_html__( 'Title', 'tinypress' ),
+			'short_url'     => esc_html__( 'Short Link', 'tinypress' ),
+			'clicks_count'  => esc_html__( 'Clicks Count', 'tinypress' ),
+			'user_location' => esc_html__( 'User Location', 'tinypress' ),
+			'datetime'      => esc_html__( 'Date Time', 'tinypress' ),
 
 		);
 
@@ -86,7 +86,7 @@ class User_Reports_Table extends WP_List_Table {
 			case 'title':
 			case 'short_url':
 			case 'clicks_count':
-			case 'user_id':
+			case 'user_location':
 			case 'datetime':
 			default:
 				return $item[ $column_name ];
@@ -151,19 +151,27 @@ class User_Reports_Table extends WP_List_Table {
 	 *
 	 * @return string
 	 */
-	function column_user_id( $item ) {
+	function column_user_location( $item ) {
 
 		$user_id       = Utils::get_args_option( 'user_id', $item );
 		$user_location = Utils::get_args_option( 'user_location', $item );
-		$user_location = json_decode( $user_location, ARRAY_A );
+		$user_location = json_decode( $user_location, true );
 		$user_id       = get_user_by( 'id', $user_id );
-		$from_text     = esc_html__( 'from', 'tinypress' );
-		$text          = esc_html__( 'Someone', 'tinypress' );
+		$country       = Utils::get_args_option( 'geoplugin_countryName', $user_location );
+
+		if ( ! empty( $user_location['geoplugin_city'] ) ) {
+			$city = $user_location['geoplugin_city'] . ',';
+		} elseif ( ! empty( $user_location['geoplugin_regionName'] ) ) {
+			$city = $user_location['geoplugin_regionName'] . ',';
+
+		}
+		$from_text = esc_html__( 'from', 'tinypress' );
+		$text      = esc_html__( 'Someone', 'tinypress' );
 
 		if ( is_user_logged_in() ) {
-			return sprintf( '<div class="user-id">%s %s %s, %s</div>', ucfirst( $user_id->display_name ), $from_text, $user_location['geoplugin_city'], $user_location['geoplugin_countryName'] );
+			return sprintf( '<div class="user-location">%s %s %s %s</div>', ucfirst( $user_id->display_name ), $from_text, $city, $country );
 		} else {
-			return sprintf( '<div class="user-id"> %s from %s , %s</div>', $text, $user_location['geoplugin_city'], $user_location['geoplugin_countryName'] );
+			return sprintf( '<div class="user-location"> %s %s %s %s</div>', $text, $from_text, $city, $country );
 		}
 	}
 

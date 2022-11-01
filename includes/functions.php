@@ -188,6 +188,7 @@ if ( ! function_exists( 'tinypress_locate_template' ) ) {
 
 
 if ( ! function_exists( 'tinypress' ) ) {
+
 	/**
 	 * @return TINYPRESS_Functions
 	 */
@@ -205,6 +206,7 @@ if ( ! function_exists( 'tinypress' ) ) {
 
 
 if ( ! function_exists( 'tinypress_generate_random_string' ) ) {
+
 	/**
 	 * Generate random string
 	 *
@@ -228,8 +230,8 @@ if ( ! function_exists( 'tinypress_generate_random_string' ) ) {
 
 
 if ( ! function_exists( 'tinypress_create_url_slug' ) ) {
-	/**
-	 * Create url slug
+
+	/**Create url slug
 	 *
 	 * @param string $given_string
 	 *
@@ -253,7 +255,8 @@ if ( ! function_exists( 'tinypress_create_url_slug' ) ) {
 
 if ( ! function_exists( 'tinypress_get_ip_address' ) ) {
 
-	/**
+	/**get user ip
+	 *
 	 * @return mixed
 	 */
 
