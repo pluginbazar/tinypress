@@ -116,7 +116,7 @@ class User_Reports_Table extends WP_List_Table {
 		$title   = $title->post_title;
 
 		return sprintf(
-			'<div class="post-title"><a href="post.php?post=%s&action=edit">%s</a></div>',$post_id,
+			'<div class="post-title"><a href="post.php?post=%s&action=edit">%s</a></div>', $post_id,
 			ucwords( $title )
 		);
 	}
@@ -153,14 +153,20 @@ class User_Reports_Table extends WP_List_Table {
 	 */
 	function column_user_id( $item ) {
 
-		$user_id = Utils::get_args_option( 'user_id', $item );
+		$user_id       = Utils::get_args_option( 'user_id', $item );
 		$user_location = Utils::get_args_option( 'user_location', $item );
-		$user_location = json_decode($user_location, ARRAY_A);
-		$user_id = get_user_by( 'id', $user_id );
+		$user_location = json_decode( $user_location, ARRAY_A );
+		$user_id       = get_user_by( 'id', $user_id );
+		$from_text     = esc_html__( 'from', 'tinypress' );
+		$text          = esc_html__( 'Someone', 'tinypress' );
 
-		return sprintf( '<div class="user-id">%s from %s , %s</div>', ucfirst($user_id->display_name), $user_location['geoplugin_city'],$user_location['geoplugin_countryName']);
+		if ( is_user_logged_in() ) {
+			return sprintf( '<div class="user-id">%s %s %s, %s</div>', ucfirst( $user_id->display_name ), $from_text, $user_location['geoplugin_city'], $user_location['geoplugin_countryName'] );
+		} else {
+			return sprintf( '<div class="user-id"> %s from %s , %s</div>', $text, $user_location['geoplugin_city'], $user_location['geoplugin_countryName'] );
+		}
 	}
-	
+
 	/**
 	 * @param $item
 	 *
