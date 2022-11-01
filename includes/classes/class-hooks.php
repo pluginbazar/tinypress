@@ -34,11 +34,17 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 			$get_ip_address = tinypress_get_ip_address();
 			$curr_user_id   = get_current_user_id();
 
+			$get_user_data = file_get_contents( 'http://www.geoplugin.net/json.gp?ip=' .$get_ip_address );
 
-			if ( is_404() && ! is_page( $key ) ) {
+			if ( is_404() && ! is_home() && ! is_page( $key ) ) {
 				global $wpdb;
-				$data   = array( 'user_id' => $curr_user_id, 'post_id' => $post_id, 'user_ip' => $get_ip_address );
-				$format = array( '%d', '%d', '%s' );
+				$data   = array(
+					'user_id'       => $curr_user_id,
+					'post_id'       => $post_id,
+					'user_ip'       => $get_ip_address,
+					'user_location' => $get_user_data,
+				);
+				$format = array( '%d', '%d', '%s', '%s' );
 				$wpdb->insert( TINNYPRESS_TABLE_REPORTS, $data, $format );
 
 				if ( wp_safe_redirect( $url, $status ) ) {
@@ -90,7 +96,10 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 		 * Adds a submenu page under a custom post type parent.
 		 */
 		function user_reports() {
-			add_menu_page( esc_html__( 'Reports', 'tinypress' ), esc_html__( 'User Reports', 'tinypress' ), 'manage_options', 'user-reports', array( $this, 'reports_data_table' ), 'dashicons-chart-bar', 36 );
+			add_menu_page( esc_html__( 'Reports', 'tinypress' ), esc_html__( 'User Reports', 'tinypress' ), 'manage_options', 'user-reports', array(
+				$this,
+				'reports_data_table'
+			), 'dashicons-chart-bar', 36 );
 		}
 
 		/**

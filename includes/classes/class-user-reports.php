@@ -19,7 +19,7 @@ class User_Reports_Table extends WP_List_Table {
 		if ( ! empty( $search ) ) {
 			return $wpdb->get_results( "SELECT user_ip FROM " . TINNYPRESS_TABLE_REPORTS . " WHERE user_ip = '%{$search}%'", ARRAY_A );
 		} else {
-			return $wpdb->get_results( "SELECT post_id,user_id,user_ip, datetime, COUNT(*) as clicks_count FROM " . TINNYPRESS_TABLE_REPORTS . " GROUP BY post_id", ARRAY_A );
+			return $wpdb->get_results( "SELECT post_id,user_id,user_ip,user_location, datetime, COUNT(*) as clicks_count FROM " . TINNYPRESS_TABLE_REPORTS . " GROUP BY post_id", ARRAY_A );
 		}
 
 	}
@@ -154,9 +154,11 @@ class User_Reports_Table extends WP_List_Table {
 	function column_user_id( $item ) {
 
 		$user_id = Utils::get_args_option( 'user_id', $item );
+		$user_location = Utils::get_args_option( 'user_location', $item );
+		$user_location = json_decode($user_location, ARRAY_A);
 		$user_id = get_user_by( 'id', $user_id );
 
-		return sprintf( '<div class="user-id">%s</div>', $user_id->display_name );
+		return sprintf( '<div class="user-id">%s from %s , %s</div>', ucfirst($user_id->display_name), $user_location['geoplugin_city'],$user_location['geoplugin_countryName']);
 	}
 	
 	/**
