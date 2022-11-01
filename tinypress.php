@@ -72,7 +72,7 @@ if ( ! class_exists( 'TINYPRESS_Main' ) ) {
                             user_id varchar(50) NOT NULL,
                             post_id varchar(50) NOT NULL,
 						    user_ip varchar(255) NOT NULL,
-						    user_location varchar(512) NOT NULL,
+						    user_location varchar(1024) NOT NULL,
                             datetime  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                             PRIMARY KEY (id)
                             );";
