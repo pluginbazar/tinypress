@@ -112,7 +112,7 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 		 * Adds a submenu page under a custom post type parent.
 		 */
 		function user_reports() {
-			add_submenu_page( 'edit.php?post_type=tinypress_url', esc_html__( 'Reports', 'tinypress' ), esc_html__( 'User Reports', 'tinypress' ), 'manage_options', 'user-reports', array( $this, 'reports_data_table' ), 'dashicons-chart-bar', 10 );
+			add_submenu_page( 'edit.php?post_type=tinypress_url', esc_html__( 'Reports', 'tinypress' ), esc_html__( 'Reports', 'tinypress' ), 'manage_options', 'reports', array( $this, 'reports_data_table' ), 'dashicons-chart-bar', 10 );
 		}
 
 		/**
