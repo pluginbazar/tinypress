@@ -21,7 +21,7 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 		function __construct() {
 
 			add_action( 'init', array( $this, 'register_everything' ) );
-			add_action( 'init', array( $this, 'user_reports' ) );
+			add_action( 'admin_menu', array( $this, 'user_reports' ) );
 			add_action( 'template_redirect', array( $this, 'redirect_url' ) );
 		}
 
@@ -112,10 +112,7 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 		 * Adds a submenu page under a custom post type parent.
 		 */
 		function user_reports() {
-			add_menu_page( esc_html__( 'Reports', 'tinypress' ), esc_html__( 'User Reports', 'tinypress' ), 'manage_options', 'user-reports', array(
-				$this,
-				'reports_data_table'
-			), 'dashicons-chart-bar', 36 );
+			add_submenu_page( 'edit.php?post_type=tinypress_url', esc_html__( 'Reports', 'tinypress' ), esc_html__( 'User Reports', 'tinypress' ), 'manage_options', 'user-reports', array( $this, 'reports_data_table' ), 'dashicons-chart-bar', 10 );
 		}
 
 		/**
