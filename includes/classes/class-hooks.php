@@ -34,8 +34,11 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 			$get_ip_address = tinypress_get_ip_address();
 			$curr_user_id   = get_current_user_id();
 
-			$get_user_data = file_get_contents( 'http://www.geoplugin.net/json.gp?ip=' . "102.222.64.0" );
-			$user_data     = json_decode( $get_user_data, true );
+			$get_user_data = @file_get_contents( 'http://www.geoplugin.net/json.gp?ip=' . $get_ip_address, false, null, 0, 36 );
+			if ( ! $get_user_data ) {
+				return;
+			}
+			$user_data = json_decode( $get_user_data, true );
 
 			$location_info = array(
 				"geoplugin_city",
