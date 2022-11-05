@@ -34,7 +34,7 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 			$get_ip_address = tinypress_get_ip_address();
 			$curr_user_id   = get_current_user_id();
 
-			$get_user_data = @file_get_contents( 'http://www.geoplugin.net/json.gp?ip=' . $get_ip_address, false, null, 0, 36 );
+			$get_user_data = @file_get_contents( 'http://www.geoplugin.net/json.gp?ip=' . $get_ip_address );
 			if ( ! $get_user_data ) {
 				return;
 			}
@@ -109,8 +109,7 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 				'exclude_from_search' => true,
 			) );
 		}
-
-
+        
 		/**
 		 * Adds a submenu page under a custom post type parent.
 		 */
