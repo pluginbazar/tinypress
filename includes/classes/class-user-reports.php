@@ -163,16 +163,16 @@ class User_Reports_Table extends WP_List_Table {
 			$city = $user_location['geoplugin_city'] . ',';
 		} elseif ( ! empty( $user_location['geoplugin_regionName'] ) ) {
 			$city = $user_location['geoplugin_regionName'] . ',';
+		}
 
+		if ( $user_id->ID == 0 ) {
+			$user = esc_html__( 'Someone', 'tinypress' );
+		} else {
+			$user = ucfirst( $user_id->display_name );
 		}
 		$from_text = esc_html__( 'from', 'tinypress' );
-		$text      = esc_html__( 'Someone', 'tinypress' );
 
-		if ( is_user_logged_in() ) {
-			return sprintf( '<div class="user-location">%s %s %s %s</div>', ucfirst( $user_id->display_name ), $from_text, $city, $country );
-		} else {
-			return sprintf( '<div class="user-location"> %s %s %s %s</div>', $text, $from_text, $city, $country );
-		}
+		return sprintf( '<div class="user-location">%s %s %s %s</div>', $user, $from_text, $city, $country );
 	}
 
 	/**
