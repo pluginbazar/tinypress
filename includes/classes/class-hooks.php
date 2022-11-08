@@ -92,6 +92,11 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 			return self::$_instance;
 		}
 
+		/**
+         * flush_rewrite_rules
+         *
+		 * @return void
+		 */
 		function flush_rewrite_rules() {
 			global $wp_rewrite;
 			$wp_rewrite->flush_rules( true );

@@ -36,7 +36,8 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 			$short_string   = Utils::get_meta( '_short_string', $post->ID, $default_string );
 
 			printf( '<input type="hidden" name="tinypress_url[_short_string]" value="%s">', $short_string );
-			printf( '<span class="short-url-wrap"><span class="prefix">%s</span><span class="random">%s</span></span>', site_url( '/' ), $short_string );
+			printf( '<span class="short-url-wrap hint--top" aria-label="Click here to copy"> <span class="prefix">%s</span><span class="random">%s</span></span>', site_url( '/' ), $short_string );
+			printf('<input type="hidden" id="short-url" name="custId" value="%s%s">',site_url( '/' ), $short_string);
 		}
 
 		/**
@@ -71,24 +72,12 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 							'subtitle' => esc_html__( '', 'tinypress' ),
 						),
 						array(
-							'id'       => '_short_string_type',
-							'type'     => 'button_set',
-							'title'    => esc_html__( 'Shorten Type', 'tinypress' ),
-							'subtitle' => esc_html__( 'Specify shorten type.', 'tinypress' ),
-							'options'  => array(
-								'random' => array( 'label' => esc_html__( 'Random', 'tinypress' ) ),
-								'manual' => array( 'label' => esc_html__( 'Manual', 'tinypress' ) ),
-							),
-							'default'  => 'random',
-						),
-						array(
 							'id'         => '_short_string',
 							'type'       => 'callback',
 							'function'   => array( $this, 'my_callback_function' ),
 							'title'      => esc_html__( 'Short String', 'tinypress' ),
 							'subtitle'   => esc_html__( 'Short string of this URL.', 'tinypress' ),
 							'default'    => $url_slug,
-							'dependency' => array( '_short_string_type', '==', 'random' ),
 						),
 						array(
 							'id'          => '_short_string',
@@ -98,7 +87,6 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 							'placeholder' => esc_attr( 'ad34o' ),
 							'class'       => 'tinypress-slug-custom',
 							'default'     => $url_slug,
-							'dependency'  => array( '_short_string_type', '==', 'manual' ),
 						),
 						array(
 							'id'          => '_redirection',
