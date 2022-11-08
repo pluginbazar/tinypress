@@ -23,6 +23,7 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 			add_action( 'init', array( $this, 'register_everything' ) );
 			add_action( 'admin_menu', array( $this, 'user_reports' ) );
 			add_action( 'template_redirect', array( $this, 'redirect_url' ) );
+			register_activation_hook( __FILE__, array( $this, 'flush_rewrite_rules' ) );
 		}
 
 		function redirect_url() {
@@ -33,11 +34,11 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 			$status         = (int) get_post_meta( $post_id, '_redirection', true );
 			$get_ip_address = tinypress_get_ip_address();
 
-            if(is_user_logged_in()){
-	            $curr_user_id   = get_current_user_id();
-            }else{
-	            $curr_user_id   =0;
-            }
+			if ( is_user_logged_in() ) {
+				$curr_user_id = get_current_user_id();
+			} else {
+				$curr_user_id = 0;
+			}
 
 			$get_user_data = @file_get_contents( 'http://www.geoplugin.net/json.gp?ip=' . $get_ip_address );
 			if ( ! $get_user_data ) {
@@ -89,6 +90,11 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 			}
 
 			return self::$_instance;
+		}
+
+		function flush_rewrite_rules() {
+			global $wp_rewrite;
+			$wp_rewrite->flush_rules( true );
 		}
 
 		/**
