@@ -93,8 +93,8 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 		}
 
 		/**
-         * flush_rewrite_rules
-         *
+		 * flush_rewrite_rules
+		 *
 		 * @return void
 		 */
 		function flush_rewrite_rules() {

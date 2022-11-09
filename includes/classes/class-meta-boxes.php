@@ -63,7 +63,6 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 			PBSettings::createSection( $this->prefix_tinyurl_metabox,
 				array(
 					'title'  => esc_html__( 'General Settings', 'tinypress' ),
-					'icon'   => 'fa fa-cog',
 					'fields' => array(
 						array(
 							'id'       => '_target_url',
@@ -82,8 +81,8 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 						array(
 							'id'          => '_short_string',
 							'type'        => 'text',
-							'title'       => esc_html__( 'Short String', 'tinypress' ),
-							'subtitle'    => esc_html__( 'Short string of this URL.', 'tinypress' ),
+							'title'       => esc_html__( 'Custom String', 'tinypress' ),
+							'subtitle'    => esc_html__( 'Custom string of this URL.', 'tinypress' ),
 							'placeholder' => esc_attr( 'ad34o' ),
 							'class'       => 'tinypress-slug-custom',
 							'default'     => $url_slug,
