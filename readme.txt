@@ -1,4 +1,4 @@
-=== Slider X Woo ===
+=== Tinypress ===
 	Contributors: pluginbazar
 	Donate link: https://pluginbazar.com/contact
 	Tags: slider, woocommerce slider, carousel, wp slider, product slider
@@ -8,16 +8,16 @@
 	License: GPLv2 or later
 	License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-    Multipurpose product slider for WooCommerce
+    Tinypress short url for WordPress
 
 == Description ==
 
-Introducing a multipurpose product slider for WooCommerce with so many free themes.
+Introducing Tinypress short url for WordPress with so many free features.
 
 == Installation ==
 
 1. Install as regular WordPress plugin.<br />
-2. Go your plugin settings via WordPress Dashboard and find "<strong>Slider X for WooCommerce </strong>" activate it.<br />
+2. Go your plugin settings via WordPress Dashboard and find "<strong>Tinypress for WordPress </strong>" activate it.<br />
 
 
 == Screenshots ==
