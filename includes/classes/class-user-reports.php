@@ -46,7 +46,7 @@ class User_Reports_Table extends WP_List_Table {
 	 */
 	function prepare_items() {
 		if ( isset( $_POST['page'] ) && isset( $_POST['s'] ) ) {
-			$this->users_data = $this->get_users_data( $_POST['s'] );
+			$this->users_data = $this->get_users_data( sanitize_text_field( $_POST['s'] ) );
 		} else {
 			$this->users_data = $this->get_users_data();
 		}
@@ -65,7 +65,7 @@ class User_Reports_Table extends WP_List_Table {
 
 		$this->set_pagination_args( array(
 			'total_items' => $total_items,
-			'per_page'    => $per_page
+			'per_page'    => $per_page,
 		) );
 
 		usort( $this->users_data, array( &$this, 'usort_reorder' ) );
@@ -157,7 +157,7 @@ class User_Reports_Table extends WP_List_Table {
 		$user_location = Utils::get_args_option( 'user_location', $item );
 		$user_location = json_decode( $user_location, true );
 		$user_id       = get_user_by( 'id', $user_id );
-		$country       = isset($user_location['geoplugin_countryName']) ? Utils::get_args_option( 'geoplugin_countryName', $user_location ): esc_html__('earth','tinypress');
+		$country       = isset( $user_location['geoplugin_countryName'] ) ? Utils::get_args_option( 'geoplugin_countryName', $user_location ) : esc_html__( 'earth', 'tinypress' );
 
 		if ( ! empty( $user_location['geoplugin_city'] ) ) {
 			$city = $user_location['geoplugin_city'] . ',';

@@ -8,7 +8,6 @@ use \Pluginbazar\Utils;
 
 defined( 'ABSPATH' ) || exit;
 
-
 if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 	/**
 	 * Class TINYPRESS_Meta_boxes
@@ -37,7 +36,7 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 
 			printf( '<input type="hidden" name="tinypress_url[_short_string]" value="%s">', $short_string );
 			printf( '<span class="short-url-wrap hint--top" aria-label="Click here to copy"> <span class="prefix">%s</span><span class="random">%s</span></span>', site_url( '/' ), $short_string );
-			printf('<input type="hidden" id="short-url" name="custId" value="%s%s">',site_url( '/' ), $short_string);
+			printf( '<input type="hidden" id="short-url" name="custId" value="%s%s">', site_url( '/' ), $short_string );
 		}
 
 		/**
@@ -56,7 +55,7 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 					'context'   => 'normal',
 					'nav'       => 'inline',
 					'preview'   => true,
-				),
+				)
 			);
 
 			// General Settings section.
@@ -65,18 +64,17 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 					'title'  => esc_html__( 'General Settings', 'tinypress' ),
 					'fields' => array(
 						array(
-							'id'       => '_target_url',
-							'type'     => 'text',
-							'title'    => esc_html__( 'Target URL', 'tinypress' ),
-							'subtitle' => esc_html__( '', 'tinypress' ),
+							'id'    => '_target_url',
+							'type'  => 'text',
+							'title' => esc_html__( 'Target URL', 'tinypress' ),
 						),
 						array(
-							'id'         => '_short_string',
-							'type'       => 'callback',
-							'function'   => array( $this, 'my_callback_function' ),
-							'title'      => esc_html__( 'Short String', 'tinypress' ),
-							'subtitle'   => esc_html__( 'Short string of this URL.', 'tinypress' ),
-							'default'    => $url_slug,
+							'id'       => '_short_string',
+							'type'     => 'callback',
+							'function' => array( $this, 'my_callback_function' ),
+							'title'    => esc_html__( 'Short String', 'tinypress' ),
+							'subtitle' => esc_html__( 'Short string of this URL.', 'tinypress' ),
+							'default'  => $url_slug,
 						),
 						array(
 							'id'          => '_short_string',
@@ -91,7 +89,6 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 							'id'          => '_redirection',
 							'type'        => 'select',
 							'title'       => esc_html__( 'Redirection', 'tinypress' ),
-							'subtitle'    => esc_html__( '', 'tinypress' ),
 							'placeholder' => 'Select an option',
 							'options'     => array(
 								307 => '307 (Temporary)',
@@ -101,10 +98,9 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 							'default'     => 302,
 						),
 						array(
-							'id'       => '_notes',
-							'type'     => 'textarea',
-							'title'    => esc_html__( 'Notes', 'tinypress' ),
-							'subtitle' => esc_html__( '', 'tinypress' ),
+							'id'    => '_notes',
+							'type'  => 'textarea',
+							'title' => esc_html__( 'Notes', 'tinypress' ),
 						),
 					),
 				)

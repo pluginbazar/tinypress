@@ -2,7 +2,7 @@
 /*
 	Plugin Name: Tinypress
 	Plugin URI: https://pluginbazar.com/plugin/tinypress
-	Description: Best tinypress plugin
+	Description: Best URL Shortify  plugin
 	Version: 1.0.0
 	Text Domain: tinypress
 	Author: Pluginbazar

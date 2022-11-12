@@ -1,9 +1,9 @@
 === Tinypress ===
 	Contributors: pluginbazar
 	Donate link: https://pluginbazar.com/contact
-	Tags: slider, woocommerce slider, carousel, wp slider, product slider
+	Tags: url shortener, short links
 	Requires at least: 4.6
-	Tested up to: 6.0.1
+	Tested up to: 6.1
 	Stable tag: 1.0.0
 	License: GPLv2 or later
 	License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -28,4 +28,4 @@ Introducing Tinypress short url for WordPress with so many free features.
 == Changelog ==
 
 = 1.0.0 =
-* 04/07/2022 - ADD - Initial release.
+* 12/11/2022 - ADD - Initial release.

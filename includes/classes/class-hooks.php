@@ -5,7 +5,7 @@
  * @author Pluginbazar
  */
 
-use Pluginbazar\Utils;
+defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 	/**
@@ -27,7 +27,7 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 		}
 
 		function redirect_url() {
-			$request_uri    = isset( $_SERVER ["REQUEST_URI"] ) ? $_SERVER ["REQUEST_URI"] : '';
+			$request_uri    = isset( $_SERVER ["REQUEST_URI"] ) ? sanitize_text_field( $_SERVER ["REQUEST_URI"] ) : '';
 			$key            = trim( $request_uri, '/' );
 			$post_id        = tinypress()->key_to_post_id( $key );
 			$url            = tinypress()->target_url( $post_id );
@@ -128,7 +128,7 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 		function user_reports() {
 			add_submenu_page( 'edit.php?post_type=tinypress_url', esc_html__( 'Reports', 'tinypress' ), esc_html__( 'Reports', 'tinypress' ), 'manage_options', 'reports', array(
 				$this,
-				'reports_data_table'
+				'reports_data_table',
 			), 'dashicons-chart-bar', 10 );
 		}
 
