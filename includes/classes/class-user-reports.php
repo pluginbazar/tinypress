@@ -157,7 +157,7 @@ class User_Reports_Table extends WP_List_Table {
 		$user_location = Utils::get_args_option( 'user_location', $item );
 		$user_location = json_decode( $user_location, true );
 		$user_id       = get_user_by( 'id', $user_id );
-		$country       = Utils::get_args_option( 'geoplugin_countryName', $user_location );
+		$country       = isset($user_location['geoplugin_countryName']) ? Utils::get_args_option( 'geoplugin_countryName', $user_location ): esc_html__('earth','tinypress');
 
 		if ( ! empty( $user_location['geoplugin_city'] ) ) {
 			$city = $user_location['geoplugin_city'] . ',';
