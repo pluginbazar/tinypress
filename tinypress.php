@@ -1,7 +1,7 @@
 <?php
 /*
 	Plugin Name: Tinypress
-	Plugin URI: https://pluginbazar.com/plugin/slider-x-woo
+	Plugin URI: https://pluginbazar.com/plugin/tinypress
 	Description: Best tinypress plugin
 	Version: 1.0.0
 	Text Domain: tinypress
@@ -10,10 +10,10 @@
 	License: GPLv2 or later
 	License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
+
 global $wpdb;
 defined( 'ABSPATH' ) || exit;
 
-defined( 'ABSPATH' ) || exit;
 defined( 'TINYPRESS_PLUGIN_URL' ) || define( 'TINYPRESS_PLUGIN_URL', WP_PLUGIN_URL . '/' . plugin_basename( dirname( __FILE__ ) ) . '/' );
 defined( 'TINYPRESS_PLUGIN_DIR' ) || define( 'TINYPRESS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 defined( 'TINYPRESS_PLUGIN_FILE' ) || define( 'TINYPRESS_PLUGIN_FILE', plugin_basename( __FILE__ ) );
@@ -56,7 +56,7 @@ if ( ! class_exists( 'TINYPRESS_Main' ) ) {
 		}
 
 		/**
-		 * create_data_table
+		 * Create data table
 		 *
 		 * @return void
 		 */

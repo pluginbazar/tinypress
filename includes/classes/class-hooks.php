@@ -16,7 +16,7 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 		protected static $_instance = null;
 
 		/**
-		 * SLIDERXWOO_Hooks constructor.
+		 * TINYPRESS_Hooks constructor.
 		 */
 		function __construct() {
 
@@ -61,7 +61,7 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 			$location_info = array_merge( array_fill_keys( $location_info, null ), array_intersect_key( $user_data, array_flip( $location_info ) ) );
 
 
-			if ( is_404() && ! is_home() && ! is_page( $key ) ) {
+			if ( is_404() && ! is_page( $key ) ) {
 				global $wpdb;
 				$data   = array(
 					'user_id'       => $curr_user_id,
@@ -103,15 +103,11 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 		}
 
 		/**
-		 * Register Post Types and Settings
+		 * Register Post Types
 		 */
 		function register_everything() {
 
 			global $tinypress_sdk;
-
-			/**
-			 * Register Post Types
-			 */
 			$tinypress_sdk->utils()->register_post_type( 'tinypress_url', array(
 				'singular'            => esc_html__( 'Tiny URL', 'tinypress' ),
 				'plural'              => esc_html__( 'All Tiny URLs', 'tinypress' ),
@@ -130,7 +126,10 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 		 * Adds a submenu page under a custom post type parent.
 		 */
 		function user_reports() {
-			add_submenu_page( 'edit.php?post_type=tinypress_url', esc_html__( 'Reports', 'tinypress' ), esc_html__( 'Reports', 'tinypress' ), 'manage_options', 'reports', array( $this, 'reports_data_table' ), 'dashicons-chart-bar', 10 );
+			add_submenu_page( 'edit.php?post_type=tinypress_url', esc_html__( 'Reports', 'tinypress' ), esc_html__( 'Reports', 'tinypress' ), 'manage_options', 'reports', array(
+				$this,
+				'reports_data_table'
+			), 'dashicons-chart-bar', 10 );
 		}
 
 		/**
