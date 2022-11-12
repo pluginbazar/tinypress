@@ -14,14 +14,10 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 class User_Reports_Table extends WP_List_Table {
 	private $users_data;
 
-	private function get_users_data( $search = "" ) {
+	private function get_users_data() {
 		global $wpdb;
-		if ( ! empty( $search ) ) {
-			return $wpdb->get_results( "SELECT user_ip FROM " . TINNYPRESS_TABLE_REPORTS . " WHERE user_ip = '%{$search}%'", ARRAY_A );
-		} else {
-			return $wpdb->get_results( "SELECT post_id,user_id,user_ip,user_location, datetime, COUNT(*) as clicks_count FROM " . TINNYPRESS_TABLE_REPORTS . " GROUP BY post_id", ARRAY_A );
-		}
 
+		return $wpdb->get_results( "SELECT post_id,user_id,user_ip,user_location, datetime, COUNT(*) as clicks_count FROM " . TINNYPRESS_TABLE_REPORTS . " GROUP BY post_id", ARRAY_A );
 	}
 
 	/**
@@ -45,11 +41,7 @@ class User_Reports_Table extends WP_List_Table {
 	 * @return void
 	 */
 	function prepare_items() {
-		if ( isset( $_POST['page'] ) && isset( $_POST['s'] ) ) {
-			$this->users_data = $this->get_users_data( sanitize_text_field( $_POST['s'] ) );
-		} else {
-			$this->users_data = $this->get_users_data();
-		}
+		$this->users_data = $this->get_users_data();
 
 		$columns               = $this->get_columns();
 		$hidden                = array();
@@ -57,7 +49,7 @@ class User_Reports_Table extends WP_List_Table {
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 
 		/* pagination */
-		$per_page     = 10;
+		$per_page     = 20;
 		$current_page = $this->get_pagenum();
 		$total_items  = count( $this->users_data );
 
@@ -68,10 +60,6 @@ class User_Reports_Table extends WP_List_Table {
 			'per_page'    => $per_page,
 		) );
 
-		usort( $this->users_data, array( &$this, 'usort_reorder' ) );
-
-
-		$this->items = $this->get_users_data();
 		$this->items = $this->users_data;
 	}
 

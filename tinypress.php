@@ -2,7 +2,7 @@
 /*
 	Plugin Name: Tinypress
 	Plugin URI: https://pluginbazar.com/plugin/tinypress
-	Description: Best URL Shortify  plugin
+	Description: Best URL Shortener Plugin
 	Version: 1.0.0
 	Text Domain: tinypress
 	Author: Pluginbazar
@@ -96,7 +96,6 @@ if ( ! class_exists( 'TINYPRESS_Main' ) ) {
 			require_once TINYPRESS_PLUGIN_DIR . 'includes/classes/class-hooks.php';
 			require_once TINYPRESS_PLUGIN_DIR . 'includes/classes/class-functions.php';
 			require_once TINYPRESS_PLUGIN_DIR . 'includes/functions.php';
-
 			require_once TINYPRESS_PLUGIN_DIR . 'includes/classes/class-meta-boxes.php';
 		}
 

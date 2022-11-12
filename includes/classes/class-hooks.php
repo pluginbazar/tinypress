@@ -144,11 +144,6 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 			echo '<div class="wrap">';
 			printf( '<h2 class="report-table">%s</h2>', esc_html__( 'All Reports', 'tinypress' ) );
 			$User_Reports_Table->prepare_items();
-			?>
-            <form action="" method="get">
-                <input type="hidden" name="page" value="<?php echo esc_attr( $current_page ); ?>"/>
-				<?php $User_Reports_Table->search_box( esc_html__( 'Search', 'tinypress' ), 'search_id' ); ?>
-            </form> <?php
 			$User_Reports_Table->display();
 			echo '</div>';
 
