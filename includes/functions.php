@@ -62,7 +62,7 @@ if ( ! function_exists( 'tinypress_create_url_slug' ) ) {
 		global $wpdb;
 
 		$given_string = empty( $given_string ) ? tinypress_generate_random_string() : $given_string;
-		$post_id      = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM %s WHERE meta_value like %s", $wpdb->postmeta, $given_string ) );
+		$post_id      = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_value like %s", $given_string ) );
 
 		if ( ! empty( $post_id ) ) {
 			$given_string = tinypress_create_url_slug();

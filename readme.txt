@@ -1,6 +1,6 @@
 === Tinypress ===
 	Contributors: pluginbazar
-	Donate link: https://pluginbazar.com/contact
+	Donate link: https://pluginbazar.com/contact/
 	Tags: url shortener, short links
 	Requires at least: 4.6
 	Tested up to: 6.1

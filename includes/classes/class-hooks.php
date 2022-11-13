@@ -126,10 +126,15 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 		 * Adds a submenu page under a custom post type parent.
 		 */
 		function user_reports() {
-			add_submenu_page( 'edit.php?post_type=tinypress_url', esc_html__( 'Reports', 'tinypress' ), esc_html__( 'Reports', 'tinypress' ), 'manage_options', 'reports', array(
-				$this,
-				'reports_data_table',
-			), 'dashicons-chart-bar', 10 );
+			add_submenu_page(
+				'edit.php?post_type=tinypress_url',
+				esc_html__( 'Reports', 'tinypress' ),
+				esc_html__( 'Reports', 'tinypress' ),
+				'manage_options',
+				'reports',
+				array( $this, 'reports_data_table' ),
+				10
+			);
 		}
 
 		/**
@@ -140,15 +145,12 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 			require_once 'class-user-reports.php';
 
 			$User_Reports_Table = new User_Reports_Table();
-			$current_page       = isset( $_REQUEST['page'] ) ? sanitize_text_field( $_REQUEST['page'] ) : '';
 			echo '<div class="wrap">';
 			printf( '<h2 class="report-table">%s</h2>', esc_html__( 'All Reports', 'tinypress' ) );
 			$User_Reports_Table->prepare_items();
 			$User_Reports_Table->display();
 			echo '</div>';
-
 		}
-
 	}
 }
 
