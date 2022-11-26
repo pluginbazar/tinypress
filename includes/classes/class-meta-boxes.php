@@ -4,7 +4,7 @@
 * Copyright: 	2022 pluginbazar
 */
 
-use \Pluginbazar\Utils;
+use WPDK\Utils;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -25,7 +25,21 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 		function __construct() {
 
 			$this->generate_tinypress_meta_box();
+
+			add_action( 'wpdk_settings_after_meta_navs', array( $this, 'add_plugin_promotional_navs' ) );
 		}
+
+
+		function add_plugin_promotional_navs() {
+
+//			if ( ! liquidpoll()->is_pro() ) {
+//				printf( '<li class="pbsettings-extra-nav get-pro"><a href="%s">%s</a></li>', LIQUIDPOLL_PLUGIN_LINK, esc_html__( 'Get Pro', 'wp-poll' ) );
+//			}
+
+			printf( '<li class="wpdk_settings-extra-nav right"><a href="%s">%s</a></li>', '', esc_html__( 'Documentation', 'wp-poll' ) );
+			printf( '<li class="wpdk_settings-extra-nav right"><a href="%s">%s</a></li>', '', esc_html__( 'Community', 'wp-poll' ) );
+		}
+
 
 		function my_callback_function( $args ) {
 
@@ -47,7 +61,7 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 			$url_slug = tinypress_create_url_slug();
 
 			// Create a metabox for tinypress.
-			PBSettings::createMetabox( $this->prefix_tinyurl_metabox,
+			WPDK_Settings::createMetabox( $this->prefix_tinyurl_metabox,
 				array(
 					'title'     => esc_html__( 'TinyPress', 'tinypress' ),
 					'post_type' => 'tinypress_url',
@@ -59,10 +73,17 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 			);
 
 			// General Settings section.
-			PBSettings::createSection( $this->prefix_tinyurl_metabox,
+			WPDK_Settings::createSection( $this->prefix_tinyurl_metabox,
 				array(
 					'title'  => esc_html__( 'General Settings', 'tinypress' ),
 					'fields' => array(
+						array(
+							'id'       => 'post_title',
+							'type'     => 'text',
+							'title'    => esc_html__( 'Label', 'tinypress' ),
+							'wp_type'  => 'post_title',
+							'subtitle' => esc_html__( 'For admin purpose only.', 'tinypress' ),
+						),
 						array(
 							'id'    => '_target_url',
 							'type'  => 'text',
@@ -99,6 +120,20 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 						),
 						array(
 							'id'    => '_notes',
+							'type'  => 'textarea',
+							'title' => esc_html__( 'Notes', 'tinypress' ),
+						),
+					),
+				)
+			);
+
+			// General Settings section.
+			WPDK_Settings::createSection( $this->prefix_tinyurl_metabox,
+				array(
+					'title'  => esc_html__( 'Analytics', 'tinypress' ),
+					'fields' => array(
+						array(
+							'id'    => '_notesadsd',
 							'type'  => 'textarea',
 							'title' => esc_html__( 'Notes', 'tinypress' ),
 						),

@@ -142,18 +142,18 @@ function pb_sdk_init_tinypress() {
 	}
 
 	if ( ! class_exists( 'Pluginbazar\Client' ) ) {
-		require_once( plugin_dir_path( __FILE__ ) . 'includes/sdk/classes/class-client.php' );
+		require_once( plugin_dir_path( __FILE__ ) . 'includes/wpdk/classes/class-client.php' );
 	}
 
 	global $tinypress_sdk;
 
-	$tinypress_sdk = new Pluginbazar\Client( esc_html( 'TinyPress - Best URL Shortener Plugin' ), 'tinypress', 36, __FILE__ );
+	$tinypress_sdk = new WPDK\Client( esc_html( 'TinyPress - Best URL Shortener Plugin' ), 'tinypress', 36, __FILE__ );
 
 	do_action( 'pb_sdk_init_tinypress', $tinypress_sdk );
 }
 
 /**
- * @global \Pluginbazar\Client $tinypress_sdk
+ * @global \WPDK\Client $tinypress_sdk
  */
 global $tinypress_sdk;
 

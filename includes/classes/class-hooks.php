@@ -108,15 +108,15 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 		function register_everything() {
 
 			global $tinypress_sdk;
+
 			$tinypress_sdk->utils()->register_post_type( 'tinypress_url', array(
-				'singular'            => esc_html__( 'Tiny URL', 'tinypress' ),
-				'plural'              => esc_html__( 'All Tiny URLs', 'tinypress' ),
+				'singular'            => esc_html__( 'Link', 'tinypress' ),
+				'plural'              => esc_html__( 'Links', 'tinypress' ),
 				'labels'              => array(
-					'menu_name' => esc_html__( 'TinyPress', 'tinypress' ),
-					'add_new'   => esc_html__( 'Short an URL', 'tinypress' ),
+					'menu_name' => esc_html__( 'TinyLinks', 'tinypress' ),
 				),
 				'menu_icon'           => 'dashicons-admin-links',
-				'supports'            => array( 'title' ),
+				'supports'            => array( '' ),
 				'public'              => false,
 				'exclude_from_search' => true,
 			) );

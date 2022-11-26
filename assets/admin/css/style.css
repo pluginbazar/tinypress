@@ -2,17 +2,84 @@
 /* CSS Document */
 
 :root {
-    --pbsettings-primary-color: #774ea9;
-    --pbsettings-red-color: #ff6a5f;
+    --wpdk_settings-primary-color: #774ea9;
+    --wpdk_settings-red-color: #ff6a5f;
 }
-/*
-*short string style box
- */
-span.short-url-wrap{
-    border: 1px solid #8c8f94;
+
+
+body.post-type-tinypress_url .wpdk_settings-metabox {
+    margin-top: -20px;
+}
+
+body.post-type-tinypress_url #submitdiv {
+    border: none;
+    background: transparent;
+    box-shadow: none;
+}
+
+body.post-type-tinypress_url #poststuff .inside {
+    margin: 0;
+}
+
+body.post-type-tinypress_url #submitdiv .postbox-header,
+body.post-type-tinypress_url #submitdiv #minor-publishing,
+body.post-type-tinypress_url #submitdiv #major-publishing-actions .clear {
+    display: none !important;
+}
+
+body.post-type-tinypress_url #submitdiv #major-publishing-actions {
+    border: none;
+    background: transparent;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+body.post-type-tinypress_url #submitdiv #major-publishing-actions #publish,
+body.post-type-tinypress_url #submitdiv #major-publishing-actions #publish:active,
+body.post-type-tinypress_url #submitdiv #major-publishing-actions #publish:focus {
+    background: var(--wpdk_settings-primary-color);
+    color: #fff;
+    border: none;
+    font-size: 16px;
+    line-height: 26px;
+    padding: 14px 30px;
+    border-radius: 0;
+}
+
+body.post-type-tinypress_url #submitdiv #major-publishing-actions .submitdelete,
+body.post-type-tinypress_url #submitdiv #major-publishing-actions .submitdelete:active,
+body.post-type-tinypress_url #submitdiv #major-publishing-actions .submitdelete:focus {
+    background: var(--wpdk_settings-red-color);
+    color: #fff;
+    text-decoration: none;
     padding: 5px 10px;
-    background-color: #808080;
+    border-radius: 50px;
+    font-size: 12px;
+    line-height: 22px;
+}
+
+
+body.post-type-tinypress_url .wpdk_settings-field-text input {
+    padding: 10px 8px;
+    border: 1px solid #eee;
+    transition: 0.3s;
+}
+
+body.post-type-tinypress_url .wpdk_settings-field-text input:focus,
+body.post-type-tinypress_url .wpdk_settings-field-text input:focus:active {
+    border-color: var(--wpdk_settings-primary-color);
+    box-shadow: none;
+    outline: none;
+}
+
+
+body.post-type-tinypress_url span.short-url-wrap {
+    border: none;
+    padding: 15px 10px;
+    background-color: #616161;
     color: #fff;
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 3px;
 }
