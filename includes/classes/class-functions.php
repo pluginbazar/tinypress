@@ -5,13 +5,13 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists( 'TINYPRESS_Functions' ) ) {
-	class TINYPRESS_Functions {
+if ( ! class_exists( 'TINYLINKS_Functions' ) ) {
+	class TINYLINKS_Functions {
 
 		/**
-		 * @var TINYPRESS_Meta_boxes|null
+		 * @var TINYLINKS_Meta_boxes|null
 		 */
-		public $tinypress_metaboxes = null;
+		public $tinylinks_metaboxes = null;
 
 		/**
 		 * @param $post_id
@@ -32,7 +32,7 @@ if ( ! class_exists( 'TINYPRESS_Functions' ) ) {
 		 */
 		function key_to_post_id( $key ) {
 			$post_id = get_posts( array(
-					'post_type'  => 'tinypress_url',
+					'post_type'  => 'tinylinks_url',
 					'meta_key'   => '_short_string',
 					'meta_value' => $key,
 					'fields'     => 'ids',
@@ -45,6 +45,6 @@ if ( ! class_exists( 'TINYPRESS_Functions' ) ) {
 	}
 }
 
-global $tinypress;
+global $tinylinks;
 
-$tinypress = new TINYPRESS_Functions();
+$tinylinks = new TINYLINKS_Functions();

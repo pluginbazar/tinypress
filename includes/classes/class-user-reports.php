@@ -1,6 +1,6 @@
 <?php
 
-use Pluginbazar\Utils;
+use WPDK\Utils;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -17,7 +17,7 @@ class User_Reports_Table extends WP_List_Table {
 	private function get_users_data() {
 		global $wpdb;
 
-		return $wpdb->get_results( "SELECT post_id,user_id,user_ip,user_location, datetime, COUNT(*) as clicks_count FROM " . TINNYPRESS_TABLE_REPORTS . " GROUP BY post_id", ARRAY_A );
+		return $wpdb->get_results( "SELECT post_id,user_id,user_ip,user_location, datetime, COUNT(*) as clicks_count FROM " . TINYLINKS_TABLE_REPORTS . " GROUP BY post_id", ARRAY_A );
 	}
 
 	/**
@@ -26,11 +26,11 @@ class User_Reports_Table extends WP_List_Table {
 	function get_columns() {
 		$columns = array(
 			'cb'            => '<input type="checkbox" />',
-			'title'         => esc_html__( 'Title', 'tinypress' ),
-			'short_url'     => esc_html__( 'Short Link', 'tinypress' ),
-			'clicks_count'  => esc_html__( 'Clicks Count', 'tinypress' ),
-			'user_location' => esc_html__( 'User Location', 'tinypress' ),
-			'datetime'      => esc_html__( 'Date Time', 'tinypress' ),
+			'title'         => esc_html__( 'Title', 'tinylinks' ),
+			'short_url'     => esc_html__( 'Short Link', 'tinylinks' ),
+			'clicks_count'  => esc_html__( 'Clicks Count', 'tinylinks' ),
+			'user_location' => esc_html__( 'User Location', 'tinylinks' ),
+			'datetime'      => esc_html__( 'Date Time', 'tinylinks' ),
 
 		);
 
@@ -87,9 +87,11 @@ class User_Reports_Table extends WP_List_Table {
 	 * @return string|void
 	 */
 	function column_cb( $item ) {
+		$id = Utils::get_args_option( 'id', $item );
+
 		return sprintf(
 			'<input type="checkbox" name="emp[]" value="%s" />',
-			$item['id']
+			$id,
 		);
 	}
 
@@ -104,7 +106,8 @@ class User_Reports_Table extends WP_List_Table {
 		$title   = $title->post_title;
 
 		return sprintf(
-			'<div class="post-title"><a href="post.php?post=%s&action=edit">%s</a></div>', $post_id,
+			'<div class="post-title"><a href="post.php?post=%s&action=edit">%s</a></div>',
+			$post_id,
 			ucwords( $title )
 		);
 	}
@@ -115,7 +118,6 @@ class User_Reports_Table extends WP_List_Table {
 	 * @return string
 	 */
 	function column_short_url( $item ) {
-
 		$id         = Utils::get_args_option( 'post_id', $item );
 		$short_link = get_post_meta( $id, '_short_string', true );
 		$url        = get_site_url();
@@ -140,25 +142,25 @@ class User_Reports_Table extends WP_List_Table {
 	 * @return string
 	 */
 	function column_user_location( $item ) {
-
+		$city          = '';
 		$user_id       = Utils::get_args_option( 'user_id', $item );
 		$user_location = Utils::get_args_option( 'user_location', $item );
 		$user_location = json_decode( $user_location, true );
 		$user_id       = get_user_by( 'id', $user_id );
-		$country       = isset( $user_location['geoplugin_countryName'] ) ? Utils::get_args_option( 'geoplugin_countryName', $user_location ) : esc_html__( 'earth', 'tinypress' );
+		$country       = isset( $user_location['geoplugin_countryName'] ) ? Utils::get_args_option( 'geoplugin_countryName', $user_location ) : esc_html__( 'earth', 'tinylinks' );
 
 		if ( ! empty( $user_location['geoplugin_city'] ) ) {
-			$city = $user_location['geoplugin_city'] . ',';
+			$city = Utils::get_args_option( 'geoplugin_regionName', $user_location ) . ',';
 		} elseif ( ! empty( $user_location['geoplugin_regionName'] ) ) {
-			$city = $user_location['geoplugin_regionName'] . ',';
+			$city = Utils::get_args_option( 'geoplugin_regionName', $user_location );
 		}
 
 		if ( $user_id->ID == 0 ) {
-			$user = esc_html__( 'Someone', 'tinypress' );
+			$user = esc_html__( 'Someone', 'tinylinks' );
 		} else {
 			$user = ucfirst( $user_id->display_name );
 		}
-		$from_text = esc_html__( 'from', 'tinypress' );
+		$from_text = esc_html__( 'from', 'tinylinks' );
 
 		return sprintf( '<div class="user-location">%s %s %s %s</div>', $user, $from_text, $city, $country );
 	}

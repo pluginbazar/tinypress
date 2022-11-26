@@ -7,19 +7,18 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
+if ( ! class_exists( 'TINYLINKS_Hooks' ) ) {
 	/**
-	 * Class TINYPRESS_Hooks
+	 * Class TINYLINKS_Hooks
 	 */
-	class TINYPRESS_Hooks {
+	class TINYLINKS_Hooks {
 
 		protected static $_instance = null;
 
 		/**
-		 * TINYPRESS_Hooks constructor.
+		 * TINYLINKS_Hooks constructor.
 		 */
 		function __construct() {
-
 			add_action( 'init', array( $this, 'register_everything' ) );
 			add_action( 'admin_menu', array( $this, 'user_reports' ) );
 			add_action( 'template_redirect', array( $this, 'redirect_url' ) );
@@ -29,10 +28,10 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 		function redirect_url() {
 			$request_uri    = isset( $_SERVER ["REQUEST_URI"] ) ? sanitize_text_field( $_SERVER ["REQUEST_URI"] ) : '';
 			$key            = trim( $request_uri, '/' );
-			$post_id        = tinypress()->key_to_post_id( $key );
-			$url            = tinypress()->target_url( $post_id );
+			$post_id        = tinylinks()->key_to_post_id( $key );
+			$url            = tinylinks()->target_url( $post_id );
 			$status         = (int) get_post_meta( $post_id, '_redirection', true );
-			$get_ip_address = tinypress_get_ip_address();
+			$get_ip_address = tinylinks_get_ip_address();
 
 			if ( is_user_logged_in() ) {
 				$curr_user_id = get_current_user_id();
@@ -70,19 +69,18 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 					'user_location' => json_encode( $location_info ),
 				);
 				$format = array( '%d', '%d', '%s', '%s' );
-				$wpdb->insert( TINNYPRESS_TABLE_REPORTS, $data, $format );
+				$wpdb->insert( TINYLINKS_TABLE_REPORTS, $data, $format );
 
 				if ( wp_safe_redirect( $url, $status ) ) {
 					header( "Location: $url", true, 301 );
 				}
 				die();
 			}
-
 		}
 
 
 		/**
-		 * @return TINYPRESS_Hooks
+		 * @return TINYLINKS_Hooks
 		 */
 		public static function instance() {
 			if ( is_null( self::$_instance ) ) {
@@ -106,14 +104,13 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 		 * Register Post Types
 		 */
 		function register_everything() {
+			global $tinylinks_sdk;
 
-			global $tinypress_sdk;
-
-			$tinypress_sdk->utils()->register_post_type( 'tinypress_url', array(
-				'singular'            => esc_html__( 'Link', 'tinypress' ),
-				'plural'              => esc_html__( 'Links', 'tinypress' ),
+			$tinylinks_sdk->utils()->register_post_type( 'tinylinks_url', array(
+				'singular'            => esc_html__( 'Link', 'tinylinks' ),
+				'plural'              => esc_html__( 'Links', 'tinylinks' ),
 				'labels'              => array(
-					'menu_name' => esc_html__( 'TinyLinks', 'tinypress' ),
+					'menu_name' => esc_html__( 'TinyLinks', 'tinylinks' ),
 				),
 				'menu_icon'           => 'dashicons-admin-links',
 				'supports'            => array( '' ),
@@ -127,9 +124,9 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 		 */
 		function user_reports() {
 			add_submenu_page(
-				'edit.php?post_type=tinypress_url',
-				esc_html__( 'Reports', 'tinypress' ),
-				esc_html__( 'Reports', 'tinypress' ),
+				'edit.php?post_type=tinylinks_url',
+				esc_html__( 'Reports', 'tinylinks' ),
+				esc_html__( 'Reports', 'tinylinks' ),
 				'manage_options',
 				'reports',
 				array( $this, 'reports_data_table' ),
@@ -141,12 +138,11 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 		 * Display callback for the submenu page.
 		 */
 		function reports_data_table() {
-
 			require_once 'class-user-reports.php';
 
 			$User_Reports_Table = new User_Reports_Table();
 			echo '<div class="wrap">';
-			printf( '<h2 class="report-table">%s</h2>', esc_html__( 'All Reports', 'tinypress' ) );
+			printf( '<h2 class="report-table">%s</h2>', esc_html__( 'All Reports', 'tinylinks' ) );
 			$User_Reports_Table->prepare_items();
 			$User_Reports_Table->display();
 			echo '</div>';
@@ -154,4 +150,4 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 	}
 }
 
-TINYPRESS_Hooks::instance();
+TINYLINKS_Hooks::instance();

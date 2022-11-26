@@ -7,26 +7,23 @@
 defined( 'ABSPATH' ) || exit;
 
 
-if ( ! function_exists( 'tinypress' ) ) {
-
+if ( ! function_exists( 'tinylinks' ) ) {
 	/**
-	 * @return TINYPRESS_Functions
+	 * @return TINYLINKS_Functions
 	 */
-	function tinypress() {
+	function tinylinks() {
+		global $tinylinks;
 
-		global $tinypress;
-
-		if ( empty( $tinypress ) ) {
-			$tinypress = new TINYPRESS_Functions();
+		if ( empty( $tinylinks ) ) {
+			$tinylinks = new TINYLINKS_Functions();
 		}
 
-		return $tinypress;
+		return $tinylinks;
 	}
 }
 
 
-if ( ! function_exists( 'tinypress_generate_random_string' ) ) {
-
+if ( ! function_exists( 'tinylinks_generate_random_string' ) ) {
 	/**
 	 * Generate random string
 	 *
@@ -34,8 +31,7 @@ if ( ! function_exists( 'tinypress_generate_random_string' ) ) {
 	 *
 	 * @return string
 	 */
-	function tinypress_generate_random_string( $length = 5 ) {
-
+	function tinylinks_generate_random_string( $length = 5 ) {
 		$characters       = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 		$charactersLength = strlen( $characters );
 		$randomString     = '';
@@ -49,23 +45,21 @@ if ( ! function_exists( 'tinypress_generate_random_string' ) ) {
 }
 
 
-if ( ! function_exists( 'tinypress_create_url_slug' ) ) {
-
+if ( ! function_exists( 'tinylinks_create_url_slug' ) ) {
 	/**Create url slug
 	 *
 	 * @param string $given_string
 	 *
 	 * @return mixed|string
 	 */
-	function tinypress_create_url_slug( $given_string = '' ) {
-
+	function tinylinks_create_url_slug( $given_string = '' ) {
 		global $wpdb;
 
-		$given_string = empty( $given_string ) ? tinypress_generate_random_string() : $given_string;
+		$given_string = empty( $given_string ) ? tinylinks_generate_random_string() : $given_string;
 		$post_id      = $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_value like %s", $given_string ) );
 
 		if ( ! empty( $post_id ) ) {
-			$given_string = tinypress_create_url_slug();
+			$given_string = tinylinks_create_url_slug();
 		}
 
 		return $given_string;
@@ -73,15 +67,13 @@ if ( ! function_exists( 'tinypress_create_url_slug' ) ) {
 }
 
 
-if ( ! function_exists( 'tinypress_get_ip_address' ) ) {
-
+if ( ! function_exists( 'tinylinks_get_ip_address' ) ) {
 	/**get user ip
 	 *
 	 * @return mixed
 	 */
 
-	function tinypress_get_ip_address() {
-
+	function tinylinks_get_ip_address() {
 		if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
 			$ip = $_SERVER['HTTP_CLIENT_IP'];
 		} elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {

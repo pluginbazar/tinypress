@@ -1,4 +1,4 @@
-=== Tinypress ===
+=== Tinylinks ===
 	Contributors: pluginbazar
 	Donate link: https://pluginbazar.com/contact/
 	Tags: url shortener, short links
@@ -8,16 +8,16 @@
 	License: GPLv2 or later
 	License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-    Tinypress short url for WordPress
+    Tinylinks short url for WordPress
 
 == Description ==
 
-Introducing Tinypress short url for WordPress with so many free features.
+Introducing Tinylinks short url for WordPress with so many free features.
 
 == Installation ==
 
 1. Install as regular WordPress plugin.<br />
-2. Go your plugin settings via WordPress Dashboard and find "<strong>Tinypress for WordPress </strong>" activate it.<br />
+2. Go your plugin settings via WordPress Dashboard and find "<strong>Tinylinks for WordPress </strong>" activate it.<br />
 
 
 == Screenshots ==

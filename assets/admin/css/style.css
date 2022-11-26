@@ -7,27 +7,27 @@
 }
 
 
-body.post-type-tinypress_url .wpdk_settings-metabox {
+body.post-type-tinylinks_url .wpdk_settings-metabox {
     margin-top: -20px;
 }
 
-body.post-type-tinypress_url #submitdiv {
+body.post-type-tinylinks_url #submitdiv {
     border: none;
     background: transparent;
     box-shadow: none;
 }
 
-body.post-type-tinypress_url #poststuff .inside {
+body.post-type-tinylinks_url #poststuff .inside {
     margin: 0;
 }
 
-body.post-type-tinypress_url #submitdiv .postbox-header,
-body.post-type-tinypress_url #submitdiv #minor-publishing,
-body.post-type-tinypress_url #submitdiv #major-publishing-actions .clear {
+body.post-type-tinylinks_url #submitdiv .postbox-header,
+body.post-type-tinylinks_url #submitdiv #minor-publishing,
+body.post-type-tinylinks_url #submitdiv #major-publishing-actions .clear {
     display: none !important;
 }
 
-body.post-type-tinypress_url #submitdiv #major-publishing-actions {
+body.post-type-tinylinks_url #submitdiv #major-publishing-actions {
     border: none;
     background: transparent;
     padding: 0;
@@ -36,9 +36,9 @@ body.post-type-tinypress_url #submitdiv #major-publishing-actions {
     align-items: center;
 }
 
-body.post-type-tinypress_url #submitdiv #major-publishing-actions #publish,
-body.post-type-tinypress_url #submitdiv #major-publishing-actions #publish:active,
-body.post-type-tinypress_url #submitdiv #major-publishing-actions #publish:focus {
+body.post-type-tinylinks_url #submitdiv #major-publishing-actions #publish,
+body.post-type-tinylinks_url #submitdiv #major-publishing-actions #publish:active,
+body.post-type-tinylinks_url #submitdiv #major-publishing-actions #publish:focus {
     background: var(--wpdk_settings-primary-color);
     color: #fff;
     border: none;
@@ -48,9 +48,9 @@ body.post-type-tinypress_url #submitdiv #major-publishing-actions #publish:focus
     border-radius: 0;
 }
 
-body.post-type-tinypress_url #submitdiv #major-publishing-actions .submitdelete,
-body.post-type-tinypress_url #submitdiv #major-publishing-actions .submitdelete:active,
-body.post-type-tinypress_url #submitdiv #major-publishing-actions .submitdelete:focus {
+body.post-type-tinylinks_url #submitdiv #major-publishing-actions .submitdelete,
+body.post-type-tinylinks_url #submitdiv #major-publishing-actions .submitdelete:active,
+body.post-type-tinylinks_url #submitdiv #major-publishing-actions .submitdelete:focus {
     background: var(--wpdk_settings-red-color);
     color: #fff;
     text-decoration: none;
@@ -61,21 +61,21 @@ body.post-type-tinypress_url #submitdiv #major-publishing-actions .submitdelete:
 }
 
 
-body.post-type-tinypress_url .wpdk_settings-field-text input {
+body.post-type-tinylinks_url .wpdk_settings-field-text input {
     padding: 10px 8px;
     border: 1px solid #eee;
     transition: 0.3s;
 }
 
-body.post-type-tinypress_url .wpdk_settings-field-text input:focus,
-body.post-type-tinypress_url .wpdk_settings-field-text input:focus:active {
+body.post-type-tinylinks_url .wpdk_settings-field-text input:focus,
+body.post-type-tinylinks_url .wpdk_settings-field-text input:focus:active {
     border-color: var(--wpdk_settings-primary-color);
     box-shadow: none;
     outline: none;
 }
 
 
-body.post-type-tinypress_url span.short-url-wrap {
+body.post-type-tinylinks_url span.short-url-wrap {
     border: none;
     padding: 15px 10px;
     background-color: #616161;
