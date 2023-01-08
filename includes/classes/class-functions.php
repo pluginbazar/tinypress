@@ -3,48 +3,54 @@
  * Class Functions
  */
 
+use WPDK\Utils;
+
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists( 'TINYLINKS_Functions' ) ) {
-	class TINYLINKS_Functions {
+if ( ! class_exists( 'TINYPRESS_Functions' ) ) {
+	class TINYPRESS_Functions {
+
+		public static $text_hint = null;
+
+		public static $text_copied = null;
+
 
 		/**
-		 * @var TINYLINKS_Meta_boxes|null
+		 * @return TINYPRESS_Meta_boxes|null
 		 */
-		public $tinylinks_metaboxes = null;
+		public $tinypress_metaboxes = null;
+
 
 		/**
-		 * @param $post_id
-		 *
-		 * @return mixed
+		 * TINYPRESS_Functions constructor.
 		 */
-		function target_url( $post_id ) {
-
-			$url = get_post_meta( $post_id, '_target_url', true );
-
-			return $url;
+		function __construct() {
+			self::$text_hint   = esc_html__( 'Click here to copy.', 'tinypress' );
+			self::$text_copied = esc_html__( 'Copied.', 'tinypress' );
 		}
 
+
 		/**
-		 * @param $key
+		 * @param $slug
 		 *
 		 * @return false|int|WP_Post
 		 */
-		function key_to_post_id( $key ) {
-			$post_id = get_posts( array(
-					'post_type'  => 'tinylinks_url',
-					'meta_key'   => '_short_string',
-					'meta_value' => $key,
-					'fields'     => 'ids',
-				)
-			);
+		function tiny_slug_to_post_id( $slug ) {
 
-			return reset( $post_id );
+			$all_posts = get_posts( array(
+				'post_type'  => 'tinypress_link',
+				'meta_key'   => 'tiny_slug',
+				'meta_value' => $slug,
+			) );
+			$post_ids  = array_map( function ( WP_Post $post ) {
+				return $post->ID;
+			}, $all_posts );
 
+			return reset( $post_ids );
 		}
 	}
 }
 
-global $tinylinks;
+global $tinypress;
 
-$tinylinks = new TINYLINKS_Functions();
+$tinypress = new TINYPRESS_Functions();

@@ -12,170 +12,135 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
  * Extending class
  */
 class User_Reports_Table extends WP_List_Table {
-	private $users_data;
 
-	private function get_users_data() {
+	private int $items_per_page = 20;
+
+
+	/**
+	 * Return all report data
+	 *
+	 * @return array|object|stdClass[]|null
+	 */
+	private function get_reports_data() {
+
 		global $wpdb;
 
-		return $wpdb->get_results( "SELECT post_id,user_id,user_ip,user_location, datetime, COUNT(*) as clicks_count FROM " . TINYLINKS_TABLE_REPORTS . " GROUP BY post_id", ARRAY_A );
+		$all_posts = $wpdb->get_results( "SELECT post_id,user_id,user_ip,user_location, datetime FROM " . TINYPRESS_TABLE_REPORTS, ARRAY_A );
+		$all_posts = array_map( function ( $post ) {
+
+			if ( empty( $post_id = Utils::get_args_option( 'post_id', $post ) ) || 0 == $post_id ) {
+				return [];
+			}
+
+			$this_post = get_post( $post_id );
+
+			if ( ! $this_post instanceof WP_Post || 'tinypress_link' != $this_post->post_type ) {
+				return [];
+			}
+
+			$post['post_title'] = $this_post->post_title;
+
+			return $post;
+		}, $all_posts );
+
+		return array_filter( $all_posts );
 	}
 
-	/**
-	 * @return array
-	 */
-	function get_columns() {
-		$columns = array(
-			'cb'            => '<input type="checkbox" />',
-			'title'         => esc_html__( 'Title', 'tinylinks' ),
-			'short_url'     => esc_html__( 'Short Link', 'tinylinks' ),
-			'clicks_count'  => esc_html__( 'Clicks Count', 'tinylinks' ),
-			'user_location' => esc_html__( 'User Location', 'tinylinks' ),
-			'datetime'      => esc_html__( 'Date Time', 'tinylinks' ),
-
-		);
-
-		return $columns;
-	}
 
 	/**
+	 * Prepare Items
+	 *
 	 * @return void
 	 */
 	function prepare_items() {
-		$this->users_data = $this->get_users_data();
 
-		$columns               = $this->get_columns();
-		$hidden                = array();
-		$sortable              = array();
-		$this->_column_headers = array( $columns, $hidden, $sortable );
-
-		/* pagination */
-		$per_page     = 20;
-		$current_page = $this->get_pagenum();
-		$total_items  = count( $this->users_data );
-
-		$this->users_data = array_slice( $this->users_data, ( ( $current_page - 1 ) * $per_page ), $per_page );
+		$reports_data          = $this->get_reports_data();
+		$this->_column_headers = array( $this->get_columns(), [], [] );
+		$current_page          = $this->get_pagenum();
+		$total_items           = count( $reports_data );
+		$reports_data          = array_slice( $reports_data, ( ( $current_page - 1 ) * $this->items_per_page ), $this->items_per_page );
 
 		$this->set_pagination_args( array(
 			'total_items' => $total_items,
-			'per_page'    => $per_page,
+			'per_page'    => $this->items_per_page,
 		) );
 
-		$this->items = $this->users_data;
+		$this->items = $reports_data;
 	}
 
-	/**
-	 * @param $item
-	 * @param $column_name
-	 *
-	 * @return mixed|void
-	 */
-	function column_default( $item, $column_name ) {
-		switch ( $column_name ) {
-			case 'title':
-			case 'short_url':
-			case 'clicks_count':
-			case 'user_location':
-			case 'datetime':
-			default:
-				return $item[ $column_name ];
-		}
-	}
 
 	/**
-	 * @param $item
+	 * Return columns
 	 *
-	 * @return string|void
+	 * @return array
 	 */
-	function column_cb( $item ) {
-		$id = Utils::get_args_option( 'id', $item );
-
-		return sprintf(
-			'<input type="checkbox" name="emp[]" value="%s" />',
-			$id,
+	function get_columns() {
+		return array(
+			'title'      => esc_html__( 'Title', 'tinypress' ),
+			'short_link' => esc_html__( 'Short Link', 'tinypress' ),
+			'details'    => esc_html__( 'Details', 'tinypress' ),
 		);
 	}
 
+
 	/**
+	 * Column Title
+	 *
 	 * @param $item
 	 *
 	 * @return string
 	 */
 	function column_title( $item ) {
-		$post_id = Utils::get_args_option( 'post_id', $item );
-		$title   = get_post( $post_id );
-		$title   = $title->post_title;
 
-		return sprintf(
-			'<div class="post-title"><a href="post.php?post=%s&action=edit">%s</a></div>',
-			$post_id,
-			ucwords( $title )
+		return sprintf( '<div class="post-title"><a href="post.php?post=%s&action=edit">%s</a></div>',
+			Utils::get_args_option( 'post_id', $item ),
+			Utils::get_args_option( 'post_title', $item )
 		);
 	}
 
+
 	/**
+	 * Column Short Link
+	 *
 	 * @param $item
 	 *
 	 * @return string
 	 */
-	function column_short_url( $item ) {
-		$id         = Utils::get_args_option( 'post_id', $item );
-		$short_link = get_post_meta( $id, '_short_string', true );
-		$url        = get_site_url();
-
-		return sprintf( '<div class="shortstring hint--top" aria-label="Click here to copy">%s/%s</div>', $url, $short_link );
+	function column_short_link( $item ) {
+		return tinypress_get_tiny_slug_copier( Utils::get_args_option( 'post_id', $item ) );
 	}
 
-	/**
-	 * @param $item
-	 *
-	 * @return string
-	 */
-	function column_clicks_count( $item ) {
-		$count = Utils::get_args_option( 'clicks_count', $item );
-
-		return sprintf( '<div class="clicks-count">%s</div>', $count );
-	}
 
 	/**
 	 * @param $item
 	 *
 	 * @return string
 	 */
-	function column_user_location( $item ) {
-		$city          = '';
-		$user_id       = Utils::get_args_option( 'user_id', $item );
-		$user_location = Utils::get_args_option( 'user_location', $item );
-		$user_location = json_decode( $user_location, true );
-		$user_id       = get_user_by( 'id', $user_id );
-		$country       = isset( $user_location['geoplugin_countryName'] ) ? Utils::get_args_option( 'geoplugin_countryName', $user_location ) : esc_html__( 'earth', 'tinylinks' );
+	function column_details( $item ) {
 
-		if ( ! empty( $user_location['geoplugin_city'] ) ) {
-			$city = Utils::get_args_option( 'geoplugin_regionName', $user_location ) . ',';
-		} elseif ( ! empty( $user_location['geoplugin_regionName'] ) ) {
-			$city = Utils::get_args_option( 'geoplugin_regionName', $user_location );
+		$user_id            = Utils::get_args_option( 'user_id', $item );
+		$user_location      = Utils::get_args_option( 'user_location', $item );
+		$user_location      = json_decode( $user_location, true );
+		$user_display_name  = esc_html__( 'Someone', 'tinypress' );
+		$user_location_name = esc_html__( 'Earth', 'tinypress' );
+		$user_visited_time  = Utils::get_args_option( 'datetime', $item );
+		$user_visited_time  = date( 'jS M Y, h:i a', strtotime( $user_visited_time ) );
+
+		if ( 0 != $user_id ) {
+			$user_obj          = get_user_by( 'ID', $user_id );
+			$user_display_name = $user_obj instanceof WP_User ? ucfirst( $user_obj->display_name ) : $user_display_name;
 		}
 
-		if ( $user_id->ID == 0 ) {
-			$user = esc_html__( 'Someone', 'tinylinks' );
-		} else {
-			$user = ucfirst( $user_id->display_name );
+		if ( ! empty( $geoplugin_city = Utils::get_args_option( 'geoplugin_city', $user_location ) ) ) {
+			$user_location_name = $geoplugin_city;
+		} else if ( ! empty( $geoplugin_region_name = Utils::get_args_option( 'geoplugin_regionName', $user_location ) ) ) {
+			$user_location_name = $geoplugin_region_name;
+		} else if ( ! empty( $geoplugin_continent_name = Utils::get_args_option( 'geoplugin_continentName', $user_location ) ) ) {
+			$user_location_name = $geoplugin_continent_name;
 		}
-		$from_text = esc_html__( 'from', 'tinylinks' );
 
-		return sprintf( '<div class="user-location">%s %s %s %s</div>', $user, $from_text, $city, $country );
+		return sprintf( '<div class="report-details">%s</div>',
+			sprintf( esc_html__( '%s from %s visited at %s', 'tinypress' ), $user_display_name, $user_location_name, $user_visited_time )
+		);
 	}
-
-	/**
-	 * @param $item
-	 *
-	 * @return string
-	 */
-	function column_datetime( $item ) {
-		$date_time = Utils::get_args_option( 'datetime', $item );
-		$date_time = strtotime( $date_time );
-		$time      = date( 'jS M, y - h:i a', $date_time );
-
-		return sprintf( '<div class="date-time">%s</div>', $time );
-	}
-
 }

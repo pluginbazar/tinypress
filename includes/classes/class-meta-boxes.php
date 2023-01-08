@@ -8,59 +8,110 @@ use WPDK\Utils;
 
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists( 'TINYLINKS_Meta_boxes' ) ) {
+if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 	/**
-	 * Class TINYLINKS_Meta_boxes
+	 * Class TINYPRESS_Meta_boxes
 	 */
-	class TINYLINKS_Meta_boxes {
+	class TINYPRESS_Meta_boxes {
+
+		private $tinypress_metabox_main = 'tinypress_meta_main';
+		private $tinypress_metabox_side = 'tinypress_meta_side';
+		private $tinypress_default_slug;
+
 
 		/**
-		 * @var string
-		 */
-		private $prefix_tinylinks_metabox = 'tinylinks_url';
-
-		/**
-		 * TINYLINKS_Meta_boxes constructor.
+		 * TINYPRESS_Meta_boxes constructor.
 		 */
 		function __construct() {
-			$this->generate_tinylinks_meta_box();
+
+			$this->tinypress_default_slug = tinypress_create_url_slug();
+
+			$this->generate_tinypress_meta_box();
+
+			foreach ( get_post_types() as $post_type ) {
+				$this->generate_tinypress_meta_box_side( $post_type );
+			}
 
 			add_action( 'wpdk_settings_after_meta_navs', array( $this, 'add_plugin_promotional_navs' ) );
 		}
 
 
+		/**
+		 * Add promotional nav items
+		 *
+		 * @return void
+		 */
 		function add_plugin_promotional_navs() {
-//			if ( ! liquidpoll()->is_pro() ) {
-//				printf( '<li class="pbsettings-extra-nav get-pro"><a href="%s">%s</a></li>', LIQUIDPOLL_PLUGIN_LINK, esc_html__( 'Get Pro', 'wp-poll' ) );
-//			}
-
-			printf( '<li class="wpdk_settings-extra-nav "><a href="%s">%s</a></li>', '', esc_html__( 'Documentation', 'tinylinks' ) );
-			printf( '<li class="wpdk_settings-extra-nav "><a href="%s">%s</a></li>', '', esc_html__( 'Community', 'tinylinks' ) );
+			printf( '<li class="wpdk_settings-extra-nav "><a href="%s">%s</a></li>', TINYPRESS_LINK_DOC, esc_html__( 'Documentation', 'tinypress' ) );
+			printf( '<li class="wpdk_settings-extra-nav "><a href="%s">%s</a></li>', TINYPRESS_LINK_SUPPORT, esc_html__( 'Support', 'tinypress' ) );
 		}
 
 
-		function my_callback_function( $args ) {
+		/**
+		 * Generate side metabox
+		 *
+		 * @param $post_type
+		 *
+		 * @return void
+		 */
+		function generate_tinypress_meta_box_side( $post_type ) {
+
+			$prefix = $this->tinypress_metabox_side . '_' . $post_type;
+
+			WPDK_Settings::createMetabox( $prefix,
+				array(
+					'title'     => esc_html__( 'TinyPress', 'tinypress' ),
+					'post_type' => $post_type,
+					'data_type' => 'unserialize',
+					'nav'       => 'inline',
+					'context'   => 'side',
+					'priority'  => 'high',
+					'preview'   => true,
+				)
+			);
+
+			WPDK_Settings::createSection( $prefix,
+				array(
+					'title'  => esc_html__( 'TinyPress', 'tinypress' ),
+					'fields' => array(
+						array(
+							'id'       => 'tiny_slug',
+							'title'    => ' ',
+							'type'     => 'callback',
+							'function' => array( $this, 'render_field_tinypress_link' ),
+							'default'  => $this->tinypress_default_slug,
+						),
+					),
+				)
+			);
+		}
+
+
+		/**
+		 * Render short URL field
+		 *
+		 * @param $args
+		 *
+		 * @return void
+		 */
+		function render_field_tinypress_link( $args ) {
+
 			global $post;
 
-			$default_string = Utils::get_args_option( 'default', $args );
-			$short_string   = Utils::get_meta( '_short_string', $post->ID, $default_string );
-
-			printf( '<input type="hidden" name="tinylinks_url[_short_string]" value="%s">', $short_string );
-			printf( '<span class="short-url-wrap hint--top" aria-label="Click here to copy"> <span class="prefix">%s</span><span class="random">%s</span></span>', site_url( '/' ), $short_string );
-			printf( '<input type="hidden" id="short-url" name="custId" value="%s%s">', site_url( '/' ), $short_string );
+			echo tinypress_get_tiny_slug_copier( $post->ID, true, $args );
 		}
+
 
 		/**
 		 * Generate meta box for slider data
 		 */
-		function generate_tinylinks_meta_box() {
-			$url_slug = tinylinks_create_url_slug();
+		function generate_tinypress_meta_box() {
 
-			// Create a metabox for tinylinks.
-			WPDK_Settings::createMetabox( $this->prefix_tinylinks_metabox,
+			// Create a metabox for tinypress.
+			WPDK_Settings::createMetabox( $this->tinypress_metabox_main,
 				array(
-					'title'     => esc_html__( 'TinyPress', 'tinylinks' ),
-					'post_type' => 'tinylinks_url',
+					'title'     => esc_html__( 'TinyPress', 'tinypress' ),
+					'post_type' => 'tinypress_link',
 					'data_type' => 'unserialize',
 					'context'   => 'normal',
 					'nav'       => 'inline',
@@ -69,69 +120,60 @@ if ( ! class_exists( 'TINYLINKS_Meta_boxes' ) ) {
 			);
 
 			// General Settings section.
-			WPDK_Settings::createSection( $this->prefix_tinylinks_metabox,
+			WPDK_Settings::createSection( $this->tinypress_metabox_main,
 				array(
-					'title'  => esc_html__( 'General Settings', 'tinylinks' ),
+					'title'  => esc_html__( 'General Settings', 'tinypress' ),
 					'fields' => array(
 						array(
 							'id'       => 'post_title',
 							'type'     => 'text',
-							'title'    => esc_html__( 'Label', 'tinylinks' ),
+							'title'    => esc_html__( 'Label', 'tinypress' ),
 							'wp_type'  => 'post_title',
-							'subtitle' => esc_html__( 'For admin purpose only.', 'tinylinks' ),
+							'subtitle' => esc_html__( 'For admin purpose only.', 'tinypress' ),
 						),
 						array(
-							'id'    => '_target_url',
+							'id'    => 'target_url',
 							'type'  => 'text',
-							'title' => esc_html__( 'Target URL', 'tinylinks' ),
+							'title' => esc_html__( 'Target URL', 'tinypress' ),
 						),
 						array(
-							'id'       => '_short_string',
+							'id'       => 'tiny_slug',
 							'type'     => 'callback',
-							'function' => array( $this, 'my_callback_function' ),
-							'title'    => esc_html__( 'Short String', 'tinylinks' ),
-							'subtitle' => esc_html__( 'Short string of this URL.', 'tinylinks' ),
-							'default'  => $url_slug,
+							'function' => array( $this, 'render_field_tinypress_link' ),
+							'title'    => esc_html__( 'Short String', 'tinypress' ),
+							'subtitle' => esc_html__( 'Short string of this URL.', 'tinypress' ),
+							'default'  => $this->tinypress_default_slug,
 						),
 						array(
-							'id'          => '_short_string',
-							'type'        => 'text',
-							'title'       => esc_html__( 'Custom String', 'tinylinks' ),
-							'subtitle'    => esc_html__( 'Custom string of this URL.', 'tinylinks' ),
-							'placeholder' => esc_attr( 'ad34o' ),
-							'class'       => 'tinylinks-slug-custom',
-							'default'     => $url_slug,
-						),
-						array(
-							'id'          => '_redirection',
+							'id'          => 'redirection_method',
 							'type'        => 'select',
-							'title'       => esc_html__( 'Redirection', 'tinylinks' ),
+							'title'       => esc_html__( 'Redirection', 'tinypress' ),
 							'placeholder' => 'Select an option',
 							'options'     => array(
-								307 => '307 (Temporary)',
-								302 => '302 (Temporary)',
-								301 => '301 (Permanent)',
+								307 => esc_html__( '307 (Temporary)', 'tinypress' ),
+								302 => esc_html__( '302 (Temporary)', 'tinypress' ),
+								301 => esc_html__( '301 (Permanent)', 'tinypress' ),
 							),
 							'default'     => 302,
 						),
 						array(
-							'id'    => '_notes',
+							'id'    => 'tiny_notes',
 							'type'  => 'textarea',
-							'title' => esc_html__( 'Notes', 'tinylinks' ),
+							'title' => esc_html__( 'Notes', 'tinypress' ),
 						),
 					),
 				)
 			);
 
 			// General Settings section.
-			WPDK_Settings::createSection( $this->prefix_tinylinks_metabox,
+			WPDK_Settings::createSection( $this->tinypress_metabox_main,
 				array(
-					'title'  => esc_html__( 'Analytics', 'tinylinks' ),
+					'title'  => esc_html__( 'Analytics', 'tinypress' ),
 					'fields' => array(
 						array(
 							'id'    => '_notesadsd',
 							'type'  => 'textarea',
-							'title' => esc_html__( 'Notes', 'tinylinks' ),
+							'title' => esc_html__( 'Notes', 'tinypress' ),
 						),
 					),
 				)
@@ -140,4 +182,4 @@ if ( ! class_exists( 'TINYLINKS_Meta_boxes' ) ) {
 	}
 }
 
-tinylinks()->tinylinks_metaboxes = new TINYLINKS_Meta_boxes();
+tinypress()->tinypress_metaboxes = new TINYPRESS_Meta_boxes();
