@@ -161,7 +161,7 @@ function pb_sdk_init_tinypress() {
 		include_once ABSPATH . '/wp-admin/includes/plugin.php';
 	}
 
-	if ( ! class_exists( 'Pluginbazar\Client' ) ) {
+	if ( ! class_exists( 'WPDK\Client' ) ) {
 		require_once( plugin_dir_path( __FILE__ ) . 'includes/wpdk/classes/class-client.php' );
 	}
 

@@ -76,12 +76,12 @@ if ( ! function_exists( 'tinypress_get_ip_address' ) ) {
 	 */
 
 	function tinypress_get_ip_address() {
-		if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
-			$ip = $_SERVER['HTTP_CLIENT_IP'];
-		} elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
-			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+		if ( ! empty( sanitize_text_field( $_SERVER['HTTP_CLIENT_IP'] ) ) ) {
+			$ip = sanitize_text_field( $_SERVER['HTTP_CLIENT_IP'] );
+		} elseif ( ! empty( sanitize_text_field( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) ) {
+			$ip = sanitize_text_field( $_SERVER['HTTP_X_FORWARDED_FOR'] );
 		} else {
-			$ip = $_SERVER['REMOTE_ADDR'];
+			$ip = sanitize_text_field( $_SERVER['REMOTE_ADDR'] );
 		}
 
 		return $ip;
