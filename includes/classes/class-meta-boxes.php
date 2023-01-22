@@ -31,19 +31,6 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 			foreach ( get_post_types() as $post_type ) {
 				$this->generate_tinypress_meta_box_side( $post_type );
 			}
-
-			add_action( 'wpdk_settings_after_meta_navs', array( $this, 'add_plugin_promotional_navs' ) );
-		}
-
-
-		/**
-		 * Add promotional nav items
-		 *
-		 * @return void
-		 */
-		function add_plugin_promotional_navs() {
-			printf( '<li class="wpdk_settings-extra-nav "><a href="%s">%s</a></li>', TINYPRESS_LINK_DOC, esc_html__( 'Documentation', 'tinypress' ) );
-			printf( '<li class="wpdk_settings-extra-nav "><a href="%s">%s</a></li>', TINYPRESS_LINK_SUPPORT, esc_html__( 'Support', 'tinypress' ) );
 		}
 
 
@@ -122,14 +109,17 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 			// General Settings section.
 			WPDK_Settings::createSection( $this->tinypress_metabox_main,
 				array(
-					'title'  => esc_html__( 'General Settings', 'tinypress' ),
+					'title'  => esc_html__( 'General', 'tinypress' ),
 					'fields' => array(
 						array(
-							'id'       => 'post_title',
-							'type'     => 'text',
-							'title'    => esc_html__( 'Label', 'tinypress' ),
-							'wp_type'  => 'post_title',
-							'subtitle' => esc_html__( 'For admin purpose only.', 'tinypress' ),
+							'id'         => 'post_title',
+							'type'       => 'text',
+							'title'      => esc_html__( 'Label', 'tinypress' ),
+							'wp_type'    => 'post_title',
+							'subtitle'   => esc_html__( 'For admin purpose only.', 'tinypress' ),
+							'attributes' => array(
+								'autocomplete' => 'off',
+							),
 						),
 						array(
 							'id'    => 'target_url',
@@ -145,6 +135,20 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 							'default'  => $this->tinypress_default_slug,
 						),
 						array(
+							'id'    => 'tiny_notes',
+							'type'  => 'textarea',
+							'title' => esc_html__( 'Notes', 'tinypress' ),
+						),
+					),
+				)
+			);
+
+			// Redirection Settings section.
+			WPDK_Settings::createSection( $this->tinypress_metabox_main,
+				array(
+					'title'  => esc_html__( 'Redirection', 'tinypress' ),
+					'fields' => array(
+						array(
 							'id'          => 'redirection_method',
 							'type'        => 'select',
 							'title'       => esc_html__( 'Redirection', 'tinypress' ),
@@ -157,9 +161,25 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 							'default'     => 302,
 						),
 						array(
-							'id'    => 'tiny_notes',
-							'type'  => 'textarea',
-							'title' => esc_html__( 'Notes', 'tinypress' ),
+							'id'       => 'redirection_sponsored',
+							'type'     => 'switcher',
+							'title'    => esc_html__( 'Sponsored', 'tinypress' ),
+							'subtitle' => esc_html__( 'Add sponsored attribute.', 'tinypress' ),
+							'label'    => esc_html__( 'Recommended for affiliate links.', 'tinypress' ),
+						),
+						array(
+							'id'       => 'redirection_no_follow',
+							'type'     => 'switcher',
+							'title'    => esc_html__( 'No Follow', 'tinypress' ),
+							'subtitle' => esc_html__( 'Add no follow attribute.', 'tinypress' ),
+							'label'    => esc_html__( 'We recommended to use this.', 'tinypress' ),
+							'default'  => true,
+						),
+						array(
+							'id'      => 'redirection_parameter_forwarding',
+							'type'    => 'switcher',
+							'title'   => esc_html__( 'Parameter Forwarding', 'tinypress' ),
+							'label'   => esc_html__( 'All the parameters will pass to the target link.', 'tinypress' ),
 						),
 					),
 				)

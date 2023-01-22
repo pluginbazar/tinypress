@@ -94,11 +94,12 @@ function tinypress_get_tiny_slug_copier( $post_id, $display_input_field = false,
 	global $post;
 
 	$default_string = Utils::get_args_option( 'default', $args );
+	$wrapper_class  = Utils::get_args_option( 'wrapper_class', $args );
 	$tiny_slug      = Utils::get_meta( 'tiny_slug', $post_id, $default_string );
 
 	ob_start();
 
-	echo '<div class="tiny-slug-wrap">';
+	echo '<div class="tiny-slug-wrap ' . esc_attr( $wrapper_class ) . '">';
 
 	echo '<div class="tiny-slug-preview hint--top" aria-label="' . tinypress()::$text_hint . '" data-text-copied="' . tinypress()::$text_copied . '">';
 	echo '<span class="prefix">' . esc_url( site_url( '/' ) ) . '</span>';
@@ -106,7 +107,7 @@ function tinypress_get_tiny_slug_copier( $post_id, $display_input_field = false,
 	echo '</div>';
 
 	if ( $display_input_field ) {
-		echo '<div class="tiny-slug-field">';
+		echo '<div class="tinypress-slug-field">';
 		if ( 'tinypress_link' == $post->post_type ) {
 			echo '<input type="text" class="tinypress-tiny-slug" name="tinypress_meta_main[tiny_slug]" value="' . esc_attr( $tiny_slug ) . '" placeholder="ad34o">';
 		} else {

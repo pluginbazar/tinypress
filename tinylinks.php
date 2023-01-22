@@ -105,6 +105,7 @@ if ( ! class_exists( 'TINYPRESS_Main' ) ) {
 			require_once TINYPRESS_PLUGIN_DIR . 'includes/functions.php';
 			require_once TINYPRESS_PLUGIN_DIR . 'includes/classes/class-meta-boxes.php';
 			require_once TINYPRESS_PLUGIN_DIR . 'includes/classes/class-columns-link.php';
+			require_once TINYPRESS_PLUGIN_DIR . 'includes/classes/class-redirection.php';
 		}
 
 

@@ -53,11 +53,11 @@ class TINYPRESS_Column_link {
 		switch ( $column_id ) {
 
 			case 'link-title':
-				echo '<div class="link-title">' . get_the_title( $post_id ) . '</div>';
+				echo '<strong><a class="row-title" href="' . esc_url( get_edit_post_link( $post_id ) ) . '">' . get_the_title( $post_id ) . '</a></strong>';
 				break;
 
 			case 'short-link':
-				echo tinypress_get_tiny_slug_copier( $post_id );
+				echo tinypress_get_tiny_slug_copier( $post_id, false, array( 'wrapper_class' => 'mini' ) );
 				break;
 
 			case 'click-count':
@@ -66,15 +66,15 @@ class TINYPRESS_Column_link {
 
 				$click_count = $wpdb->get_var( "SELECT COUNT(*) FROM " . TINYPRESS_TABLE_REPORTS . " WHERE post_id = $post_id" );
 
-				echo '<div class="click-count">' . sprintf( esc_html__( '%s times', 'tinypress' ), $click_count ) . '</div>';
+				echo '<div class="click-count">' . sprintf( esc_html__( 'Clicked %s times', 'tinypress' ), $click_count ) . '</div>';
 				break;
 
 			case 'link-actions':
 
 				echo '<div class="link-actions">';
 
-				echo '<div class="action action-edit">' . esc_html__( 'Edit', 'tinypress' ) . '</div>';
-				echo '<div class="action action-delete">' . esc_html__( 'Delete', 'tinypress' ) . '</div>';
+				echo '<a href="' . esc_url( get_edit_post_link( $post_id ) ) . '" class="action action-edit">' . esc_html__( 'Edit', 'tinypress' ) . '</a>';
+				echo '<a href="' . esc_url( get_delete_post_link( $post_id ) ) . '" class="action action-delete">' . esc_html__( 'Delete', 'tinypress' ) . '</a>';
 
 				echo '</div>';
 

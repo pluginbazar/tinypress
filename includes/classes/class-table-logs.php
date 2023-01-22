@@ -9,9 +9,9 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 }
 
 /**
- * Extending class
+ * Logs Class
  */
-class User_Reports_Table extends WP_List_Table {
+class WP_List_Table_Logs extends WP_List_Table {
 
 	private int $items_per_page = 20;
 
@@ -107,7 +107,7 @@ class User_Reports_Table extends WP_List_Table {
 	 * @return string
 	 */
 	function column_short_link( $item ) {
-		return tinypress_get_tiny_slug_copier( Utils::get_args_option( 'post_id', $item ) );
+		return tinypress_get_tiny_slug_copier( Utils::get_args_option( 'post_id', $item ), false, array( 'wrapper_class' => 'mini' ) );
 	}
 
 

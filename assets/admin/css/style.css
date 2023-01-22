@@ -2,8 +2,12 @@
 /* CSS Document */
 
 :root {
-    --wpdk_settings-primary-color: #774ea9;
-    --wpdk_settings-red-color: #ff6a5f;
+    --tinypress-color-primary: #774ea9;
+    --tinypress-color-red: #f44336;
+    --tinypress-color-green: #009688;
+
+    --wpdk_settings-primary-color: var(--tinypress-color-primary);
+    --wpdk_settings-red-color: var(--tinypress-color-red);
 }
 
 
@@ -61,14 +65,17 @@ body.post-type-tinypress_link #submitdiv #major-publishing-actions .submitdelete
 }
 
 
-body.post-type-tinypress_link .wpdk_settings-field-text input {
+body.post-type-tinypress_link .wpdk_settings-field-text input,
+body.post-type-tinypress_link .wpdk_settings-field-textarea textarea {
     padding: 10px 8px;
     border: 1px solid #eee;
     transition: 0.3s;
 }
 
 body.post-type-tinypress_link .wpdk_settings-field-text input:focus,
-body.post-type-tinypress_link .wpdk_settings-field-text input:focus:active {
+body.post-type-tinypress_link .wpdk_settings-field-text input:focus:active,
+body.post-type-tinypress_link .wpdk_settings-field-textarea textarea:focus,
+body.post-type-tinypress_link .wpdk_settings-field-textarea textarea:focus:active {
     border-color: var(--wpdk_settings-primary-color);
     box-shadow: none;
     outline: none;
@@ -107,6 +114,13 @@ table.tinypress_link_page_tinypress-reports th#details {
     overflow-wrap: anywhere;
 }
 
+.tiny-slug-wrap.mini .tiny-slug-preview {
+    padding: 3px 8px;
+    font-size: 14px;
+    line-height: 24px;
+    width: auto;
+}
+
 .tiny-slug-wrap .tiny-slug-preview.preview-mini {
     width: auto;
     padding: 4px 8px;
@@ -118,21 +132,38 @@ table.tinypress_link_page_tinypress-reports th#details {
     float: left;
 }
 
-.tiny-slug-wrap .tiny-slug-field {
+.tiny-slug-wrap .tinypress-slug-field {
     margin-top: 10px;
     width: 100%;
 }
 
-.tiny-slug-wrap .tiny-slug-field input[type=text] {
+.tiny-slug-wrap .tinypress-slug-field input[type=text],
+.tiny-slug-wrap .tinypress-slug-field textarea {
     padding: 10px 8px;
     border: 1px solid #eee;
     transition: 0.3s;
     width: 100px;
 }
 
-.tiny-slug-wrap .tiny-slug-field input[type=text]:focus,
-.tiny-slug-wrap .tiny-slug-field input[type=text]:focus:active {
+.tiny-slug-wrap .tinypress-slug-field input[type=text]:focus,
+.tiny-slug-wrap .tinypress-slug-field input[type=text]:focus:active,
+.tiny-slug-wrap .tinypress-slug-field textarea:focus,
+.tiny-slug-wrap .tinypress-slug-field textarea:focus:active {
     border-color: var(--wpdk_settings-primary-color);
     box-shadow: none;
     outline: none;
+}
+
+
+.link-actions a.action {
+    display: inline-block;
+    background: var(--tinypress-color-green);
+    color: #fff;
+    padding: 3px 8px;
+    margin-right: 5px;
+    border-radius: 3px;
+}
+
+.link-actions a.action.action-delete {
+    background: var(--tinypress-color-red);
 }
