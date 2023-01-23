@@ -31,6 +31,41 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 			foreach ( get_post_types() as $post_type ) {
 				$this->generate_tinypress_meta_box_side( $post_type );
 			}
+
+			add_action( 'add_meta_boxes', array( $this, 'add_side_meta_box' ), 0 );
+			add_action( 'WPDK_Settings/meta_section/analytics', array( $this, 'render_analytics' ) );
+		}
+
+
+		/**
+		 * Render analytics section
+		 *
+		 * @return void
+		 */
+		function render_analytics() {
+			include TINYPRESS_PLUGIN_DIR . 'templates/admin/analytics.php';
+		}
+
+
+		/**
+		 * Render Side Meta Box
+		 *
+		 * @return void
+		 */
+		function render_side_box() {
+			echo '<div class="tinypress-meta-side">';
+			include TINYPRESS_PLUGIN_DIR . 'templates/admin/qr-code.php';
+			echo '</div>';
+		}
+
+
+		/**
+		 * Add Side Meta Box
+		 *
+		 * @return void
+		 */
+		function add_side_meta_box() {
+			add_meta_box( 'tinypress-meta-side', esc_html__( 'Side', 'tinypress' ), array( $this, 'render_side_box' ), 'tinypress_link', 'side', 'core' );
 		}
 
 
@@ -135,6 +170,17 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 							'default'  => $this->tinypress_default_slug,
 						),
 						array(
+							'id'         => 'link_status',
+							'type'       => 'switcher',
+							'title'      => esc_html__( 'Status', 'tinypress' ),
+							'subtitle'   => esc_html__( 'Disable the link instantly.', 'tinypress' ),
+							'label'      => esc_html__( 'After disabling the link will not active but the settings will be reserved.', 'tinypress' ),
+							'text_on'    => esc_html__( 'Enable', 'tinypress' ),
+							'text_off'   => esc_html__( 'Disable', 'tinypress' ),
+							'default'    => true,
+							'text_width' => 100,
+						),
+						array(
 							'id'    => 'tiny_notes',
 							'type'  => 'textarea',
 							'title' => esc_html__( 'Notes', 'tinypress' ),
@@ -151,8 +197,9 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 						array(
 							'id'          => 'redirection_method',
 							'type'        => 'select',
-							'title'       => esc_html__( 'Redirection', 'tinypress' ),
-							'placeholder' => 'Select an option',
+							'title'       => esc_html__( 'Redirection Method', 'tinypress' ),
+							'subtitle'    => esc_html__( 'Select redirection method', 'tinypress' ),
+							'placeholder' => 'Select a method',
 							'options'     => array(
 								307 => esc_html__( '307 (Temporary)', 'tinypress' ),
 								302 => esc_html__( '302 (Temporary)', 'tinypress' ),
@@ -176,26 +223,69 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 							'default'  => true,
 						),
 						array(
-							'id'      => 'redirection_parameter_forwarding',
-							'type'    => 'switcher',
-							'title'   => esc_html__( 'Parameter Forwarding', 'tinypress' ),
-							'label'   => esc_html__( 'All the parameters will pass to the target link.', 'tinypress' ),
+							'id'    => 'redirection_parameter_forwarding',
+							'type'  => 'switcher',
+							'title' => esc_html__( 'Parameter Forwarding', 'tinypress' ),
+							'label' => esc_html__( 'All the parameters will pass to the target link.', 'tinypress' ),
 						),
 					),
 				)
 			);
 
-			// General Settings section.
+			// Security Settings section.
 			WPDK_Settings::createSection( $this->tinypress_metabox_main,
 				array(
-					'title'  => esc_html__( 'Analytics', 'tinypress' ),
+					'title'  => esc_html__( 'Security', 'tinypress' ),
 					'fields' => array(
 						array(
-							'id'    => '_notesadsd',
-							'type'  => 'textarea',
-							'title' => esc_html__( 'Notes', 'tinypress' ),
+							'id'       => 'password_protection',
+							'type'     => 'switcher',
+							'title'    => esc_html__( 'Password Protection', 'tinypress' ),
+							'subtitle' => esc_html__( 'Secure your link.', 'tinypress' ),
+							'label'    => esc_html__( 'Users must enter the password to redirect to the target link.', 'tinypress' ),
+						),
+						array(
+							'id'          => 'link_password',
+							'type'        => 'text',
+							'title'       => esc_html__( 'Password', 'tinypress' ),
+							'subtitle'    => esc_html__( 'Share this with users.', 'tinypress' ),
+							'desc'        => esc_html__( 'Passwords are case sensitive.', 'tinypress' ),
+							'placeholder' => esc_html__( '********', 'tinypress' ),
+							'attributes'  => array(
+								'minlength' => 6,
+							),
+							'dependency'  => array( 'password_protection', '==', '1' ),
+						),
+						array(
+							'id'       => 'enable_expiration',
+							'type'     => 'switcher',
+							'title'    => esc_html__( 'Enable Expiration', 'tinypress' ),
+							'subtitle' => esc_html__( 'Expire automatically.', 'tinypress' ),
+							'label'    => esc_html__( 'Users will not able to redirect to the target URL once expire.', 'tinypress' ),
+						),
+						array(
+							'id'         => 'expiration_date',
+							'type'       => 'datetime',
+							'title'      => esc_html__( 'Expiration Date', 'tinypress' ),
+							'subtitle'   => esc_html__( 'It will automatically expire.', 'tinypress' ),
+							'settings'   => array(
+								'dateFormat'      => 'd-m-Y',
+								'allowInput'      => false,
+								'minuteIncrement' => 1,
+								'minDate'         => 'today',
+							),
+							'dependency' => array( 'enable_expiration', '==', '1' ),
 						),
 					),
+				)
+			);
+
+			// Analytics section.
+			WPDK_Settings::createSection( $this->tinypress_metabox_main,
+				array(
+					'id'       => 'analytics',
+					'external' => true,
+					'title'    => esc_html__( 'Analytics', 'tinypress' ),
 				)
 			);
 		}

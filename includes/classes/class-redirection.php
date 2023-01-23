@@ -21,7 +21,7 @@ if ( ! class_exists( 'TINYPRESS_Redirection' ) ) {
 		 * TINYPRESS_Redirection constructor.
 		 */
 		function __construct() {
-			add_action( 'template_redirect', array( $this, 'redirect_url' ) );
+			add_action( 'template_redirect', array( $this, 'redirection_controller' ) );
 		}
 
 
@@ -41,10 +41,18 @@ if ( ! class_exists( 'TINYPRESS_Redirection' ) ) {
 			$sponsored            = Utils::get_meta( 'redirection_sponsored', $link_id );
 			$parameter_forwarding = Utils::get_meta( 'redirection_parameter_forwarding', $link_id );
 
-			if ( '1' == $parameter_forwarding && ! empty( $parameters = wp_unslash( $_GET ) ) ) {
-				$target_url = $target_url . '?' . http_build_query( $parameters );
-			}
+			if ( '1' == $parameter_forwarding ) {
 
+				$parameters = wp_unslash( $_GET );
+
+				if ( isset( $parameters['password'] ) ) {
+					unset( $parameters['password'] );
+				}
+
+				if ( ! empty( $parameters ) ) {
+					$target_url = $target_url . '?' . http_build_query( $parameters );
+				}
+			}
 
 			if ( '1' == $no_follow ) {
 				$tags[] = 'noindex';
@@ -116,26 +124,123 @@ if ( ! class_exists( 'TINYPRESS_Redirection' ) ) {
 
 
 		/**
+		 * Check security protocols for the redirection
+		 *
+		 * @param $link_id
+		 *
+		 * @return void
+		 */
+		function check_protection( $link_id ) {
+
+			$current_url          = site_url( $this->get_request_uri() );
+			$password_protection  = Utils::get_meta( 'password_protection', $link_id );
+			$link_password        = Utils::get_meta( 'link_password', $link_id );
+			$expiration_date      = Utils::get_meta( 'expiration_date', $link_id );
+			$link_status          = Utils::get_meta( 'link_status', $link_id );
+			$password_check_nonce = wp_create_nonce( 'password_check' );
+
+			if ( parse_url( $current_url, PHP_URL_QUERY ) ) {
+				$password_checked_url = $current_url . '&password=' . $password_check_nonce;
+			} else {
+				$password_checked_url = $current_url . '?password=' . $password_check_nonce;
+			}
+
+
+			// Check if the link status is enabled
+			if ( '1' != $link_status ) {
+				wp_die( esc_html__( 'This link is not active.', 'tinypress' ) );
+			}
+
+			// Check if the link is expired or not
+			if ( ! empty( $expiration_date ) ) {
+				$expiration_date = $expiration_date . ' 23:59:59';
+
+				if ( current_time( 'd-m-Y G:i:s' ) > $expiration_date ) {
+					wp_die( esc_html__( 'This link is expired.', 'tinypress' ) );
+				}
+			}
+
+
+			// Check the password protection for this link
+			if ( '1' != $password_protection ) {
+				$this->redirect_url( $link_id );
+			}
+
+			?>
+            <script>
+                if ('<?php echo esc_attr( $link_password ); ?>' === prompt("Password:")) {
+                    window.location.href = '<?php echo esc_url( $password_checked_url ); ?>';
+                } else {
+                    window.location.href = '<?php echo esc_url( $current_url ); ?>';
+                }
+            </script>
+			<?php
+
+
+			$password_nonce = isset( $_GET['password'] ) ? sanitize_text_field( $_GET['password'] ) : '';
+
+			if ( wp_verify_nonce( $password_nonce, 'password_check' ) ) {
+				$this->redirect_url( $link_id );
+			}
+
+			die();
+		}
+
+
+		/**
 		 * Redirect to target URL
 		 *
 		 * @return void
 		 */
-		function redirect_url() {
+		function redirect_url( $link_id ) {
 
-			$request_uri = isset( $_SERVER ['REQUEST_URI'] ) ? sanitize_text_field( $_SERVER ['REQUEST_URI'] ) : '';
-			$_tiny_slug  = trim( $request_uri, '/' );
-			$_tiny_slug  = explode( '?', $_tiny_slug );
-			$tiny_slug   = $_tiny_slug[0] ?? '';
-			$link_id     = tinypress()->tiny_slug_to_post_id( $tiny_slug );
+			// Track redirection
+			$this->track_redirection( $link_id );
 
-			if ( is_404() && ! is_page( $tiny_slug ) ) {
+			// Do the redirection
+			$this->do_redirection( $link_id );
+		}
 
-				// Track redirection
-				$this->track_redirection( $link_id );
 
-				// Do the redirection
-				$this->do_redirection( $link_id );
+		/**
+		 * Redirection Controller
+		 *
+		 * @return void
+		 */
+		public function redirection_controller() {
+
+			if ( is_single() || is_archive() ) {
+				return;
 			}
+
+			$link_prefix      = Utils::get_option( 'tinypress_link_prefix' );
+			$link_prefix_slug = Utils::get_option( 'tinypress_link_prefix_slug', 'go' );
+
+			$tiny_slug_1 = trim( $this->get_request_uri(), '/' );
+			$tiny_slug_2 = ( '1' == $link_prefix ) ? str_replace( $link_prefix_slug . '/', '', $tiny_slug_1 ) : $tiny_slug_1;
+			$tiny_slug_3 = explode( '?', $tiny_slug_2 );
+			$tiny_slug_4 = $tiny_slug_3[0] ?? '';
+
+			$link_id = tinypress()->tiny_slug_to_post_id( $tiny_slug_4 );
+
+			if ( ! empty( $link_id ) && is_404() && ! is_page( $tiny_slug_4 ) ) {
+
+				if ( '1' == $link_prefix && strpos( $tiny_slug_1, $link_prefix_slug ) === false ) {
+					wp_die( esc_html__( 'This link is not containing the right prefix slug.', 'tinypress' ) );
+				}
+
+				$this->check_protection( $link_id );
+			}
+		}
+
+
+		/**
+		 * Return request URI from SERVER
+		 *
+		 * @return string
+		 */
+		protected function get_request_uri() {
+			return isset( $_SERVER ['REQUEST_URI'] ) ? sanitize_text_field( $_SERVER ['REQUEST_URI'] ) : '';
 		}
 
 

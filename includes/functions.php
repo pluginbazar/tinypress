@@ -89,34 +89,58 @@ if ( ! function_exists( 'tinypress_get_ip_address' ) ) {
 }
 
 
-function tinypress_get_tiny_slug_copier( $post_id, $display_input_field = false, $args = array() ) {
+if ( ! function_exists( 'tinypress_get_tiny_slug_copier' ) ) {
+	/**
+	 * TinyPress get tiny slug copier
+	 *
+	 * @param $post_id
+	 * @param $display_input_field
+	 * @param $args
+	 *
+	 * @return false|string
+	 */
+	function tinypress_get_tiny_slug_copier( $post_id, $display_input_field = false, $args = array() ) {
 
-	global $post;
+		global $post;
 
-	$default_string = Utils::get_args_option( 'default', $args );
-	$wrapper_class  = Utils::get_args_option( 'wrapper_class', $args );
-	$tiny_slug      = Utils::get_meta( 'tiny_slug', $post_id, $default_string );
+		$default_string   = Utils::get_args_option( 'default', $args );
+		$wrapper_class    = Utils::get_args_option( 'wrapper_class', $args );
+		$tiny_slug        = Utils::get_meta( 'tiny_slug', $post_id, $default_string );
+		$link_prefix      = Utils::get_option( 'tinypress_link_prefix' );
+		$link_prefix_slug = '';
 
-	ob_start();
-
-	echo '<div class="tiny-slug-wrap ' . esc_attr( $wrapper_class ) . '">';
-
-	echo '<div class="tiny-slug-preview hint--top" aria-label="' . tinypress()::$text_hint . '" data-text-copied="' . tinypress()::$text_copied . '">';
-	echo '<span class="prefix">' . esc_url( site_url( '/' ) ) . '</span>';
-	echo '<span class="tiny-slug"> ' . esc_attr( $tiny_slug ) . ' </span>';
-	echo '</div>';
-
-	if ( $display_input_field ) {
-		echo '<div class="tinypress-slug-field">';
-		if ( 'tinypress_link' == $post->post_type ) {
-			echo '<input type="text" class="tinypress-tiny-slug" name="tinypress_meta_main[tiny_slug]" value="' . esc_attr( $tiny_slug ) . '" placeholder="ad34o">';
-		} else {
-			echo '<input type="text" class="tinypress-tiny-slug" name="tinypress_meta_side_' . $post->post_type . '[tiny_slug]" value="' . esc_attr( $tiny_slug ) . '" placeholder="ad34o">';
+		if ( '1' == $link_prefix ) {
+			$link_prefix_slug = Utils::get_option( 'tinypress_link_prefix_slug', 'go' );
 		}
+
+		ob_start();
+
+		echo '<div class="tiny-slug-wrap ' . esc_attr( $wrapper_class ) . '">';
+
+		echo '<div class="tiny-slug-preview hint--top" aria-label="' . tinypress()::$text_hint . '" data-text-copied="' . tinypress()::$text_copied . '">';
+		echo '<span class="prefix">' . esc_url( site_url( '/' . $link_prefix_slug . '/' ) ) . '</span>';
+		echo '<span class="tiny-slug"> ' . esc_attr( $tiny_slug ) . ' </span>';
 		echo '</div>';
+
+		if ( $display_input_field ) {
+
+			echo '<div class="tinypress-slug-field">';
+			if ( 'tinypress_link' == $post->post_type ) {
+				echo '<input type="text" class="tinypress-tiny-slug" name="tinypress_meta_main[tiny_slug]" value="' . esc_attr( $tiny_slug ) . '" placeholder="ad34o">';
+			} else {
+				echo '<input type="text" class="tinypress-tiny-slug" name="tinypress_meta_side_' . $post->post_type . '[tiny_slug]" value="' . esc_attr( $tiny_slug ) . '" placeholder="ad34o">';
+			}
+			echo '</div>';
+		}
+
+		echo '</div>';
+
+		return ob_get_clean();
 	}
-
-	echo '</div>';
-
-	return ob_get_clean();
 }
+
+
+
+
+
+

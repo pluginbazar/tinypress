@@ -105,6 +105,7 @@ if ( ! class_exists( 'TINYPRESS_Main' ) ) {
 			require_once TINYPRESS_PLUGIN_DIR . 'includes/functions.php';
 			require_once TINYPRESS_PLUGIN_DIR . 'includes/classes/class-meta-boxes.php';
 			require_once TINYPRESS_PLUGIN_DIR . 'includes/classes/class-columns-link.php';
+			require_once TINYPRESS_PLUGIN_DIR . 'includes/classes/class-settings.php';
 			require_once TINYPRESS_PLUGIN_DIR . 'includes/classes/class-redirection.php';
 		}
 
@@ -126,6 +127,8 @@ if ( ! class_exists( 'TINYPRESS_Main' ) ) {
 		 * Load Admin Scripts
 		 */
 		function admin_scripts() {
+
+			wp_enqueue_script( 'qrcode', plugins_url( '/assets/admin/js/qrcode.min.js', __FILE__ ), array( 'jquery' ), self::$_script_version );
 			wp_enqueue_script( 'tinypress', plugins_url( '/assets/admin/js/scripts.js', __FILE__ ), array( 'jquery' ), self::$_script_version );
 			wp_localize_script( 'tinypress', 'tinypress', $this->localize_scripts() );
 

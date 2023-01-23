@@ -80,14 +80,14 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 				)
 			);
 
-			$tinypress_wpdk->utils()->register_taxonomy( 'tinypress_link_tags', 'tinypress_link',
-				apply_filters( 'TINYPRESS/Filters/link_tags_args',
-					array(
-						'singular' => esc_html__( 'Tag', 'tinypress' ),
-						'plural'   => esc_html__( 'Tags', 'tinypress' ),
-					)
-				)
-			);
+//			$tinypress_wpdk->utils()->register_taxonomy( 'tinypress_link_tags', 'tinypress_link',
+//				apply_filters( 'TINYPRESS/Filters/link_tags_args',
+//					array(
+//						'singular' => esc_html__( 'Tag', 'tinypress' ),
+//						'plural'   => esc_html__( 'Tags', 'tinypress' ),
+//					)
+//				)
+//			);
 		}
 
 
