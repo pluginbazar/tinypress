@@ -283,3 +283,7 @@ table.tinypress_link_page_tinypress-reports th#details {
 .link-actions a.action.action-delete {
     background: var(--tinypress-color-red);
 }
+
+.wpdk_settings-section .tinypress-meta-analytics #chart {
+    padding-top: 20px;
+}
