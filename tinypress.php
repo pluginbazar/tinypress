@@ -128,6 +128,8 @@ if ( ! class_exists( 'TINYPRESS_Main' ) ) {
 		 */
 		function admin_scripts() {
 
+			wp_enqueue_script( 'apexcharts', plugins_url( '/assets/admin/js/apexcharts.js', __FILE__ ), array( 'jquery' ), self::$_script_version );
+
 			wp_enqueue_script( 'qrcode', plugins_url( '/assets/admin/js/qrcode.min.js', __FILE__ ), array( 'jquery' ), self::$_script_version );
 			wp_enqueue_script( 'tinypress', plugins_url( '/assets/admin/js/scripts.js', __FILE__ ), array( 'jquery' ), self::$_script_version );
 			wp_localize_script( 'tinypress', 'tinypress', $this->localize_scripts() );
