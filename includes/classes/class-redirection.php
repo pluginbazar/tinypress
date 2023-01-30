@@ -34,9 +34,15 @@ if ( ! class_exists( 'TINYPRESS_Redirection' ) ) {
 		 */
 		function do_redirection( $link_id ) {
 
-			$tags                 = array();
-			$target_url           = Utils::get_meta( 'target_url', $link_id );
+			$tags       = array();
+			$target_url = Utils::get_meta( 'target_url', $link_id );
+
+			if ( empty( $target_url ) && 'tinypress_link' != get_post_type( $link_id ) ) {
+				$target_url = get_permalink( $link_id );
+			}
+
 			$redirection_method   = Utils::get_meta( 'redirection_method', $link_id );
+			$redirection_method   = $redirection_method ? $redirection_method : 302;
 			$no_follow            = Utils::get_meta( 'redirection_no_follow', $link_id );
 			$sponsored            = Utils::get_meta( 'redirection_sponsored', $link_id );
 			$parameter_forwarding = Utils::get_meta( 'redirection_parameter_forwarding', $link_id );
@@ -146,17 +152,19 @@ if ( ! class_exists( 'TINYPRESS_Redirection' ) ) {
 			}
 
 
-			// Check if the link status is enabled
-			if ( '1' != $link_status ) {
-				wp_die( esc_html__( 'This link is not active.', 'tinypress' ) );
-			}
+			if ( 'tinypress_link' == get_post_type( $link_id ) ) {
+				// Check if the link status is enabled
+				if ( '1' != $link_status ) {
+					wp_die( esc_html__( 'This link is not active.', 'tinypress' ) );
+				}
 
-			// Check if the link is expired or not
-			if ( ! empty( $expiration_date ) ) {
-				$expiration_date = $expiration_date . ' 23:59:59';
+				// Check if the link is expired or not
+				if ( ! empty( $expiration_date ) ) {
+					$expiration_date = $expiration_date . ' 23:59:59';
 
-				if ( current_time( 'd-m-Y G:i:s' ) > $expiration_date ) {
-					wp_die( esc_html__( 'This link is expired.', 'tinypress' ) );
+					if ( current_time( 'd-m-Y G:i:s' ) > $expiration_date ) {
+						wp_die( esc_html__( 'This link is expired.', 'tinypress' ) );
+					}
 				}
 			}
 

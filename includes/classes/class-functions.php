@@ -36,15 +36,21 @@ if ( ! class_exists( 'TINYPRESS_Functions' ) ) {
 		 * @return false|int|WP_Post
 		 */
 		function tiny_slug_to_post_id( $slug ) {
+			global $wpdb;
 
 			$all_posts = get_posts( array(
 				'post_type'  => 'tinypress_link',
 				'meta_key'   => 'tiny_slug',
 				'meta_value' => $slug,
 			) );
-			$post_ids  = array_map( function ( WP_Post $post ) {
+
+			$post_ids = array_map( function ( WP_Post $post ) {
 				return $post->ID;
 			}, $all_posts );
+
+			if ( empty( $post_ids ) ) {
+				$post_ids[] = (int) $wpdb->get_var( $wpdb->prepare( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_value like %s", $slug ) );
+			}
 
 			return reset( $post_ids );
 		}
