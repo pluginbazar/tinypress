@@ -132,9 +132,11 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 		function get_role_lists() {
 			$role  = array();
 			$roles = wp_roles()->roles;
+
 			foreach ( $roles as $key => $val ) {
-				$role[ $key ] = $key;
+				$role[ $key ] = $val['name'] ?? $key;
 			}
+
 			return $role;
 		}
 
@@ -292,30 +294,32 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 							'dependency' => array( 'enable_expiration', '==', '1' ),
 						),
 						array(
-							'id'       => 'tinypress_role_view',
-							'type'     => 'checkbox',
-							'title'    => esc_html__( 'Who Can View Links?', 'tinypress' ),
-							'inline'     => true,
-							'options'  =>$this->get_role_lists(),
-						),array(
-							'id'       => 'tinypress_role_create',
-							'type'     => 'checkbox',
-							'title'    => esc_html__( 'Who Can Create/Edit Links', 'tinypress' ),
-							'inline'     => true,
-							'options'  =>$this->get_role_lists(),
-						),array(
-							'id'       => 'tinypress_role_analytics',
-							'type'     => 'checkbox',
-							'title'    => esc_html__( 'Who Can Check Analytics', 'tinypress' ),
-							'inline'     => true,
-							'options'  =>$this->get_role_lists(),
+							'id'      => 'tinypress_role_view',
+							'type'    => 'checkbox',
+							'title'   => esc_html__( 'Who Can View Links?', 'tinypress' ),
+							'inline'  => true,
+							'options' => $this->get_role_lists(),
 						),
 						array(
-							'id'       => 'tinypress_role_edit',
-							'type'     => 'checkbox',
-							'title'    => esc_html__( 'Who Can Edit Settings', 'tinypress' ),
-							'inline'   => true,
-							'options'  => $this->get_role_lists(),
+							'id'      => 'tinypress_role_create',
+							'type'    => 'checkbox',
+							'title'   => esc_html__( 'Who Can Create/Edit Links', 'tinypress' ),
+							'inline'  => true,
+							'options' => $this->get_role_lists(),
+						),
+						array(
+							'id'      => 'tinypress_role_analytics',
+							'type'    => 'checkbox',
+							'title'   => esc_html__( 'Who Can Check Analytics', 'tinypress' ),
+							'inline'  => true,
+							'options' => $this->get_role_lists(),
+						),
+						array(
+							'id'      => 'tinypress_role_edit',
+							'type'    => 'checkbox',
+							'title'   => esc_html__( 'Who Can Edit Settings', 'tinypress' ),
+							'inline'  => true,
+							'options' => $this->get_role_lists(),
 						),
 					),
 				)
