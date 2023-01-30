@@ -18,7 +18,6 @@ if ( ! class_exists( 'TINYPRESS_Settings' ) ) {
 		 * TINYPRESS_Settings constructor.
 		 */
 		public function __construct() {
-
 			global $tinypress_wpdk;
 
 			// Generate settings page
@@ -43,7 +42,6 @@ if ( ! class_exists( 'TINYPRESS_Settings' ) ) {
 		 * @return mixed|void
 		 */
 		function get_settings_pages() {
-
 			$field_sections['settings'] = array(
 				'title'    => esc_html__( 'Settings', 'tinypress' ),
 				'sections' => array(

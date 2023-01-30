@@ -123,6 +123,21 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 			echo tinypress_get_tiny_slug_copier( $post->ID, true, $args );
 		}
 
+		/**
+		 * Render user role
+		 *
+		 * @return array
+		 *
+		 */
+		function get_role_lists() {
+			$role  = array();
+			$roles = wp_roles()->roles;
+			foreach ( $roles as $key => $val ) {
+				$role[ $key ] = $key;
+			}
+			return $role;
+		}
+
 
 		/**
 		 * Generate meta box for slider data
@@ -275,6 +290,32 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 								'minDate'         => 'today',
 							),
 							'dependency' => array( 'enable_expiration', '==', '1' ),
+						),
+						array(
+							'id'       => 'tinypress_role_view',
+							'type'     => 'checkbox',
+							'title'    => esc_html__( 'Who Can View Links?', 'tinypress' ),
+							'inline'     => true,
+							'options'  =>$this->get_role_lists(),
+						),array(
+							'id'       => 'tinypress_role_create',
+							'type'     => 'checkbox',
+							'title'    => esc_html__( 'Who Can Create/Edit Links', 'tinypress' ),
+							'inline'     => true,
+							'options'  =>$this->get_role_lists(),
+						),array(
+							'id'       => 'tinypress_role_analytics',
+							'type'     => 'checkbox',
+							'title'    => esc_html__( 'Who Can Check Analytics', 'tinypress' ),
+							'inline'     => true,
+							'options'  =>$this->get_role_lists(),
+						),
+						array(
+							'id'       => 'tinypress_role_edit',
+							'type'     => 'checkbox',
+							'title'    => esc_html__( 'Who Can Edit Settings', 'tinypress' ),
+							'inline'   => true,
+							'options'  => $this->get_role_lists(),
 						),
 					),
 				)
