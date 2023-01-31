@@ -35,7 +35,6 @@ if ( ! class_exists( 'TINYPRESS_Settings' ) ) {
 			WPDK_Settings::createSettingsPage( $tinypress_wpdk->plugin_unique_id, $settings_args, $this->get_settings_pages() );
 		}
 
-
 		/**
 		 * Return settings pages
 		 *
@@ -65,6 +64,45 @@ if ( ! class_exists( 'TINYPRESS_Settings' ) ) {
 								'placeholder' => esc_html__( 'go', 'tinypress' ),
 								'default'     => esc_html__( 'go', 'tinypress' ),
 								'dependency'  => array( 'tinypress_link_prefix', '==', '1' ),
+							),
+						),
+					),
+				),
+			);
+
+			$field_sections['security'] = array(
+				'title'    => esc_html__( 'Security', 'tinypress' ),
+				'sections' => array(
+					array(
+						'title'  => esc_html__( 'Role Management Settings', 'tinypress' ),
+						'fields' => array(
+							array(
+								'id'      => 'tinypress_role_view',
+								'type'    => 'checkbox',
+								'title'   => esc_html__( 'Who Can View Links?', 'tinypress' ),
+								'inline'  => true,
+								'options' => user_role_management(),
+							),
+							array(
+								'id'      => 'tinypress_role_create',
+								'type'    => 'checkbox',
+								'title'   => esc_html__( 'Who Can Create/Edit Links', 'tinypress' ),
+								'inline'  => true,
+								'options' => user_role_management(),
+							),
+							array(
+								'id'      => 'tinypress_role_analytics',
+								'type'    => 'checkbox',
+								'title'   => esc_html__( 'Who Can Check Analytics', 'tinypress' ),
+								'inline'  => true,
+								'options' => user_role_management(),
+							),
+							array(
+								'id'      => 'tinypress_role_edit',
+								'type'    => 'checkbox',
+								'title'   => esc_html__( 'Who Can Edit Settings', 'tinypress' ),
+								'inline'  => true,
+								'options' => user_role_management(),
 							),
 						),
 					),

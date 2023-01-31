@@ -100,7 +100,6 @@ if ( ! function_exists( 'tinypress_get_tiny_slug_copier' ) ) {
 	 * @return false|string
 	 */
 	function tinypress_get_tiny_slug_copier( $post_id, $display_input_field = false, $args = array() ) {
-
 		global $post;
 
 		$default_string   = Utils::get_args_option( 'default', $args );
@@ -123,7 +122,6 @@ if ( ! function_exists( 'tinypress_get_tiny_slug_copier' ) ) {
 		echo '</div>';
 
 		if ( $display_input_field ) {
-
 			echo '<div class="tinypress-slug-field">';
 			if ( 'tinypress_link' == $post->post_type ) {
 				echo '<input type="text" class="tinypress-tiny-slug" name="tinypress_meta_main[tiny_slug]" value="' . esc_attr( $tiny_slug ) . '" placeholder="ad34o">';
@@ -139,6 +137,24 @@ if ( ! function_exists( 'tinypress_get_tiny_slug_copier' ) ) {
 	}
 }
 
+if ( ! function_exists( 'user_role_management' ) ) {
+	/**
+	 * Get user role management
+	 *
+	 * @return array
+	 */
+
+	function user_role_management() {
+		$role  = array();
+		$roles = wp_roles()->roles;
+
+		foreach ( $roles as $key => $value ) {
+			$role[ $key ] = $value['name'] ?? $key;
+		}
+
+		return $role;
+	}
+}
 
 
 
