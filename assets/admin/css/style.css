@@ -3,10 +3,12 @@
 
 :root {
     --tinypress-color-primary: #617822;
+    --tinypress-color-primary-dim: #f3ffd2;
     --tinypress-color-red: #f44336;
     --tinypress-color-green: #009688;
 
     --wpdk_settings-primary-color: var(--tinypress-color-primary);
+    --wpdk_settings-primary-color-dim: var(--tinypress-color-primary-dim);
     --wpdk_settings-red-color: var(--tinypress-color-red);
 }
 
