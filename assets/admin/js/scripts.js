@@ -43,6 +43,19 @@
         }, 5000);
     });
 
+
+    $(document).on('click', '.tiny-slug-copy', function () {
+        var hiddenInputValue = $(this).prev().val();
+        console.log($(this).prev().val());
+        var $temp = $("<input>");
+        $("body").append($temp);
+        $temp.val(hiddenInputValue).select();
+        document.execCommand("copy",false);
+        $temp.remove();
+        alert("Copied the text: " + hiddenInputValue);
+    });
+
+
 })(jQuery, window, document, tinypress);
 
 
