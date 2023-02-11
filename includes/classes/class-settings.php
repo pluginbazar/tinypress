@@ -67,12 +67,6 @@ if ( ! class_exists( 'TINYPRESS_Settings' ) ) {
 							),
 						),
 					),
-				),
-			);
-
-			$field_sections['security'] = array(
-				'title'    => esc_html__( 'Security', 'tinypress' ),
-				'sections' => array(
 					array(
 						'title'  => esc_html__( 'Role Management', 'tinypress' ),
 						'fields' => array(
@@ -103,6 +97,24 @@ if ( ! class_exists( 'TINYPRESS_Settings' ) ) {
 								'title'   => esc_html__( 'Who Can Edit Settings', 'tinypress' ),
 								'inline'  => true,
 								'options' => user_role_management(),
+							),
+						),
+					),
+				),
+
+			);
+
+			$field_sections['security'] = array(
+				'title'    => esc_html__( 'Browser Extensions', 'tinypress' ),
+				'sections' => array(
+					array(
+						'title'  => esc_html__( 'Google Chrome', 'tinypress' ),
+						'fields' => array(
+							array(
+								'id'      => 'tinypress_auth_key_chrome',
+								'type'    => 'text',
+								'title'   => esc_html__( 'Authentication Key', 'tinypress' ),
+								'default' => md5( site_url() ),
 							),
 						),
 					),
