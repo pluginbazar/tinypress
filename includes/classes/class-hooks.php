@@ -25,8 +25,50 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 
 			add_action( 'init', array( $this, 'register_everything' ) );
 			add_action( 'admin_menu', array( $this, 'links_log' ) );
-
 			add_filter( 'post_updated_messages', array( $this, 'change_url_update_message' ) );
+
+			add_action( 'rest_api_init', array( $this, 'register_api_endpoints' ) );
+		}
+
+
+		/**
+		 * @param WP_REST_Request $request
+		 *
+		 * @return int|WP_Error|WP_REST_Response
+		 */
+		function handle_api_create( WP_REST_Request $request ) {
+
+			$data      = $request->get_body_params();
+			$short_url = tinypress_create_shorten_url( array(
+				'post_title'  => wp_strip_all_tags( Utils::get_args_option( 'post_title', $data ) ),
+				'target_url'  => Utils::get_args_option( 'target_url', $data ),
+				'tiny_slug'   => Utils::get_args_option( 'tiny_slug', $data ),
+				'redirection' => Utils::get_args_option( 'redirection', $data ),
+				'notes'       => Utils::get_args_option( 'notes', $data ),
+			) );
+
+			if ( is_wp_error( $short_url ) ) {
+				return new WP_REST_Response( array( 'message' => $short_url->get_error_message() ) );
+			}
+
+			return new WP_REST_Response(
+				array(
+					'message'   => esc_html__( 'Short url generated successfully.', 'tinypress' ),
+					'short_url' => $short_url,
+				)
+			);
+		}
+
+
+		/**
+		 * @return void
+		 */
+		function register_api_endpoints() {
+			register_rest_route( 'tinypress/api/v1', '/create/', array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'handle_api_create' ),
+				'permission_callback' => '__return_true',
+			) );
 		}
 
 
@@ -127,6 +169,7 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 		 * @return TINYPRESS_Hooks
 		 */
 		public static function instance() {
+
 			if ( is_null( self::$_instance ) ) {
 				self::$_instance = new self();
 			}

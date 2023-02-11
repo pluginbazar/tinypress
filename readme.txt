@@ -1,4 +1,4 @@
-=== Tinylinks ===
+=== TinyPress - Shorten and Track your urls ===
 	Contributors: pluginbazar
 	Donate link: https://pluginbazar.com/contact/
 	Tags: url shortener, short links

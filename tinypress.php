@@ -1,6 +1,6 @@
 <?php
 /*
-	Plugin Name: TinyPress - Shorten and Track your links
+	Plugin Name: TinyPress - Shorten and track your urls
 	Plugin URI: https://pluginbazar.com/plugin/tinypress
 	Description: Shorten URL easily even without going to your website.
 	Version: 1.0.0

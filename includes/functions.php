@@ -137,6 +137,7 @@ if ( ! function_exists( 'tinypress_get_tiny_slug_copier' ) ) {
 	}
 }
 
+
 if ( ! function_exists( 'user_role_management' ) ) {
 	/**
 	 * Get user role management
@@ -157,6 +158,58 @@ if ( ! function_exists( 'user_role_management' ) ) {
 }
 
 
+function tinypress_create_shorten_url( $args = array() ) {
+
+	if ( empty( $target_url = Utils::get_args_option( 'target_url', $args ) ) ) {
+		return new WP_Error( 404, esc_html__( 'Target url not found.', 'tinypress' ) );
+	}
+
+	if ( empty( $tiny_slug = Utils::get_args_option( 'tiny_slug', $args, tinypress_create_url_slug() ) ) ) {
+		return new WP_Error( 404, esc_html__( 'Tiny slug could not created.', 'tinypress' ) );
+	}
+
+	$url_args = array(
+		'post_title'  => wp_strip_all_tags( Utils::get_args_option( 'post_title', $args ) ),
+		'post_type'   => 'tinypress_link',
+		'post_status' => 'publish',
+		'post_author' => get_current_user_id(),
+		'meta_input'  => array(
+			'target_url'  => $target_url,
+			'tiny_slug'   => $tiny_slug,
+			'redirection' => Utils::get_args_option( 'redirection', $args, 302 ),
+			'notes'       => Utils::get_args_option( 'notes', $args ),
+		),
+	);
+
+	$new_url_id = wp_insert_post( $url_args );
+
+	if ( is_wp_error( $new_url_id ) ) {
+		return $new_url_id;
+	}
+
+	return tinypress_get_tinyurl( $new_url_id );
+}
 
 
+if ( ! function_exists( 'tinypress_get_tinyurl' ) ) {
+	/**
+	 * Return tinyurl from slug or post ID
+	 *
+	 * @param $tiny_slug_or_post_id
+	 *
+	 * @return mixed|null
+	 */
+	function tinypress_get_tinyurl( $tiny_slug_or_post_id ) {
+		$tinyurl = site_url();
 
+		if ( is_string( $tiny_slug_or_post_id ) ) {
+			$tinyurl = site_url( $tiny_slug_or_post_id );
+		}
+
+		if ( $tiny_slug_or_post_id > 0 ) {
+			$tinyurl = site_url( Utils::get_meta( 'tiny_slug', $tiny_slug_or_post_id ) );
+		}
+
+		return apply_filters( 'TINYPRESS/Filters/get_tinyurl', $tinyurl );
+	}
+}
