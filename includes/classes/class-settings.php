@@ -42,10 +42,10 @@ if ( ! class_exists( 'TINYPRESS_Settings' ) ) {
 		 */
 		function get_settings_pages() {
 			$field_sections['settings'] = array(
-				'title'    => esc_html__( 'Settings', 'tinypress' ),
+				'title'    => esc_html__( 'General', 'tinypress' ),
 				'sections' => array(
 					array(
-						'title'  => esc_html__( 'General', 'tinypress' ),
+						'title'  => esc_html__( 'Options', 'tinypress' ),
 						'fields' => array(
 							array(
 								'id'       => 'tinypress_link_prefix',
@@ -74,7 +74,7 @@ if ( ! class_exists( 'TINYPRESS_Settings' ) ) {
 				'title'    => esc_html__( 'Security', 'tinypress' ),
 				'sections' => array(
 					array(
-						'title'  => esc_html__( 'Role Management Settings', 'tinypress' ),
+						'title'  => esc_html__( 'Role Management', 'tinypress' ),
 						'fields' => array(
 							array(
 								'id'      => 'tinypress_role_view',
