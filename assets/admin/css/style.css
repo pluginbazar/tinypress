@@ -316,3 +316,10 @@ table.tinypress_link_page_tinypress-reports th#details {
 .wpdk_settings-section #chart .filter-buttons .date-filter:last-child {
     border-right: none;
 }
+
+/*copy link*/
+.copy-link {
+    width: 25px;
+    height: 24px;
+    cursor: pointer;
+}
