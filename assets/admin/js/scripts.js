@@ -21,6 +21,15 @@
 
         tiny_slug_preview.html(tiny_slug_value);
         tiny_slug_field.val(tiny_slug_value);
+
+        if (tiny_slug_field.val().length === 0) {
+            $('#publish').attr('disabled', true);
+            $(this).css("border", "1px solid red");
+        } else if ($(this).val().length > 0) {
+            $('#publish').removeAttr('disabled', false);
+            $(this).css("border", "1px solid #774ea9");
+        }
+
     });
 
     $(document).on('click', '.tiny-slug-wrap .tiny-slug-preview', function () {
@@ -50,7 +59,7 @@
         var $temp = $("<input>");
         $("body").append($temp);
         $temp.val(hiddenInputValue).select();
-        document.execCommand("copy",false);
+        document.execCommand("copy", false);
         $temp.remove();
         alert("Copied the text: " + hiddenInputValue);
     });
