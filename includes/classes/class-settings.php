@@ -111,10 +111,13 @@ if ( ! class_exists( 'TINYPRESS_Settings' ) ) {
 						'title'  => esc_html__( 'Google Chrome', 'tinypress' ),
 						'fields' => array(
 							array(
-								'id'      => 'tinypress_auth_key_chrome',
-								'type'    => 'text',
-								'title'   => esc_html__( 'Authentication Key', 'tinypress' ),
-								'default' => md5( site_url() ),
+								'id'         => 'tinypress_auth_key_chrome',
+								'type'       => 'text',
+								'title'      => esc_html__( 'Authentication Key', 'tinypress' ),
+								'default'    => md5( site_url() ),
+								'attributes' => array(
+									'disabled' => true,
+								),
 							),
 						),
 					),

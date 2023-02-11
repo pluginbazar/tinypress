@@ -142,7 +142,7 @@ if ( ! class_exists( 'TINYPRESS_Redirection' ) ) {
 			$password_protection  = Utils::get_meta( 'password_protection', $link_id );
 			$link_password        = Utils::get_meta( 'link_password', $link_id );
 			$expiration_date      = Utils::get_meta( 'expiration_date', $link_id );
-			$link_status          = Utils::get_meta( 'link_status', $link_id );
+			$link_status          = Utils::get_meta( 'link_status', $link_id, '1' );
 			$password_check_nonce = wp_create_nonce( 'password_check' );
 
 			if ( parse_url( $current_url, PHP_URL_QUERY ) ) {
@@ -150,7 +150,6 @@ if ( ! class_exists( 'TINYPRESS_Redirection' ) ) {
 			} else {
 				$password_checked_url = $current_url . '?password=' . $password_check_nonce;
 			}
-
 
 			if ( 'tinypress_link' == get_post_type( $link_id ) ) {
 				// Check if the link status is enabled
@@ -168,7 +167,6 @@ if ( ! class_exists( 'TINYPRESS_Redirection' ) ) {
 				}
 			}
 
-
 			// Check the password protection for this link
 			if ( '1' != $password_protection ) {
 				$this->redirect_url( $link_id );
@@ -183,7 +181,6 @@ if ( ! class_exists( 'TINYPRESS_Redirection' ) ) {
                 }
             </script>
 			<?php
-
 
 			$password_nonce = isset( $_GET['password'] ) ? sanitize_text_field( $_GET['password'] ) : '';
 

@@ -38,7 +38,19 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 		 */
 		function handle_api_create( WP_REST_Request $request ) {
 
-			$data      = $request->get_body_params();
+			$data     = $request->get_body_params();
+			$auth_key = Utils::get_args_option( 'auth_key', $data );
+
+			if ( $auth_key != Utils::get_option( 'tinypress_auth_key_chrome' ) ) {
+				return new WP_REST_Response(
+					array(
+						'short_url' => '',
+						'success'   => false,
+						'message'   => esc_html__( 'Invalid authentication key.', 'tinypress' ),
+					)
+				);
+			}
+
 			$short_url = tinypress_create_shorten_url( array(
 				'post_title'  => wp_strip_all_tags( Utils::get_args_option( 'post_title', $data ) ),
 				'target_url'  => Utils::get_args_option( 'target_url', $data ),
@@ -48,13 +60,20 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 			) );
 
 			if ( is_wp_error( $short_url ) ) {
-				return new WP_REST_Response( array( 'message' => $short_url->get_error_message() ) );
+				return new WP_REST_Response(
+					array(
+						'short_url' => '',
+						'success'   => false,
+						'message'   => $short_url->get_error_message(),
+					)
+				);
 			}
 
 			return new WP_REST_Response(
 				array(
-					'message'   => esc_html__( 'Short url generated successfully.', 'tinypress' ),
 					'short_url' => $short_url,
+					'success'   => true,
+					'message'   => esc_html__( 'Short url generated successfully.', 'tinypress' ),
 				)
 			);
 		}
