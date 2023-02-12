@@ -168,6 +168,78 @@ body.post-type-tinypress_link .wpdk_settings-field-textarea textarea:focus:activ
     outline: none;
 }
 
+
+body.post-type-tinypress_link .tinypress-settings-copy input {
+    background: var(--tinypress-color-primary-dim);
+    border: 1px solid var(--wpdk_settings-primary-color);
+    cursor: pointer;
+    color: #646464;
+    position: relative;
+}
+
+body.post-type-tinypress_link .tinypress-settings-copy input:hover {
+
+}
+
+body.post-type-tinypress_link .tinypress-settings-copy .copied {
+    margin-left: 15px;
+    font-size: 14px;
+    color: var(--wpdk_settings-primary-color);
+}
+
+
+.tinypress-extensions-message {
+    font-size: 16px;
+    line-height: 26px;
+}
+
+ul.tinypress-extensions-list {
+
+}
+
+ul.tinypress-extensions-list > li {
+    margin-bottom: 20px;
+    display: inline-block;
+    width: 50%;
+}
+
+ul.tinypress-extensions-list > li > a {
+    display: flex;
+    text-decoration: none;
+    align-items: center;
+    justify-content: start;
+}
+
+ul.tinypress-extensions-list > li > a:active,
+ul.tinypress-extensions-list > li > a:focus,
+ul.tinypress-extensions-list > li > a:visited {
+    outline: none;
+    box-shadow: none;
+}
+
+ul.tinypress-extensions-list > li > a > svg {
+    width: 36px;
+}
+
+ul.tinypress-extensions-list > li > a > svg > path {
+    fill: #636363;
+}
+
+ul.tinypress-extensions-list > li.active > a > svg > path {
+    fill: var(--tinypress-color-primary);
+}
+
+ul.tinypress-extensions-list > li > a > span.name {
+    margin-left: 15px;
+    font-size: 16px;
+    line-height: 26px;
+    color: #636363;
+}
+
+ul.tinypress-extensions-list > li.active > a > span.name {
+    color: var(--tinypress-color-primary);
+}
+
 /**
  * Popup Box
  */
@@ -213,9 +285,7 @@ table.tinypress_link_page_tinypress-reports th#details {
 }
 
 .tiny-slug-wrap {
-    width: 100%;
     display: inline-block;
-    max-width: 280px;
 }
 
 .tiny-slug-wrap .tiny-slug-preview {

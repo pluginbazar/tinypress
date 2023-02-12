@@ -32,6 +32,22 @@
 
     });
 
+
+    $(document).on('click', 'body.post-type-tinypress_link .tinypress-settings-copy input', function () {
+
+        let copy_field = $(this),
+            copy_string = copy_field.val();
+
+        copy_field.parent().find('.copied').remove();
+
+        tinypress_copy_to_clipboard(copy_string);
+        copy_field.after('<span class="copied">' + pluginObject.copy_text + '</span>');
+
+        setTimeout(function () {
+            copy_field.parent().find('.copied').fadeOut(300);
+        }, 3000);
+    });
+
     $(document).on('click', '.tiny-slug-wrap .tiny-slug-preview', function () {
 
         let el_input = document.createElement('input'),
@@ -54,15 +70,26 @@
 
 
     $(document).on('click', '.tiny-slug-copy', function () {
-        var hiddenInputValue = $(this).prev().val();
-        console.log($(this).prev().val());
-        var $temp = $("<input>");
+        let hiddenInputValue = $(this).prev().val(),
+            $temp = $("<input>");
+
         $("body").append($temp);
         $temp.val(hiddenInputValue).select();
         document.execCommand("copy", false);
         $temp.remove();
-        alert("Copied the text: " + hiddenInputValue);
     });
+
+
+    function tinypress_copy_to_clipboard(string) {
+
+        let el_input = document.createElement('input');
+
+        document.body.appendChild(el_input);
+        el_input.value = string;
+        el_input.select();
+        document.execCommand('copy', false);
+        el_input.remove();
+    }
 
 
 })(jQuery, window, document, tinypress);

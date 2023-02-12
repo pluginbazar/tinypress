@@ -137,14 +137,15 @@ if ( ! function_exists( 'tinypress_get_tiny_slug_copier' ) ) {
 }
 
 
-if ( ! function_exists( 'user_role_management' ) ) {
+if ( ! function_exists( 'tinypress_get_roles' ) ) {
 	/**
-	 * Get user role management
+	 * Get user roles
 	 *
 	 * @return array
 	 */
 
-	function user_role_management() {
+	function tinypress_get_roles() {
+
 		$role  = array();
 		$roles = wp_roles()->roles;
 

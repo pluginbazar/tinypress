@@ -1,8 +1,8 @@
 <?php
 /*
-	Plugin Name: TinyPress - Shorten and track your urls
+	Plugin Name: TinyPress - Shorten and Track URLs
 	Plugin URI: https://pluginbazar.com/plugin/tinypress
-	Description: Shorten URL easily even without going to your website.
+	Description: No more long URL, Shorten and track it with TinyPress.
 	Version: 1.0.0
 	Text Domain: tinypress
 	Author: Pluginbazar
@@ -118,7 +118,7 @@ if ( ! class_exists( 'TINYPRESS_Main' ) ) {
 		function localize_scripts() {
 			return apply_filters( 'tinypress/filters/localize_scripts', array(
 				'ajax_url'  => admin_url( 'admin-ajax.php' ),
-				'copy_text' => esc_html__( 'Copied !', 'tinypress' ),
+				'copy_text' => esc_html__( 'Copied.', 'tinypress' ),
 			) );
 		}
 

@@ -73,7 +73,7 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 				array(
 					'short_url' => $short_url,
 					'success'   => true,
-					'message'   => esc_html__( 'Short url generated successfully.', 'tinypress' ),
+					'message'   => esc_html__( 'Short url generated successfully and copied to clipboard.', 'tinypress' ),
 				)
 			);
 		}

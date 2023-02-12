@@ -245,7 +245,10 @@ if ( ! class_exists( 'TINYPRESS_Redirection' ) ) {
 		 * @return string
 		 */
 		protected function get_request_uri() {
-			return isset( $_SERVER ['REQUEST_URI'] ) ? sanitize_text_field( $_SERVER ['REQUEST_URI'] ) : '';
+
+			$current_url = isset( $_SERVER ['SCRIPT_URI'] ) ? sanitize_text_field( $_SERVER ['SCRIPT_URI'] ) : '';
+
+			return str_replace( site_url(), '', $current_url );
 		}
 
 
