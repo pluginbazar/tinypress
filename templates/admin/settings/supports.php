@@ -5,7 +5,6 @@
 
 ?>
 
-
 <div class="settings-block">
     <div class="block-icon">
         <span class="dashicons dashicons-media-document"></span>
@@ -14,7 +13,7 @@
     <div class="details">
         <p>Get started by spending some time with the documentation to get familiar with the plugin.</p>
     </div>
-    <a href="#" class="learn-more">Get More</a>
+    <a href="https://docs.pluginbazar.com/plugin/tinypress/" class="learn-more">Get More</a>
 </div>
 
 <div class="settings-block">
@@ -25,7 +24,7 @@
     <div class="details">
         <p>Have some questions in your mind? Create a support ticket so that we can help you in a better way.</p>
     </div>
-    <a href="#" class="learn-more">Ask Query</a>
+    <a href="https://pluginbazar.com/supports/tinypress/" class="learn-more">Ask Query</a>
 </div>
 
 <div class="settings-block">
