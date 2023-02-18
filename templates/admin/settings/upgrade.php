@@ -1,0 +1,6 @@
+<?php
+/**
+ * Admin Template: Upgrade
+ */
+
+?>

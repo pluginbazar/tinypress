@@ -225,10 +225,9 @@ if ( ! class_exists( 'TINYPRESS_Redirection' ) ) {
 			$tiny_slug_2 = ( '1' == $link_prefix ) ? str_replace( $link_prefix_slug . '/', '', $tiny_slug_1 ) : $tiny_slug_1;
 			$tiny_slug_3 = explode( '?', $tiny_slug_2 );
 			$tiny_slug_4 = $tiny_slug_3[0] ?? '';
+			$link_id     = tinypress()->tiny_slug_to_post_id( $tiny_slug_4 );
 
-			$link_id = tinypress()->tiny_slug_to_post_id( $tiny_slug_4 );
-
-			if ( ! empty( $link_id ) && is_404() && ! is_page( $tiny_slug_4 ) ) {
+			if ( ! empty( $link_id ) && $link_id !== 0 && is_404() && ! is_page( $tiny_slug_4 ) ) {
 
 				if ( '1' == $link_prefix && strpos( $tiny_slug_1, $link_prefix_slug ) === false ) {
 					wp_die( esc_html__( 'This link is not containing the right prefix slug.', 'tinypress' ) );
@@ -247,6 +246,10 @@ if ( ! class_exists( 'TINYPRESS_Redirection' ) ) {
 		protected function get_request_uri() {
 
 			$current_url = isset( $_SERVER ['SCRIPT_URI'] ) ? sanitize_text_field( $_SERVER ['SCRIPT_URI'] ) : '';
+
+			if ( empty( $current_url ) ) {
+				$current_url = isset( $_SERVER ['REQUEST_URI'] ) ? sanitize_text_field( $_SERVER ['REQUEST_URI'] ) : '';
+			}
 
 			return str_replace( site_url(), '', $current_url );
 		}

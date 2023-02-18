@@ -69,14 +69,23 @@
     });
 
 
-    $(document).on('click', '.tiny-slug-copy', function () {
-        let hiddenInputValue = $(this).prev().val(),
-            $temp = $("<input>");
+    // For columns content
+    $(document).on('click', '.tinypress-column-content .single-link.copy-link', function () {
+        let link_copier = $(this),
+            tiny_slug = link_copier.data('tiny_slug'),
+            temp_input_field = $("<input>"),
+            tool_tip_prev = link_copier.attr('aria-label'),
+            tool_tip_copied = link_copier.data('text-copied');
 
-        $("body").append($temp);
-        $temp.val(hiddenInputValue).select();
-        document.execCommand("copy", false);
-        $temp.remove();
+        $('body').append(temp_input_field);
+        temp_input_field.val(tiny_slug).select();
+        document.execCommand('copy', false);
+        temp_input_field.remove();
+
+        link_copier.attr('aria-label', tool_tip_copied);
+        setTimeout(function () {
+            link_copier.attr('aria-label', tool_tip_prev);
+        }, 3000);
     });
 
 

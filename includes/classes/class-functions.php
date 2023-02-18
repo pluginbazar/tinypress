@@ -16,16 +16,21 @@ if ( ! class_exists( 'TINYPRESS_Functions' ) ) {
 
 
 		/**
-		 * @return TINYPRESS_Meta_boxes|null
+		 * @var TINYPRESS_Meta_boxes
 		 */
 		public $tinypress_metaboxes = null;
+
+		/**
+		 * @var TINYPRESS_Column_link
+		 */
+		public $tinypress_columns = null;
 
 
 		/**
 		 * TINYPRESS_Functions constructor.
 		 */
 		function __construct() {
-			self::$text_hint   = esc_html__( 'Click here to copy.', 'tinypress' );
+			self::$text_hint   = esc_html__( 'Click to Copy.', 'tinypress' );
 			self::$text_copied = esc_html__( 'Copied.', 'tinypress' );
 		}
 
@@ -33,19 +38,13 @@ if ( ! class_exists( 'TINYPRESS_Functions' ) ) {
 		/**
 		 * @param $slug
 		 *
-		 * @return false|int|WP_Post
+		 * @return int
 		 */
 		function tiny_slug_to_post_id( $slug ) {
-//			$all_posts = get_posts( array(
-//				'post_type'  => 'tinypress_link',
-//				'meta_key'   => 'tiny_slug',
-//				'meta_value' => $slug,
-//			) );
-//
-//			$post_ids = array_map( function ( WP_Post $post ) {
-//				return $post->ID;
-//			}, $all_posts );
-//			return reset( $post_ids );
+
+			if ( empty( $slug ) ) {
+				return 0;
+			}
 
 			global $wpdb;
 

@@ -28,8 +28,10 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 
 			$this->generate_tinypress_meta_box();
 
-			foreach ( get_post_types() as $post_type ) {
-				$this->generate_tinypress_meta_box_side( $post_type );
+			foreach ( get_post_types( array( 'public' => true ) ) as $post_type ) {
+				if ( ! in_array( $post_type, array( 'attachment', 'tinypress_link' ) ) ) {
+					$this->generate_tinypress_meta_box_side( $post_type );
+				}
 			}
 
 			add_action( 'add_meta_boxes', array( $this, 'add_side_meta_box' ), 0 );
