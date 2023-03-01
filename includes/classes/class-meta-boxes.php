@@ -23,7 +23,6 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 		 * TINYPRESS_Meta_boxes constructor.
 		 */
 		function __construct() {
-
 			$this->tinypress_default_slug = tinypress_create_url_slug();
 
 			$this->generate_tinypress_meta_box();
@@ -79,7 +78,6 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 		 * @return void
 		 */
 		function generate_tinypress_meta_box_side( $post_type ) {
-
 			$prefix = $this->tinypress_metabox_side . '_' . $post_type;
 
 			WPDK_Settings::createMetabox( $prefix,
@@ -119,7 +117,6 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 		 * @return void
 		 */
 		function render_field_tinypress_link( $args ) {
-
 			global $post;
 
 			echo tinypress_get_tiny_slug_copier( $post->ID, true, $args );
@@ -130,7 +127,6 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 		 * Generate meta box for slider data
 		 */
 		function generate_tinypress_meta_box() {
-
 			// Create a metabox for tinypress.
 			WPDK_Settings::createMetabox( $this->tinypress_metabox_main,
 				array(
@@ -151,23 +147,27 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 						array(
 							'id'         => 'post_title',
 							'type'       => 'text',
-							'title'      => esc_html__( 'Label', 'tinypress' ),
+							'title'      => esc_html__( 'Label *', 'tinypress' ),
 							'wp_type'    => 'post_title',
 							'subtitle'   => esc_html__( 'For admin purpose only.', 'tinypress' ),
 							'attributes' => array(
 								'autocomplete' => 'off',
+								'class'      => 'tinypress_blank_label',
 							),
 						),
 						array(
 							'id'    => 'target_url',
 							'type'  => 'text',
-							'title' => esc_html__( 'Target URL', 'tinypress' ),
+							'title' => esc_html__( 'Target URL *', 'tinypress' ),
+							'attributes' => array(
+								'class'      => 'tinypress_blan_target_url',
+							),
 						),
 						array(
 							'id'       => 'tiny_slug',
 							'type'     => 'callback',
 							'function' => array( $this, 'render_field_tinypress_link' ),
-							'title'    => esc_html__( 'Short String', 'tinypress' ),
+							'title'    => esc_html__( 'Short String *', 'tinypress' ),
 							'subtitle' => esc_html__( 'Short string of this URL.', 'tinypress' ),
 							'default'  => $this->tinypress_default_slug,
 						),

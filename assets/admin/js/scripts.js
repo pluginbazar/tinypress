@@ -26,11 +26,24 @@
             $('#publish').attr('disabled', true);
             $(this).css("border", "1px solid red");
         } else if ($(this).val().length > 0) {
-            $('#publish').removeAttr('disabled', false);
+            $('#publishi').removeAttr('disabled', false);
             $(this).css("border", "1px solid #774ea9");
         }
 
     });
+
+
+    $(document).ready(function(){
+
+        $('#publish').prop('disabled',true);
+        $('.tinypress_field_blank').keyup(function(){
+            $('#publish').prop('disabled', this.value == "" ? true : false);
+        })
+        $('.tinypress_blan_target_url').keyup(function(){
+            $('#publish').prop('disabled', this.value == "" ? true : false);
+        })
+    });
+
 
 
     $(document).on('click', 'body.post-type-tinypress_link .tinypress-settings-copy input', function () {
