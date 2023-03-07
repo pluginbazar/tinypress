@@ -22,12 +22,12 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 		 * TINYPRESS_Hooks constructor.
 		 */
 		function __construct() {
-
 			add_action( 'init', array( $this, 'register_everything' ) );
 			add_action( 'admin_menu', array( $this, 'links_log' ) );
 			add_filter( 'post_updated_messages', array( $this, 'change_url_update_message' ) );
 
 			add_action( 'rest_api_init', array( $this, 'register_api_endpoints' ) );
+			add_action( 'admin_bar_menu', array( $this, 'handle_admin_bar_menu' ), 9999, 1 );
 		}
 
 
@@ -37,7 +37,6 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 		 * @return int|WP_Error|WP_REST_Response
 		 */
 		function handle_api_create( WP_REST_Request $request ) {
-
 			$data     = $request->get_body_params();
 			$auth_key = Utils::get_args_option( 'auth_key', $data );
 
@@ -99,7 +98,6 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 		 * @return mixed
 		 */
 		function change_url_update_message( $messages ) {
-
 			$post_messages = Utils::get_args_option( 'post', $messages );
 			$post_messages = array_map( function ( $message ) {
 				return str_replace( 'Post', 'TinyPress Link', $message );
@@ -110,12 +108,181 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 			return $messages;
 		}
 
+		/**
+		 * Add nodes to WP Admin Bar
+		 *
+		 * @param WP_Admin_Bar $wp_admin_bar
+		 */
+		function handle_admin_bar_menu( \WP_Admin_Bar $wp_admin_bar ) {
+			$wp_admin_bar->add_node(
+				array(
+					'id'     => 'tinypress-admin-bar',
+					'title'  => esc_html__( 'TinyPress', 'tinypress' ),
+					'href'   => admin_url( '#' ),
+					'parent' => false,
+				)
+			);
+
+			?>
+
+            <div class="tinypress-popup" role="alert">
+                <div class="popup-container">
+                    <a href="#0" class="popup-close img-replace">Close</a>
+                    <form action="" method="">
+                        <p>Label <span class="tiny-required">*</span></p>
+                        <label>
+                            <input type="text" name="timy-label" placeholder="URL Label" required>
+                        </label>
+
+                        <p>Target URL <span class="tiny-required">*</span></p>
+                        <label>
+                            <input type="text" name="tiny-target-url" placeholder="Target URL" required>
+                        </label>
+
+                        <p>Short String <span class="tiny-required">*</span></p>
+                        <label>
+                            <input type="text" name="tiny-short-string" placeholder="Short string of this URL" required>
+                        </label>
+
+                        <br> <br>
+                        <input type="submit" value="SAVE">
+                    </form>
+                </div>
+            </div>
+
+
+            <style>
+
+                li#wp-admin-bar-tinypress-admin-bar > a,
+                li#wp-admin-bar-tinypress-admin-bar > a:hover,
+                li#wp-admin-bar-tinypress-admin-bar > a:focus,
+                li#wp-admin-bar-tinypress-admin-bar > a:active {
+                    color: #fff !important;
+                    background: #009688FF !important;
+                    outline: none;
+                    box-shadow: none;
+                    border: none;
+                }
+
+
+                .tinypress-popup {
+                    position: fixed;
+                    left: 0;
+                    top: 0;
+                    height: 100%;
+                    z-index: 999999999;
+                    width: 100%;
+                    background-color: rgba(0, 0, 0, 0.76);
+                    opacity: 0;
+                    visibility: hidden;
+                    transition: 500ms all;
+
+                }
+
+                .tinypress-popup.is-visible {
+                    opacity: 1;
+                    visibility: visible;
+                    transition: 1s all;
+                }
+
+                .popup-container {
+                    transform: translateY(-50%);
+                    transition: 500ms all;
+                    position: relative;
+                    width: 25%;
+                    margin: 2em auto;
+                    top: 5%;
+                    padding: 2rem;
+                    background: #FFF;
+                    border-radius: .25em .25em .4em .4em;
+                    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+                }
+
+                .is-visible .popup-container {
+                    transform: translateY(0);
+                    transition: 500ms all;
+                }
+
+                .popup-container .popup-close {
+                    position: absolute;
+                    top: 8px;
+                    font-size: 0;
+                    right: 8px;
+                    width: 30px;
+                    height: 30px;
+                }
+
+
+                .popup-container .popup-close::before,
+                .popup-container .popup-close::after {
+                    content: '';
+                    position: absolute;
+                    top: 12px;
+                    width: 14px;
+                    height: 3px;
+                    background-color: #8f9cb5;
+                }
+
+                .tinypress-popup .popup-container .popup-close::before {
+                    -webkit-transform: rotate(45deg);
+                    -moz-transform: rotate(45deg);
+                    -ms-transform: rotate(45deg);
+                    -o-transform: rotate(45deg);
+                    transform: rotate(45deg);
+                    left: 8px;
+                }
+
+                .tinypress-popup .popup-container .popup-close::after {
+                    -webkit-transform: rotate(-45deg);
+                    -moz-transform: rotate(-45deg);
+                    -ms-transform: rotate(-45deg);
+                    -o-transform: rotate(-45deg);
+                    transform: rotate(-45deg);
+                    right: 8px;
+                }
+
+                .tinypress-popup .popup-container .popup-close:hover:before,
+                .tinypress-popup .popup-container .popup-close:hover:after {
+                    background-color: #35a785;
+                    transition: 300ms all;
+                }
+
+                .tinypress-popup span.tiny-required {
+                    color: red;
+                    font-size: 16px;
+                }
+
+                .tinypress-popup input[type="text"] {
+                    width: 80%;
+                    height: 50px;
+                    padding: 10px 8px;
+                    border: 1px solid #eee;
+                }
+
+                .tinypress-popup input[type=text]:focus {
+                    border: 1px solid #617822;
+                }
+
+                .tinypress-popup input[type="submit"] {
+                    background: var(--tinypress-color-green);
+                    padding: 12px 16px;
+                    font-size: 14px;
+                    color: #fff;
+                    border-radius: 3px;
+                    cursor: pointer;
+                    text-transform: uppercase;
+                    border: none;
+                }
+
+            </style>
+			<?php
+		}
+
 
 		/**
 		 * Register Post Types
 		 */
 		function register_everything() {
-
 			global $tinypress_wpdk;
 
 			$tinypress_wpdk->utils()->register_post_type( 'tinypress_link', array(
@@ -131,7 +298,8 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 				'exclude_from_search' => true,
 			) );
 
-			$tinypress_wpdk->utils()->register_taxonomy( 'tinypress_link_cat', 'tinypress_link',
+			$tinypress_wpdk->utils()->register_taxonomy( 'tinypress_link_cat',
+				'tinypress_link',
 				apply_filters( 'TINYPRESS/Filters/link_cat_args',
 					array(
 						'singular'     => esc_html__( 'Category', 'tinypress' ),
@@ -167,7 +335,6 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 		 * Render logs menu
 		 */
 		function render_menu_logs() {
-
 			if ( ! class_exists( 'WP_List_Table_Logs' ) ) {
 				require_once 'class-table-logs.php';
 			}
@@ -188,7 +355,6 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 		 * @return TINYPRESS_Hooks
 		 */
 		public static function instance() {
-
 			if ( is_null( self::$_instance ) ) {
 				self::$_instance = new self();
 			}

@@ -33,17 +33,39 @@
     });
 
 
-    $(document).ready(function(){
+    $(document).ready(function () {
 
-        $('#publish').prop('disabled',true);
-        $('.tinypress_field_blank').keyup(function(){
+        $('#publish').prop('disabled', true);
+        $('.tinypress_field_blank').keyup(function () {
             $('#publish').prop('disabled', this.value == "" ? true : false);
         })
-        $('.tinypress_blan_target_url').keyup(function(){
+        $('.tinypress_blan_target_url').keyup(function () {
             $('#publish').prop('disabled', this.value == "" ? true : false);
         })
     });
 
+
+    $(document).ready(function ($) {
+        //open popup
+        $('#wp-admin-bar-tinypress-admin-bar').on('click', function (event) {
+            event.preventDefault();
+            $('.tinypress-popup').addClass('is-visible');
+        });
+
+        //close popup
+        $('.tinypress-popup').on('click', function (event) {
+            if ($(event.target).is('.popup-close') || $(event.target).is('.tinypress-popup')) {
+                event.preventDefault();
+                $(this).removeClass('is-visible');
+            }
+        });
+        //close popup when clicking the esc keyboard button
+        $(document).keyup(function (event) {
+            if (event.which == '27') {
+                $('.tinypress-popup').removeClass('is-visible');
+            }
+        });
+    });
 
 
     $(document).on('click', 'body.post-type-tinypress_link .tinypress-settings-copy input', function () {
