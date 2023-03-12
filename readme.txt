@@ -3,8 +3,8 @@
 	Donate link: https://pluginbazar.com/contact/
 	Tags: url shortener, short links
 	Requires at least: 4.6
-	Tested up to: 6.1
-	Stable tag: 1.0.0
+	Tested up to: 6.1.1
+	Stable tag: 1.0.1
 	License: GPLv2 or later
 	License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -29,3 +29,6 @@ Introducing Tinylinks short url for WordPress with so many free features.
 
 = 1.0.0 =
 * 12/11/2022 - ADD - Initial release.
+
+= 1.0.1 =
+* 12/03/2023 - FIX - Empty input fields validation.
