@@ -5,45 +5,55 @@
 (function ($, window, document, pluginObject) {
     "use strict";
 
+    $(document).ready(function () {
 
-    $(document).on('keydown, keyup', '.tiny-slug-wrap .tinypress-tiny-slug', function (e) {
-
-        let tiny_slug_field = $(this),
-            tiny_slug_wrap = tiny_slug_field.parent().parent(),
-            tiny_slug_preview = tiny_slug_wrap.find('.tiny-slug-preview .tiny-slug'),
-            tiny_slug_value = tiny_slug_field.val();
-
-        console.log(tiny_slug_value);
-
-        tiny_slug_value = wpFeSanitizeTitle(tiny_slug_value);
-
-        console.log(tiny_slug_value);
-
-        tiny_slug_preview.html(tiny_slug_value);
-        tiny_slug_field.val(tiny_slug_value);
-
-        if (tiny_slug_field.val().length === 0) {
-            $('#publish').attr('disabled', true);
-            $(this).css("border", "1px solid red");
-        } else if ($(this).val().length > 0) {
-            $('#publishi').removeAttr('disabled', false);
-            $(this).css("border", "1px solid #774ea9");
+        // Set the initial state of the "publish" button
+        var isPublishDisabled = true;
+        if ($('.tinypress_tiny_label').val() !== "" && $('.tinypress_tiny_url').val() !== "" && $('.tinypress-tiny-slug').val() !== "") {
+            isPublishDisabled = false;
         }
+        $('#publish').prop('disabled', isPublishDisabled);
+
+        // Listen for changes to the input fields
+        $('.tinypress_tiny_label, .tinypress_tiny_url').keyup(function () {
+
+            // Check if both input fields have values
+            var isPublishDisabled = true;
+            if ($('.tinypress_tiny_label').val() !== "" && $('.tinypress_tiny_url').val() !== "" && $('.tinypress-tiny-slug').val() !== "") {
+                isPublishDisabled = false;
+            }
+            $('#publish').prop('disabled', isPublishDisabled);
+        })
+
+        $(document).on('keydown, keyup', '.tiny-slug-wrap .tinypress-tiny-slug', function (e) {
+
+            let tiny_slug_field = $(this),
+                tiny_slug_wrap = tiny_slug_field.parent().parent(),
+                tiny_slug_preview = tiny_slug_wrap.find('.tiny-slug-preview .tiny-slug'),
+                tiny_slug_value = tiny_slug_field.val();
+
+            tiny_slug_value = wpFeSanitizeTitle(tiny_slug_value);
+
+            tiny_slug_preview.html(tiny_slug_value);
+            tiny_slug_field.val(tiny_slug_value);
+
+            if (tiny_slug_field.val().length === 0) {
+                $(this).css("border", "1px solid red");
+            } else if ($(this).val().length > 0) {
+                $(this).css("border", "1px solid #617822");
+            }
+
+            var isPublishDisabled = true;
+
+            if ($('.tinypress_tiny_label').val() !== "" && $('.tinypress_tiny_url').val() !== "" && $('.tinypress-tiny-slug').val() !== "") {
+                isPublishDisabled = false;
+            }
+
+            $('#publish').prop('disabled', isPublishDisabled);
+
+        });
 
     });
-
-
-    $(document).ready(function(){
-
-        $('#publish').prop('disabled',true);
-        $('.tinypress_field_blank').keyup(function(){
-            $('#publish').prop('disabled', this.value == "" ? true : false);
-        })
-        $('.tinypress_blan_target_url').keyup(function(){
-            $('#publish').prop('disabled', this.value == "" ? true : false);
-        })
-    });
-
 
 
     $(document).on('click', 'body.post-type-tinypress_link .tinypress-settings-copy input', function () {

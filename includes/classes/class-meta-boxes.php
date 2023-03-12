@@ -152,7 +152,7 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 							'subtitle'   => esc_html__( 'For admin purpose only.', 'tinypress' ),
 							'attributes' => array(
 								'autocomplete' => 'off',
-								'class'      => 'tinypress_blank_label',
+								'class'      => 'tinypress_tiny_label',
 							),
 						),
 						array(
@@ -160,7 +160,7 @@ if ( ! class_exists( 'TINYPRESS_Meta_boxes' ) ) {
 							'type'  => 'text',
 							'title' => esc_html__( 'Target URL *', 'tinypress' ),
 							'attributes' => array(
-								'class'      => 'tinypress_blan_target_url',
+								'class'      => 'tinypress_tiny_url',
 							),
 						),
 						array(
