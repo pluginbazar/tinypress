@@ -28,6 +28,35 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 
 			add_action( 'rest_api_init', array( $this, 'register_api_endpoints' ) );
 			add_action( 'admin_bar_menu', array( $this, 'handle_admin_bar_menu' ), 9999, 1 );
+
+			add_action( 'wp_ajax_tiny_admin_popuop', array( $this, 'tiny_admin_popup_form' ) );
+		}
+
+
+		function tiny_admin_popup_form() {
+			$_form_data = isset( $_POST['form-data'] ) ? $_POST['form-data'] : '';
+
+			parse_str( $_form_data, $form_data );
+
+			$tiny_lebel        = Utils::get_args_option( 'timy-label', $form_data );
+			$tiny_target_url   = Utils::get_args_option( 'tiny-target-url', $form_data );
+			$tiny_short_string = Utils::get_args_option( 'tiny-short-string', $form_data );
+
+			$post_id = array(
+				'post_type'      => 'your_post_type',
+				'post_title'     => $tiny_lebel,
+				'post_status'    => 'publish',
+				'comment_status' => 'closed',
+				'ping_status'    => 'closed',
+				'meta_input'     => array(
+					'meta_value' => $tiny_target_url,
+					'tiny_slug'  => $tiny_short_string,
+				),
+			);
+
+			wp_insert_post( $post_id );
+
+			wp_send_json_success( $_form_data );
 		}
 
 
@@ -128,7 +157,7 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
             <div class="tinypress-popup" role="alert">
                 <div class="popup-container">
                     <a href="#0" class="popup-close img-replace">Close</a>
-                    <form action="" method="">
+                    <form action="" method="POST" id="form-data">
                         <p>Label <span class="tiny-required">*</span></p>
                         <label>
                             <input type="text" name="timy-label" placeholder="URL Label" required>
@@ -145,7 +174,7 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
                         </label>
 
                         <br> <br>
-                        <input type="submit" value="SAVE">
+                        <input type="submit" value="SAVE" class="tiny-save" name="tiny-save">
                     </form>
                 </div>
             </div>

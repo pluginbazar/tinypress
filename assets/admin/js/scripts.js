@@ -67,6 +67,31 @@
         });
     });
 
+    $(document).on('click', '.tiny-save', function (e) {
+
+        e.preventDefault();
+
+       let formdata = $('#form-data').serialize();
+
+
+        jQuery.ajax({
+            type: 'POST',
+            url: pluginObject.ajax_url,
+            context: this,
+            data: {
+                "action": "tiny_admin_popuop",
+                'form-data' : formdata,
+            },
+            success: function (response) {
+                if (response.success) {
+                    console.log('ddd')
+                }
+            }
+        });
+    });
+
+
+
 
     $(document).on('click', 'body.post-type-tinypress_link .tinypress-settings-copy input', function () {
 
