@@ -47,31 +47,29 @@
 
     $(document).ready(function ($) {
         //open popup
+        let tinypressPopup = $('.tinypress-popup');
+
         $('#wp-admin-bar-tinypress-admin-bar').on('click', function (event) {
             event.preventDefault();
-            $('.tinypress-popup').addClass('is-visible');
+            tinypressPopup.addClass('is-visible');
         });
 
         //close popup
-        $('.tinypress-popup').on('click', function (event) {
+        tinypressPopup.on('click', function (event) {
             if ($(event.target).is('.popup-close') || $(event.target).is('.tinypress-popup')) {
                 event.preventDefault();
                 $(this).removeClass('is-visible');
             }
         });
-        //close popup when clicking the esc keyboard button
-        $(document).keyup(function (event) {
-            if (event.which == '27') {
-                $('.tinypress-popup').removeClass('is-visible');
-            }
-        });
     });
 
-    $(document).on('click', '.tiny-save', function (e) {
+    $(document).on('click', '.tiny-popup', function (e) {
 
         e.preventDefault();
-
-       let formdata = $('#form-data').serialize();
+        let loader = $(".loader-container"),
+         tinypressPopup = $('.tinypress-popup');
+        loader.show();
+        let formdata = $('#form-data').serialize();
 
 
         jQuery.ajax({
@@ -80,17 +78,18 @@
             context: this,
             data: {
                 "action": "tiny_admin_popuop",
-                'form-data' : formdata,
+                'form-data': formdata,
             },
             success: function (response) {
                 if (response.success) {
-                    console.log('ddd')
+                    loader.hide();
+                    tinypressPopup.removeClass('is-visible');
+                    window.location.replace(response.data)
                 }
-            }
+            },
+
         });
     });
-
-
 
 
     $(document).on('click', 'body.post-type-tinypress_link .tinypress-settings-copy input', function () {

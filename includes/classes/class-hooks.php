@@ -38,25 +38,23 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 
 			parse_str( $_form_data, $form_data );
 
-			$tiny_lebel        = Utils::get_args_option( 'timy-label', $form_data );
+			$tiny_lebel        = Utils::get_args_option( 'tiny-label', $form_data );
 			$tiny_target_url   = Utils::get_args_option( 'tiny-target-url', $form_data );
 			$tiny_short_string = Utils::get_args_option( 'tiny-short-string', $form_data );
 
-			$post_id = array(
-				'post_type'      => 'your_post_type',
-				'post_title'     => $tiny_lebel,
-				'post_status'    => 'publish',
-				'comment_status' => 'closed',
-				'ping_status'    => 'closed',
-				'meta_input'     => array(
+			$args = array(
+				'post_type'  => 'tinypress_link',
+				'post_title' => $tiny_lebel,
+				'meta_input' => array(
 					'meta_value' => $tiny_target_url,
 					'tiny_slug'  => $tiny_short_string,
 				),
 			);
 
-			wp_insert_post( $post_id );
+			$post_id = wp_insert_post( $args );
+			$_url    = admin_url( "post.php?post={$post_id}&action=edit" );
 
-			wp_send_json_success( $_form_data );
+			wp_send_json_success( $_url );
 		}
 
 
@@ -154,18 +152,18 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 
 			?>
 
-            <div class="tinypress-popup" role="alert">
+            <div class="tinypress-popup">
                 <div class="popup-container">
-                    <a href="#0" class="popup-close img-replace">Close</a>
+                    <a href="#" class="popup-close">Close</a>
                     <form action="" method="POST" id="form-data">
                         <p>Label <span class="tiny-required">*</span></p>
                         <label>
-                            <input type="text" name="timy-label" placeholder="URL Label" required>
+                            <input type="text" name="tiny-label" placeholder="URL Label" required>
                         </label>
 
                         <p>Target URL <span class="tiny-required">*</span></p>
                         <label>
-                            <input type="text" name="tiny-target-url" placeholder="Target URL" required>
+                            <input type="url" name="tiny-target-url" placeholder="Target URL" required>
                         </label>
 
                         <p>Short String <span class="tiny-required">*</span></p>
@@ -174,7 +172,14 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
                         </label>
 
                         <br> <br>
-                        <input type="submit" value="SAVE" class="tiny-save" name="tiny-save">
+                        <div class="tiny-submit">
+                            <div class="loader-container">
+                                <div class="loader"></div>
+                                <span class="#message_string">Please wait</span>
+                            </div>
+
+                            <input type="submit" value="Create" class="tiny-popup" name="tiny-popup">
+                        </div>
                     </form>
                 </div>
             </div>
@@ -214,7 +219,7 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
                     transition: 1s all;
                 }
 
-                .popup-container {
+                .tinypress-popup .popup-container {
                     transform: translateY(-50%);
                     transition: 500ms all;
                     position: relative;
@@ -232,7 +237,7 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
                     transition: 500ms all;
                 }
 
-                .popup-container .popup-close {
+                .tinypress-popup .popup-container .popup-close {
                     position: absolute;
                     top: 8px;
                     font-size: 0;
@@ -281,13 +286,15 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
                     font-size: 16px;
                 }
 
+                .tinypress-popup input[type="url"],
                 .tinypress-popup input[type="text"] {
-                    width: 80%;
+                    width: 100%;
                     height: 50px;
                     padding: 10px 8px;
                     border: 1px solid #eee;
                 }
 
+                .tinypress-popup input[type="url"]:focus,
                 .tinypress-popup input[type=text]:focus {
                     border: 1px solid #617822;
                 }
@@ -302,6 +309,53 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
                     text-transform: uppercase;
                     border: none;
                 }
+
+                .tinypress-popup .tiny-submit {
+                    display: flex;
+                    justify-content: flex-end;
+                }
+
+                /*loader css style*/
+
+                .tiny-submit .loader-container {
+                    display: none;
+                    align-items: center;
+                }
+
+                .tiny-submit .loader-container::after {
+                    align-items: center;
+                    justify-content: flex-end;
+                    height: 50px;
+                    width: 100%;
+                    background-color: #f5f5f5;
+                    float: right;
+                }
+
+
+                .tinypress-popup .loader {
+                    border: 4px solid #009688;
+                    border-top: 4px solid #ffffff;
+                    border-radius: 50%;
+                    width: 16px;
+                    height: 16px;
+                    animation: spin 2s linear infinite;
+                    margin: 10px;
+
+                }
+
+                .tinypress-popup .loader-container span {
+                    padding: 0 10px;
+                }
+
+                @keyframes spin {
+                    0% {
+                        transform: rotate(0deg);
+                    }
+                    100% {
+                        transform: rotate(360deg);
+                    }
+                }
+
 
             </style>
 			<?php
