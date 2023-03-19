@@ -62,22 +62,30 @@
             }
         });
     });
+    // $(document).on('click', '#tiny-popup', function (e) {
+    //     let loader = $(".loader-container"),
+    //         tinypressPopup = $('.tinypress-popup');
+    //
+    //     tinypressPopup.find('.loader-container').css("visibility", "visible");
+    //
+    // });
 
-    $(document).on('click', '.tiny-popup', function (e) {
+
+    $(document).on('click', '#tiny-popup', function (e) {
 
         e.preventDefault();
         let loader = $(".loader-container"),
-         tinypressPopup = $('.tinypress-popup');
-        loader.show();
-        let formdata = $('#form-data').serialize();
+            tinypressPopup = $('.tinypress-popup');
 
+        tinypressPopup.find('.loader-container').css("visibility", "visible");
 
+        let  formdata = $('#form-data').serialize();
         jQuery.ajax({
             type: 'POST',
             url: pluginObject.ajax_url,
             context: this,
             data: {
-                "action": "tiny_admin_popuop",
+                "action": "tiny_admin_popup",
                 'form-data': formdata,
             },
             success: function (response) {

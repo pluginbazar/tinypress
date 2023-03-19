@@ -29,7 +29,7 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 			add_action( 'rest_api_init', array( $this, 'register_api_endpoints' ) );
 			add_action( 'admin_bar_menu', array( $this, 'handle_admin_bar_menu' ), 9999, 1 );
 
-			add_action( 'wp_ajax_tiny_admin_popuop', array( $this, 'tiny_admin_popup_form' ) );
+			add_action( 'wp_ajax_tiny_admin_popup', array( $this, 'tiny_admin_popup_form' ) );
 		}
 
 
@@ -158,17 +158,17 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
                     <form action="" method="POST" id="form-data">
                         <p>Label <span class="tiny-required">*</span></p>
                         <label>
-                            <input type="text" name="tiny-label" placeholder="URL Label" required>
+                            <input type="text" id="tiny-label" name="tiny-label" placeholder="URL Label" required>
                         </label>
 
                         <p>Target URL <span class="tiny-required">*</span></p>
                         <label>
-                            <input type="url" name="tiny-target-url" placeholder="Target URL" required>
+                            <input type="url" id="tiny-target-url" name="tiny-target-url" placeholder="Target URL" required>
                         </label>
 
                         <p>Short String <span class="tiny-required">*</span></p>
                         <label>
-                            <input type="text" name="tiny-short-string" placeholder="Short string of this URL" required>
+                            <input type="text" id="tiny-short-string" name="tiny-short-string" placeholder="Short string of this URL" required>
                         </label>
 
                         <br> <br>
@@ -178,7 +178,7 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
                                 <span class="#message_string">Please wait</span>
                             </div>
 
-                            <input type="submit" value="Create" class="tiny-popup" name="tiny-popup">
+                            <input type="submit" value="Create" id="tiny-popup" class="tiny-popup" name="tiny-popup">
                         </div>
                     </form>
                 </div>
@@ -318,8 +318,9 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
                 /*loader css style*/
 
                 .tiny-submit .loader-container {
-                    display: none;
+                    display: flex;
                     align-items: center;
+                    visibility: hidden;
                 }
 
                 .tiny-submit .loader-container::after {
