@@ -34,7 +34,7 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 
 
 		function tiny_admin_popup_form() {
-			$_form_data = isset( $_POST['form-data'] ) ? $_POST['form-data'] : '';
+			$_form_data = isset( $_POST['tiny-popup-form'] ) ? $_POST['tiny-popup-form'] : '';
 
 			parse_str( $_form_data, $form_data );
 
@@ -155,7 +155,7 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
             <div class="tinypress-popup">
                 <div class="popup-container">
                     <a href="#" class="popup-close">Close</a>
-                    <form action="" method="POST" id="form-data">
+                    <form action="" method="POST" id="tiny-popup-form">
                         <p>Label <span class="tiny-required">*</span></p>
                         <label>
                             <input type="text" id="tiny-label" name="tiny-label" placeholder="URL Label" required>
@@ -177,8 +177,7 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
                                 <div class="loader"></div>
                                 <span class="#message_string">Please wait</span>
                             </div>
-
-                            <input type="submit" value="Create" id="tiny-popup" class="tiny-popup" name="tiny-popup">
+                            <input type="submit" value="Create" id="tiny-popup-btn" class="tiny-popup-btn" name="tiny-popup-btn">
                         </div>
                     </form>
                 </div>
@@ -197,7 +196,6 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
                     box-shadow: none;
                     border: none;
                 }
-
 
                 .tinypress-popup {
                     position: fixed;
@@ -334,29 +332,29 @@ if ( ! class_exists( 'TINYPRESS_Hooks' ) ) {
 
 
                 .tinypress-popup .loader {
-                    border: 4px solid #009688;
-                    border-top: 4px solid #ffffff;
-                    border-radius: 50%;
-                    width: 16px;
                     height: 16px;
-                    animation: spin 2s linear infinite;
-                    margin: 10px;
+                    width: 16px;
+                    border-radius: 50%;
+                    border: 3px solid rgba(74, 138, 244, 0.2);
+                    border-right-color: #009688;
+                    animation: loading 1s linear infinite;
+                }
 
+                @keyframes loading {
+                    0% {
+                        transform: rotate(0deg)
+                    }
+                    50% {
+                        transform: rotate(180deg)
+                    }
+                    100% {
+                        transform: rotate(360deg)
+                    }
                 }
 
                 .tinypress-popup .loader-container span {
                     padding: 0 10px;
                 }
-
-                @keyframes spin {
-                    0% {
-                        transform: rotate(0deg);
-                    }
-                    100% {
-                        transform: rotate(360deg);
-                    }
-                }
-
 
             </style>
 			<?php

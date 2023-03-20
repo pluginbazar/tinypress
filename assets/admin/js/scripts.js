@@ -62,16 +62,9 @@
             }
         });
     });
-    // $(document).on('click', '#tiny-popup', function (e) {
-    //     let loader = $(".loader-container"),
-    //         tinypressPopup = $('.tinypress-popup');
-    //
-    //     tinypressPopup.find('.loader-container').css("visibility", "visible");
-    //
-    // });
 
 
-    $(document).on('click', '#tiny-popup', function (e) {
+    $(document).on('submit', '#tiny-popup-form', function (e) {
 
         e.preventDefault();
         let loader = $(".loader-container"),
@@ -79,14 +72,14 @@
 
         tinypressPopup.find('.loader-container').css("visibility", "visible");
 
-        let  formdata = $('#form-data').serialize();
+        let formdata = $('#tiny-popup-form').serialize();
         jQuery.ajax({
             type: 'POST',
             url: pluginObject.ajax_url,
             context: this,
             data: {
                 "action": "tiny_admin_popup",
-                'form-data': formdata,
+                'tiny-popup-form': formdata,
             },
             success: function (response) {
                 if (response.success) {
