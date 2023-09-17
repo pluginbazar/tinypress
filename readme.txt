@@ -4,7 +4,7 @@
 	Tags: url shortener, short links
 	Requires at least: 4.6
 	Tested up to: 6.3
-	Stable tag: 1.1.4
+	Stable tag: 1.1.5
 	License: GPLv2 or later
 	License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -68,3 +68,6 @@ Introducing Tinylinks short url for WordPress with so many free features.
 
 = 1.1.4 =
 * 07/09/2023 - UPDATE - Readme text update.
+
+= 1.1.5 =
+* 17/09/2023 - UPDATE - Plugin security check.
