@@ -82,4 +82,4 @@ Introducing Tinylinks short url for WordPress with so many free features.
 * 12/10/2023 - UPDATE - Readme text update.
 
 = 1.1.9 =
-* 26/10/2023 - UPDATE - WordPress version update.
+* 28/10/2023 - UPDATE - WordPress version update.
