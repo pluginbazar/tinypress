@@ -2,9 +2,10 @@
 /* CSS Document */
 
 :root {
-    --tinypress-color-primary: #617822;
-    --tinypress-color-primary-dim: #f7ffe0;
+    --tinypress-color-primary: #24417C;
+    --tinypress-color-primary-dim: rgba(36, 65, 124, 0.08);
     --tinypress-color-red: #f44336;
+    --tinypress-color-red-dim: rgba(244, 67, 54, 0.08);
     --tinypress-color-green: #009688;
 
     --wpdk_settings-primary-color: var(--tinypress-color-primary);
@@ -470,4 +471,150 @@ th#tinypress-link {
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 18px;
+}
+
+#wpadminbar ul#wp-admin-bar-root-default > li.tinypress-admin-bar-icon > a > svg {
+    margin-top: 3px;
+}
+
+/**
+ * Popup Style
+ */
+.tinypress-popup {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    opacity: 1;
+    display: none;
+    z-index: 9999999;
+}
+
+.tinypress-popup .tinypress-popup-box {
+    padding: 30px 20px;
+    background: #fff;
+    border-radius: 5px;
+    width: 420px;
+    position: absolute;
+    transition: all 0.3s ease-in-out;
+    text-align: center;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.tinypress-popup .tinypress-popup-box .popup-content {
+    font-size: 18px;
+    line-height: 28px;
+    margin: 20px 0 30px;
+}
+
+.tinypress-popup .tinypress-popup-box .popup-content .tinypress-logo {
+    max-width: 260px;
+    margin: 0 auto 15px auto;
+}
+
+.tinypress-popup .tinypress-popup-box .popup-content .tinypress-logo a,
+.tinypress-popup .tinypress-popup-box .popup-content .tinypress-logo a:focus,
+.tinypress-popup .tinypress-popup-box .popup-content .tinypress-logo a:active {
+    outline: none;
+    box-shadow: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+
+.tinypress-popup .tinypress-popup-box .popup-content .tinypress-logo img {
+    width: 100%;
+}
+
+.tinypress-popup .tinypress-popup-box .popup-content label {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.tinypress-popup .tinypress-popup-box .popup-content input[type="url"] {
+    margin-top: 15px;
+    padding: 10px 8px;
+    border: 1px solid #eee;
+    transition: 0.3s;
+    width: 100%;
+}
+
+.tinypress-popup .tinypress-popup-box .popup-content input[type="url"]:focus,
+.tinypress-popup .tinypress-popup-box .popup-content input[type="url"]:focus:active {
+    border-color: var(--tinypress-color-primary);
+    box-shadow: none;
+    outline: none;
+}
+
+.tinypress-popup .tinypress-popup-box .popup-content .response-area {
+    display: inline-block;
+    width: 100%;
+    text-align: left;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.tinypress-popup .tinypress-popup-box .popup-content .response-area .response-item {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.tinypress-popup .tinypress-popup-box .popup-content .response-area .response-item:first-child {
+    margin-bottom: 10px;
+}
+
+.tinypress-popup .tinypress-popup-box .popup-content .response-area .response-item .item-label {
+    display: inline-block;
+    min-width: 100px;
+}
+
+.tinypress-popup .tinypress-popup-box .popup-content .response-area .response-item .item-val.long-url {
+    word-wrap: break-word;
+    overflow: hidden;
+}
+
+
+.tinypress-popup .tinypress-popup-box .popup-content .response-area .tinypress-modal-link .tiny-slug-preview {
+    padding: 5px 12px;
+    font-size: 16px;
+    line-height: 24px;
+    border-radius: 4px;
+    background: var(--tinypress-color-primary-dim);
+    color: var(--tinypress-color-primary);
+    border: 1px solid var(--tinypress-color-primary-dim);
+}
+
+.tinypress-popup .tinypress-popup-box .popup-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tinypress-popup .tinypress-popup-box .popup-actions .popup-action {
+    text-transform: uppercase;
+    font-weight: 500;
+    letter-spacing: 1px;
+    cursor: pointer;
+}
+
+.tinypress-popup .tinypress-popup-box .popup-actions .popup-action.popup-action-create {
+    padding: 10px 18px;
+    border-radius: 3px;
+    background: var(--tinypress-color-primary);
+    border-color: var(--tinypress-color-primary);
+    color: #fff;
+    transition: all 0.3s;
+}
+
+.tinypress-popup .tinypress-popup-box .popup-actions .popup-action.popup-action-cancel {
+    margin-right: 20px;
+    color: var(--tinypress-color-red);
 }

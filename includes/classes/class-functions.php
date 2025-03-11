@@ -25,6 +25,7 @@ if ( ! class_exists( 'TINYPRESS_Functions' ) ) {
 		 */
 		public $tinypress_columns = null;
 
+		public static $connect_url = null;
 
 		/**
 		 * TINYPRESS_Functions constructor.
@@ -32,8 +33,12 @@ if ( ! class_exists( 'TINYPRESS_Functions' ) ) {
 		function __construct() {
 			self::$text_hint   = esc_html__( 'Click to Copy.', 'tinypress' );
 			self::$text_copied = esc_html__( 'Copied.', 'tinypress' );
+			self::$connect_url = TINYPRESS_SERVER . 'tiny-connect/?s_url=' . site_url();
 		}
 
+		public static function is_license_active() {
+			return apply_filters( 'tinypress_filters_is_pro', class_exists( 'TINYPRESS_PRO_Main' ) );
+		}
 
 		/**
 		 * @param $slug

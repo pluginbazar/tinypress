@@ -22,7 +22,7 @@ if ( ! class_exists( 'TINYPRESS_Settings' ) ) {
 
 			// Generate settings page
 			$settings_args = array(
-				'framework_title' => esc_html__( 'TinyPress Settings', 'tinypress' ),
+				'framework_title' => '<img style="max-width: 220px;" src="' . TINYPRESS_PLUGIN_URL . '/assets/images/tinypress.svg">',
 				'menu_title'      => esc_html__( 'Settings', 'tinypress' ),
 				'menu_slug'       => 'settings',
 				'menu_type'       => 'submenu',
@@ -30,6 +30,7 @@ if ( ! class_exists( 'TINYPRESS_Settings' ) ) {
 				'database'        => 'option',
 				'theme'           => 'light',
 				'show_search'     => false,
+				'pro_url'         => TINYPRESS_LINK_PRO,
 			);
 
 			WPDK_Settings::createSettingsPage( $tinypress_wpdk->plugin_unique_id, $settings_args, $this->get_settings_pages() );
@@ -38,7 +39,6 @@ if ( ! class_exists( 'TINYPRESS_Settings' ) ) {
 		function render_field_tinypress_browsers() {
 			include TINYPRESS_PLUGIN_DIR . 'templates/admin/settings/browsers.php';
 		}
-
 
 		function render_field_tinypress_supports() {
 			include TINYPRESS_PLUGIN_DIR . 'templates/admin/settings/supports.php';
@@ -80,6 +80,20 @@ if ( ! class_exists( 'TINYPRESS_Settings' ) ) {
 								'desc'        => sprintf( esc_html__( 'This prefix slug will be added this way - %s', 'tinypress' ), esc_url( site_url( 'go/my-tiny-slug' ) ) ),
 								'placeholder' => esc_html__( 'go', 'tinypress' ),
 								'default'     => esc_html__( 'go', 'tinypress' ),
+								'dependency'  => array( 'tinypress_link_prefix', '==', '1' ),
+							),
+							array(
+								'id'          => 'tinypress_kb_shortcut',
+								'type'        => 'text',
+								'title'       => esc_html__( 'Keyboard Shortcut', 'tinypress' ),
+								'subtitle'    => esc_html__( 'Configure your K/B', 'tinypress' ),
+								'desc'        => esc_html__( 'You can now short your large links from anywhere inside your WordPress dashboard.', 'tinypress' ) . '<br>'.
+								                 esc_html__( 'For now you have no option to set your own shortcut but this will come soon.', 'tinypress' ),
+								'placeholder' => esc_html__( 'Ctrl or Cmd + /', 'tinypress' ),
+								'default'     => esc_html__( 'Ctrl or Cmd + /', 'tinypress' ),
+								'attributes'  => array(
+									'disabled' => true,
+								),
 								'dependency'  => array( 'tinypress_link_prefix', '==', '1' ),
 							),
 						),
@@ -141,32 +155,35 @@ if ( ! class_exists( 'TINYPRESS_Settings' ) ) {
 						'title'  => esc_html__( 'Browser Extensions', 'tinypress' ),
 						'fields' => array(
 							array(
-								'id'         => 'tinypress_chrome_address',
-								'type'       => 'text',
-								'title'      => esc_html__( 'Website Address', 'tinypress' ),
-								'desc'       => esc_html__( 'Click on the field to copy the address.', 'tinypress' ),
-								'default'    => site_url(),
-								'class'      => 'tinypress-settings-copy',
-								'attributes' => array(
+								'id'           => 'tinypress_chrome_address',
+								'type'         => 'text',
+								'title'        => esc_html__( 'Website Address', 'tinypress' ),
+								'desc'         => esc_html__( 'Click on the field to copy the address.', 'tinypress' ),
+								'default'      => site_url(),
+								'class'        => 'tinypress-settings-copy',
+								'attributes'   => array(
 									'readonly' => true,
 								),
+								'availability' => ! tinypress()::is_license_active() ? 'pro' : '',
 							),
 							array(
-								'id'         => 'tinypress_chrome_auth_key',
-								'type'       => 'text',
-								'title'      => esc_html__( 'Authentication Key', 'tinypress' ),
-								'desc'       => esc_html__( 'Click on the field to copy the authentication key.', 'tinypress' ),
-								'class'      => 'tinypress-settings-copy',
-								'default'    => md5( current_time( 'U' ) ),
-								'attributes' => array(
+								'id'           => 'tinypress_chrome_auth_key',
+								'type'         => 'text',
+								'title'        => esc_html__( 'Authentication Key', 'tinypress' ),
+								'desc'         => esc_html__( 'Click on the field to copy the authentication key.', 'tinypress' ),
+								'class'        => 'tinypress-settings-copy',
+								'default'      => md5( current_time( 'U' ) ),
+								'attributes'   => array(
 									'readonly' => true,
 								),
+								'availability' => ! tinypress()::is_license_active() ? 'pro' : '',
 							),
 							array(
-								'id'       => 'tinypress_browsers',
-								'type'     => 'callback',
-								'function' => array( $this, 'render_field_tinypress_browsers' ),
-								'title'    => esc_html__( 'Supported Browsers', 'tinypress' ),
+								'id'           => 'tinypress_browsers',
+								'type'         => 'callback',
+								'function'     => array( $this, 'render_field_tinypress_browsers' ),
+								'title'        => esc_html__( 'Supported Browsers', 'tinypress' ),
+								'availability' => ! tinypress()::is_license_active() ? 'pro' : '',
 							),
 						),
 					),

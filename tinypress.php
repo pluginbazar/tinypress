@@ -1,12 +1,12 @@
 <?php
 /*
 	Plugin Name: TinyPress - Shorten and Track URLs
-	Plugin URI: https://pluginbazar.com/plugin/tinypress
-	Description: No more long URL, Shorten and track it with TinyPress.
-	Version: 1.2.3
+	Plugin URI: https://tinypress.xyz/
+	Description: No more long URL, Shorten and track it with tinyPress.
+	Version: 1.2.4
 	Text Domain: tinypress
-	Author: Pluginbazar
-	Author URI: https://pluginbazar.com/
+	Author: Jaed Mosharraf
+	Author URI: https://jaedpro.com/
 	License: GPLv2 or later
 	License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
@@ -19,9 +19,11 @@ defined( 'TINYPRESS_PLUGIN_DIR' ) || define( 'TINYPRESS_PLUGIN_DIR', plugin_dir_
 defined( 'TINYPRESS_PLUGIN_FILE' ) || define( 'TINYPRESS_PLUGIN_FILE', plugin_basename( __FILE__ ) );
 defined( 'TINYPRESS_PLUGIN_VERSION' ) || define( 'TINYPRESS_PLUGIN_VERSION', '1.2.3' );
 defined( 'TINYPRESS_TABLE_REPORTS' ) || define( 'TINYPRESS_TABLE_REPORTS', sprintf( '%stinypress_reports', $wpdb->prefix ) );
+defined( 'TINYPRESS_SERVER' ) || define( 'TINYPRESS_SERVER', esc_url_raw( 'https://endearing-lobster-8e2abe.instawp.xyz/' ) );
+defined( 'TINYPRESS_LINK_PRO' ) || define( 'TINYPRESS_LINK_PRO', esc_url_raw( 'https://pluginbazar.com/products/tinypress/?ref=' . site_url() ) );
 defined( 'TINYPRESS_LINK_DOC' ) || define( 'TINYPRESS_LINK_DOC', esc_url_raw( 'https://docs.pluginbazar.com/plugin/tinypress/' ) );
 defined( 'TINYPRESS_LINK_DOC' ) || define( 'TINYPRESS_LINK_DOC', esc_url_raw( 'https://docs.pluginbazar.com/plugin/tinypress/' ) );
-defined( 'TINYPRESS_LINK_SUPPORT' ) || define( 'TINYPRESS_LINK_SUPPORT', esc_url_raw( 'https://pluginbazar.com/supports/tinypress/' ) );
+defined( 'TINYPRESS_LINK_SUPPORT' ) || define( 'TINYPRESS_LINK_SUPPORT', esc_url_raw( 'mailto:hello@tinypress.xyz' ) );
 
 if ( ! class_exists( 'TINYPRESS_Main' ) ) {
 	/**
@@ -160,7 +162,6 @@ if ( ! class_exists( 'TINYPRESS_Main' ) ) {
 	}
 }
 
-
 function pb_sdk_init_tinypress() {
 
 	if ( ! function_exists( 'get_plugins' ) ) {
@@ -168,7 +169,7 @@ function pb_sdk_init_tinypress() {
 	}
 
 	if ( ! class_exists( 'WPDK\Client' ) ) {
-		require_once( plugin_dir_path( __FILE__ ) . 'includes/wpdk/classes/class-client.php' );
+		require_once( plugin_dir_path( __FILE__ ) . 'includes/wp-dev-kit/classes/class-client.php' );
 	}
 
 	global $tinypress_wpdk;

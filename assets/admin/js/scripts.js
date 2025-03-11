@@ -53,8 +53,87 @@
 
         });
 
+        $(document).keydown(function (e) {
+            // (e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'u'
+            if ((e.metaKey || e.ctrlKey) && e.key === '/') {
+                e.preventDefault();
+                $('.tinypress-popup').show().find('#tinypress-modal-url').focus();
+                return false;
+            }
+        });
     });
 
+
+    $(document).on('click', '.tinypress-popup .tinypress-popup-box .popup-actions .popup-action.popup-action-cancel', function () {
+        $(this).parents('.tinypress-popup').hide();
+    });
+
+
+    $(document).on('keypress', '.tinypress-popup form.tinypress-popup-box #tinypress-modal-url', function (e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            $(this).closest('form').submit();
+        }
+    });
+
+    $(document).on('keydown', '.tinypress-popup form.tinypress-popup-box #tinypress-modal-url', function (e) {
+        if (e.keyCode === 27) {
+            e.preventDefault();
+            $(this).closest('form')[0].reset();
+            $(this).parents('.tinypress-popup').hide();
+        }
+    });
+
+    $(document).on('submit', '.tinypress-popup form.tinypress-popup-box', function () {
+        let el_tinypress_popup_form = $(this),
+            el_submit_btn = el_tinypress_popup_form.find('.popup-action-create'),
+            submit_btn_text = el_submit_btn.text(),
+            el_response_area = el_tinypress_popup_form.find('.response-area');
+
+        if (el_submit_btn.hasClass('working')) {
+            return;
+        }
+
+        $.ajax({
+            type: 'POST',
+            context: this,
+            url: pluginObject.ajax_url,
+            beforeSend: function () {
+                el_submit_btn.addClass('working').text('Working...');
+            },
+            data: {
+                'action': 'tinypress_popup_create_url',
+                'url_data': el_tinypress_popup_form.serialize(),
+            },
+            success: function (response) {
+                if (response.success) {
+                    setTimeout(function () {
+                        el_response_area.find('.tiny-slug-preview .preview').html(response.data.tiny_url);
+                        el_response_area.find('.item-val.long-url').html(response.data.long_url);
+                    }, 1500);
+                }
+            },
+            complete: function () {
+                setTimeout(function () {
+                    el_submit_btn.removeClass('working').text(submit_btn_text);
+                    el_tinypress_popup_form.trigger("reset");
+                }, 1500);
+            },
+        });
+
+        return false;
+    });
+
+    $(document).on('click', '#wpadminbar ul#wp-admin-bar-root-default > li.tinypress-admin-bar-icon', function () {
+
+        let el_tinypress_popup = $('.tinypress-popup'),
+            el_input_url = el_tinypress_popup.find('#tinypress-modal-url');
+
+        el_tinypress_popup.show();
+        el_input_url.focus();
+
+        return false;
+    });
 
     $(document).on('click', 'body.post-type-tinypress_link .tinypress-settings-copy input', function () {
 

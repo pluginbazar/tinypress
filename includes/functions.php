@@ -99,11 +99,13 @@ if ( ! function_exists( 'tinypress_get_tiny_slug_copier' ) ) {
 	 *
 	 * @return false|string
 	 */
-	function tinypress_get_tiny_slug_copier( $post_id, $display_input_field = false, $args = array() ) {
+	function tinypress_get_tiny_slug_copier( $post_id = 0, $display_input_field = false, $args = array() ) {
 		global $post;
 
 		$default_string   = Utils::get_args_option( 'default', $args );
 		$wrapper_class    = Utils::get_args_option( 'wrapper_class', $args );
+		$preview          = (bool) Utils::get_args_option( 'preview', $args, false );
+		$preview_text     = Utils::get_args_option( 'preview_text', $args );
 		$tiny_slug        = Utils::get_meta( 'tiny_slug', $post_id, $default_string );
 		$link_prefix_slug = '';
 
@@ -116,8 +118,13 @@ if ( ! function_exists( 'tinypress_get_tiny_slug_copier' ) ) {
 		echo '<div class="tiny-slug-wrap ' . esc_attr( $wrapper_class ) . '">';
 
 		echo '<div class="tiny-slug-preview hint--top" aria-label="' . tinypress()::$text_hint . '" data-text-copied="' . tinypress()::$text_copied . '">';
-		echo '<span class="prefix">' . esc_url( site_url( '/' . $link_prefix_slug . '/' ) ) . '</span>';
-		echo '<span class="tiny-slug"> ' . esc_attr( $tiny_slug ) . ' </span>';
+
+		if ( $preview ) {
+			echo '<span class="preview"> ' . esc_html__( $preview_text ) . ' </span>';
+		} else {
+			echo '<span class="prefix">' . esc_url( site_url( '/' . $link_prefix_slug . '/' ) ) . '</span>';
+			echo '<span class="tiny-slug"> ' . esc_attr( $tiny_slug ) . ' </span>';
+		}
 		echo '</div>';
 
 		if ( $display_input_field ) {
@@ -176,18 +183,14 @@ if ( ! function_exists( 'tinypress_create_shorten_url' ) ) {
 			return new WP_Error( 404, esc_html__( 'Tiny slug could not created.', 'tinypress' ) );
 		}
 
-		$post_title = wp_strip_all_tags( Utils::get_args_option( 'post_title', $args ) );
-		$url_args   = array(
+		$post_title  = wp_strip_all_tags( Utils::get_args_option( 'post_title', $args ) );
+		$redirection = Utils::get_args_option( 'redirection', $args, 302 );
+		$notes       = Utils::get_args_option( 'notes', $args );
+		$url_args    = array(
 			'post_title'  => $post_title,
 			'post_type'   => 'tinypress_link',
 			'post_status' => 'publish',
 			'post_author' => get_current_user_id(),
-			'meta_input'  => array(
-				'target_url'  => $target_url,
-				'tiny_slug'   => $tiny_slug,
-				'redirection' => Utils::get_args_option( 'redirection', $args, 302 ),
-				'notes'       => Utils::get_args_option( 'notes', $args ),
-			),
 		);
 
 		$new_url_id = wp_insert_post( $url_args );
@@ -202,6 +205,11 @@ if ( ! function_exists( 'tinypress_create_shorten_url' ) ) {
 		if ( is_wp_error( $new_url_id ) ) {
 			return $new_url_id;
 		}
+
+		update_post_meta( $new_url_id, 'target_url', $target_url );
+		update_post_meta( $new_url_id, 'tiny_slug', $tiny_slug );
+		update_post_meta( $new_url_id, 'redirection', $redirection );
+		update_post_meta( $new_url_id, 'notes', $notes );
 
 		return tinypress_get_tinyurl( $new_url_id );
 	}

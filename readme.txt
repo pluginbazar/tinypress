@@ -8,11 +8,11 @@
 	License: GPLv2 or later
 	License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-    Tinylinks short url for WordPress
+    Start using tinyPress to shorten the ugly long URL with a branded and beautiful shorter version without paying other platforms.
 
 == Description ==
 
-Introducing Tinylinks short url for WordPress with so many free features.
+Introducing tinyPress short url for WordPress with so many free features.
 
 == Installation ==
 
