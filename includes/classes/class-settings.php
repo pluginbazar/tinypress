@@ -87,7 +87,7 @@ if ( ! class_exists( 'TINYPRESS_Settings' ) ) {
 								'type'        => 'text',
 								'title'       => esc_html__( 'Keyboard Shortcut', 'tinypress' ),
 								'subtitle'    => esc_html__( 'Configure your K/B', 'tinypress' ),
-								'desc'        => esc_html__( 'You can now short your large links from anywhere inside your WordPress dashboard.', 'tinypress' ) . '<br>'.
+								'desc'        => esc_html__( 'You can now short your large links from anywhere inside your WordPress dashboard.', 'tinypress' ) . '<br>' .
 								                 esc_html__( 'For now you have no option to set your own shortcut but this will come soon.', 'tinypress' ),
 								'placeholder' => esc_html__( 'Ctrl or Cmd + /', 'tinypress' ),
 								'default'     => esc_html__( 'Ctrl or Cmd + /', 'tinypress' ),
@@ -95,6 +95,14 @@ if ( ! class_exists( 'TINYPRESS_Settings' ) ) {
 									'disabled' => true,
 								),
 								'dependency'  => array( 'tinypress_link_prefix', '==', '1' ),
+							),
+							array(
+								'id'       => 'tinypress_hide_modal_opener',
+								'type'     => 'switcher',
+								'title'    => esc_html__( 'Hide Modal Opener', 'tinypress' ),
+								'subtitle' => esc_html__( 'Remove from WP Admin Bar', 'tinypress' ),
+								'label'    => esc_html__( 'Hide quick short link modal opener from WP Admin Bar.', 'tinypress' ),
+								'default'  => false,
 							),
 						),
 					),

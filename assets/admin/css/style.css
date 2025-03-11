@@ -473,8 +473,29 @@ th#tinypress-link {
     font-size: 18px;
 }
 
+#wpadminbar ul#wp-admin-bar-root-default > li.tinypress-admin-bar-icon {
+    background: #F44336;
+    min-width: 100px;
+    position: relative;
+    max-width: 100px;
+}
+
+#wpadminbar ul#wp-admin-bar-root-default > li.tinypress-admin-bar-icon > a,
+#wpadminbar ul#wp-admin-bar-root-default > li.tinypress-admin-bar-icon:hover > a {
+    background: #F44336;
+    color: #fff;
+}
+
 #wpadminbar ul#wp-admin-bar-root-default > li.tinypress-admin-bar-icon > a > svg {
     margin-top: 3px;
+}
+
+#wpadminbar ul#wp-admin-bar-root-default > li.tinypress-admin-bar-icon > a > span.tinypress-icon-text {
+    position: absolute;
+    top: 0;
+    left: 34px;
+    font-size: 14px;
+    line-height: 30px;
 }
 
 /**
