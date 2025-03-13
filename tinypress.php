@@ -1,12 +1,12 @@
 <?php
 /*
 	Plugin Name: TinyPress - Shorten and Track URLs
-	Plugin URI: https://tinypress.xyz/
+	Plugin URI: https://pluginbazar.com/plugins/tinypress-shorten-and-track-your-urls/
 	Description: No more long URL, Shorten and track it with tinyPress.
 	Version: 1.2.4
 	Text Domain: tinypress
-	Author: Jaed Mosharraf
-	Author URI: https://jaedpro.com/
+	Author: Pluginbazar
+	Author URI: https://pluginbazar.com/
 	License: GPLv2 or later
 	License URI: http://www.gnu.org/licenses/gpl-2.0.html
 */
@@ -16,8 +16,8 @@ defined( 'ABSPATH' ) || exit;
 
 defined( 'TINYPRESS_PLUGIN_URL' ) || define( 'TINYPRESS_PLUGIN_URL', WP_PLUGIN_URL . '/' . plugin_basename( dirname( __FILE__ ) ) . '/' );
 defined( 'TINYPRESS_PLUGIN_DIR' ) || define( 'TINYPRESS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+defined( 'TINYPRESS_PLUGIN_VERSION' ) || define( 'TINYPRESS_PLUGIN_VERSION', '1.2.4' );
 defined( 'TINYPRESS_PLUGIN_FILE' ) || define( 'TINYPRESS_PLUGIN_FILE', plugin_basename( __FILE__ ) );
-defined( 'TINYPRESS_PLUGIN_VERSION' ) || define( 'TINYPRESS_PLUGIN_VERSION', '1.2.3' );
 defined( 'TINYPRESS_TABLE_REPORTS' ) || define( 'TINYPRESS_TABLE_REPORTS', sprintf( '%stinypress_reports', $wpdb->prefix ) );
 defined( 'TINYPRESS_SERVER' ) || define( 'TINYPRESS_SERVER', esc_url_raw( 'https://endearing-lobster-8e2abe.instawp.xyz/' ) );
 defined( 'TINYPRESS_LINK_PRO' ) || define( 'TINYPRESS_LINK_PRO', esc_url_raw( 'https://pluginbazar.com/products/tinypress/?ref=' . site_url() ) );
