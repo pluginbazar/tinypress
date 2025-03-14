@@ -1,9 +1,9 @@
 <?php
 /*
-	Plugin Name: TinyPress - Shorten and Track URLs
+	Plugin Name: tinyPress - Shorten and Track URLs
 	Plugin URI: https://pluginbazar.com/plugins/tinypress-shorten-and-track-your-urls/
 	Description: No more long URL, Shorten and track it with tinyPress.
-	Version: 1.2.4
+	Version: 1.2.5
 	Text Domain: tinypress
 	Author: Pluginbazar
 	Author URI: https://pluginbazar.com/
@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || exit;
 
 defined( 'TINYPRESS_PLUGIN_URL' ) || define( 'TINYPRESS_PLUGIN_URL', WP_PLUGIN_URL . '/' . plugin_basename( dirname( __FILE__ ) ) . '/' );
 defined( 'TINYPRESS_PLUGIN_DIR' ) || define( 'TINYPRESS_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-defined( 'TINYPRESS_PLUGIN_VERSION' ) || define( 'TINYPRESS_PLUGIN_VERSION', '1.2.4' );
+defined( 'TINYPRESS_PLUGIN_VERSION' ) || define( 'TINYPRESS_PLUGIN_VERSION', '1.2.5' );
 defined( 'TINYPRESS_PLUGIN_FILE' ) || define( 'TINYPRESS_PLUGIN_FILE', plugin_basename( __FILE__ ) );
 defined( 'TINYPRESS_TABLE_REPORTS' ) || define( 'TINYPRESS_TABLE_REPORTS', sprintf( '%stinypress_reports', $wpdb->prefix ) );
 defined( 'TINYPRESS_SERVER' ) || define( 'TINYPRESS_SERVER', esc_url_raw( 'https://endearing-lobster-8e2abe.instawp.xyz/' ) );

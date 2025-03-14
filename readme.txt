@@ -1,14 +1,14 @@
-=== TinyPress - Shorten and Track your urls ===
-	Contributors: pluginbazar
+=== tinyPress - Complete solution for Affiliate Links, Link Shortening, Link Tracking, Link Branding & Marketing  ===
+	Contributors: pluginbazar, jaedm97
 	Donate link: https://pluginbazar.com/contact/
 	Tags: affiliate links, link shortener, short links, redirects, link tracking
 	Requires at least: 4.6
 	Tested up to: 6.7
-	Stable tag: 1.2.4
+	Stable tag: 1.2.5
 	License: GPLv2 or later
 	License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-    Ultimate solution to create, shorten, track and manage any long URL without paying other platforms. Gather analytics reports and run successful marketing campaigns easily.
+    Complete solution to create, shorten, track and manage any URL without paying other platforms. Get reports and run successful marketing campaigns.
 
 == Description ==
 
@@ -34,18 +34,39 @@ Transform long, messy URLs into clean, branded links while gaining powerful clic
 ✨ **Keyboard Wizardry** - Press `Ctrl/Cmd + /` anywhere in WP Admin to instantly create shortlinks.
 ✨ **Browser Power-Up** - [Chrome Extension](https://pluginbazar.com/plugins/tinypress-shorten-and-track-your-urls/) lets you shorten URLs in one click without dashboard access
 
+https://www.youtube.com/watch?v=71B3GkqiT6E
+
 #### *Upcoming Features*
- - 🔍 Auto-link keywords
- - 🩺 Broken link scanner
- - 🎭 Stealth cloaking
- - 🌍 Geo-targeted redirects
- - 🔀 A/B testing paths
- - 📥 Bulk shortlinks imports/exports
+ 👉 Auto-link keywords
+ 👉 Broken link scanner
+ 👉 Stealth cloaking
+ 👉 Geo-targeted redirects
+ 👉 A/B testing paths
+ 👉 Bulk short links imports/exports
+ 👉 Google Analytics integration.
+ 👉 MonsterInsights integration.
 
 == Installation ==
 
 1. Install as regular WordPress plugin.<br />
-2. Go your plugin settings via WordPress Dashboard and find "<strong>tinyPress</strong>" activate it.<br />
+2. Go your plugin list and find "<strong>tinyPress</strong>" activate it.<br />
+
+
+== Frequently Asked Questions ==
+= tinyPress is helpful to whom? =
+tinyPress is particularly helpful to affiliate marketers & website owners. It helps them to manage, clean up, brand, and track their links. In addition to affiliate marketing, tinyPress also helpful to SEO marketers, bloggers, merchants, social media marketers, and anyone else who wants to easily take control of their link strategy.
+
+= Is it compatible with any WordPress theme? =
+Absolutely YES! tinyPress mainly run in the WordPress admin, So it is not depended on any WordPress theme.
+
+= Why I should try tinyPress whereas there are lots of alternatives in the market? =
+Most of the available plugins, make the basic features on their premium version like link protection, link expiry, etc. But tinyPress made all of them free for the users.
+
+= Is tinyPress translatable? =
+Yes! tinyPress is ready for translation. You can translate easily as you do for the other plugins in your own language.
+
+= What are the differences in redirect types? =
+301 (Permanent) redirects are used to tell search engines that a requested URL has been permanently moved to another URL. If you're confident that your target URL will never change, then use this redirect type. 302 and 307 (Temporary) redirects tell search engines that the requested URL has been moved temporarily, but will be back eventually.
 
 
 == Screenshots ==
@@ -54,6 +75,9 @@ Transform long, messy URLs into clean, branded links while gaining powerful clic
 
 
 == Changelog ==
+
+= 1.2.5 - 14 March 2025 =
+- FIX: Readme updated with more content.
 
 = 1.2.4 - 14 March 2025 =
 - NEW: Added keyboard shortcut functionality.
@@ -130,3 +154,5 @@ Transform long, messy URLs into clean, branded links while gaining powerful clic
 
 = 1.0.0 - 12 November 2022 =
 - NEW: Initial release.
+
+== Upgrade Notice ==
